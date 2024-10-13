@@ -1,18 +1,55 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id='id'>
+    <el-container>
+      <el-aside width="auto">
+        <Aside></Aside>
+      </el-aside>
+      <el-container>
+        <el-header>
+          <Header></Header>
+          
+        </el-header>
+        <CommonTag></CommonTag>
+        <el-main>
+          <router-view ></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+  import Aside from '@/components/common/Aside'
+  import Header from '@/components/common/Header'
+  import CommonTag from '@/components/common/CommonTag'
+  export default {
+    name: 'HomeView',
+    components: {
+      Aside,
+      Header,
+      CommonTag
+    }
 
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
   }
-}
 </script>
+
+<style scoped lang="less">
+  *{
+    padding: 0;
+    margin: 0;
+   }
+   .app-container{
+    height: 100%;
+   }
+  .el-main{
+    height: 100%;
+  }
+  .el-aside{
+    height: 100%;
+  
+  }
+
+  
+
+ 
+</style>
