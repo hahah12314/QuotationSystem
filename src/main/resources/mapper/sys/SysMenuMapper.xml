@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.sys.mapper.SysMenuMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        menu_id, parent_id, name, path, perms, type, icon, order_num
+    </sql>
+    <select id="queryMenuByRoleId" resultType="java.lang.Long">
+        select menu_id from sys_role_menu where role_id = #{roleId}
+    </select>
+    <select id="queryRoleByMenuId" resultType="com.wanshu.sys.entity.SysRole">
+        select * from sys_role where role_id in (select role_id from sys_role_menu where menu_id = #{menuId})
+    </select>
+    <select id="queryMenuRoleByRoleId" resultType="com.wanshu.sys.entity.SysMenu">
+        select * from sys_menu where menu_id in (select menu_id from sys_role_menu where role_id = #{roleId})
+    </select>
+
+
+</mapper>

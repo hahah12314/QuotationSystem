@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.cost.mapper.QuotationsMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        quotation_id, quotation_name, material_code, material_name, unit_price, count, specification, is_external_procurement, total_cost, create_time, update_time, audit_status
+    </sql>
+
+</mapper>

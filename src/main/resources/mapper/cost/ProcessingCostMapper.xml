@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.cost.mapper.ProcessingCostMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, detailId, sawTime, sawFee, bendTime, bendFee, drillTime, drillFee, turnTime, turnFee, grindTime, grindFee, millTime, millFee, calibrateTime, calibrateFee, boreMillTime, boreMillFee, weldTime, weldFee, polishTime, polishFee, assembleTime, assembleFee, totalProcessFee
+    </sql>
+
+</mapper>
