@@ -12,11 +12,12 @@
                 <el-table-column prop="customer.email" label="客户邮箱" width="150"></el-table-column>
                 <el-table-column prop="customer.address" label="客户地址" width="200"></el-table-column>
                 <el-table-column prop="customer.paymentMethod" label="支付方式" width="150"></el-table-column>
-                <el-table-column label="操作" width="240">
+                <el-table-column label="状态"><el-button size="mini" type="danger"
+                    @click="handleDelete(scope.$index, scope.row)">未审核</el-button></el-table-column>
+                <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="fetchQuotationInfo(scope.row)">审核</el-button>
-                        <el-button size="mini" type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">未审核</el-button>
+                        
                         
                     </template>
                 </el-table-column>

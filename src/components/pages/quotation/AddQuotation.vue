@@ -109,9 +109,9 @@
             <td><input v-model.number="item.unitPrice" class="input-field" :readonly="isReadOnly" /></td>
             <td><input v-model.number="item.quantity" class="input-field" :readonly="isReadOnly" /></td>
             <td>
-              <select v-model="item.specification" class="input-field" :disabled="isReadOnly">
-                <option v-for="material in historyMaterials" :key="material.detailId" :value="material.specification">
-                  {{ material.specification }}
+              <select v-model="quotationForm.material.historyMaterialId" class="input-field" :disabled="isReadOnly">
+                <option v-for="(material,index) in historyMaterials" :key="material.detailId" :value="material.detailId">
+                  {{ material.specification}}
                 </option>
               </select>
             </td>

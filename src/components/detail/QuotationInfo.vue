@@ -3,7 +3,7 @@
     <header class="header">
       <h1 class="title">金威报价单</h1>
     </header>
-    {{quotationForm}}
+   
     <div v-if="quotationForm">
       <table class="data-table">
         <thead>
@@ -190,6 +190,7 @@
           if (response.code === 200) {
             this.$message.success('报价单已提交审核！');
           }
+          this.$router.push('/firstPage')
 
         } catch (error) {
           console.error('提交失败:', error);
