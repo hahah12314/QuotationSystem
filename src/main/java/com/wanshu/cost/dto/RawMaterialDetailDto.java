@@ -1,5 +1,4 @@
-package com.wanshu.cost.vo;
-import java.math.BigDecimal;
+package com.wanshu.cost.dto;
 
 import com.wanshu.cost.entity.RawMaterials;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,12 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class RawMaterialQueryVo extends RawMaterials {
-
-
+@AllArgsConstructor
+public class RawMaterialDetailDto extends RawMaterials {
     @ApiModelProperty(value = "数割(M)")
     private Integer numCut;
 
@@ -50,7 +50,6 @@ public class RawMaterialQueryVo extends RawMaterials {
 
     @ApiModelProperty(value = "原材料费用小计")
     private BigDecimal totalMaterialCost;
-
     @ApiModelProperty(value = "喷砂工时")
     private BigDecimal sandblastTime;
 
@@ -71,33 +70,6 @@ public class RawMaterialQueryVo extends RawMaterials {
 
     @ApiModelProperty(value = "费用小计")
     private BigDecimal totalPaintingFee;
-
-    @ApiModelProperty(value = "镀锌工时")
-    private BigDecimal zincWeight;
-
-    @ApiModelProperty(value = "镀锌金额")
-    private BigDecimal zincFee;
-
-    @ApiModelProperty(value = "调质工时")
-    private BigDecimal temperingWeight;
-
-    @ApiModelProperty(value = "调质金额")
-    private BigDecimal temperingFee;
-
-    @ApiModelProperty(value = "冲砂工时")
-    private BigDecimal sandWeight;
-
-    @ApiModelProperty(value = "冲砂金额")
-    private BigDecimal sandFee;
-
-    @ApiModelProperty(value = "QPQ工时")
-    private BigDecimal qpqWeight;
-
-    @ApiModelProperty(value = "QPQ金额")
-    private BigDecimal qpqFee;
-
-    @ApiModelProperty(value = "费用小计")
-    private BigDecimal totalCoatingFee;
     @ApiModelProperty(value = "锯工时")
     private BigDecimal sawTime;
 
@@ -166,5 +138,31 @@ public class RawMaterialQueryVo extends RawMaterials {
 
     @ApiModelProperty(value = "费用小计")
     private BigDecimal totalProcessFee;
+    @ApiModelProperty(value = "镀锌工时")
+    private BigDecimal zincWeight;
+
+    @ApiModelProperty(value = "镀锌金额")
+    private BigDecimal zincFee;
+
+    @ApiModelProperty(value = "调质工时")
+    private BigDecimal temperingWeight;
+
+    @ApiModelProperty(value = "调质金额")
+    private BigDecimal temperingFee;
+
+    @ApiModelProperty(value = "冲砂工时")
+    private BigDecimal sandWeight;
+
+    @ApiModelProperty(value = "冲砂金额")
+    private BigDecimal sandFee;
+
+    @ApiModelProperty(value = "QPQ工时")
+    private BigDecimal qpqWeight;
+
+    @ApiModelProperty(value = "QPQ金额")
+    private BigDecimal qpqFee;
+
+    @ApiModelProperty(value = "费用小计")
+    private BigDecimal totalCoatingFee;
 
 }

@@ -5,6 +5,9 @@ import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.cost.entity.RawMaterials;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 原材料表 服务类
@@ -16,4 +19,8 @@ import com.wanshu.cost.entity.RawMaterials;
 public interface IRawMaterialsService extends IService<RawMaterials> {
 
     PageUtils queryPageRawMaterial(RawMaterialQueryDto rawMaterialQueryDto);
+
+    Map<String, Object> getRawMaterialDetail(Long detailId);
+
+    List<RawMaterials> queryAll();
 }

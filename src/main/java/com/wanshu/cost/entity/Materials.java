@@ -48,6 +48,8 @@ public class Materials implements Serializable {
     @ApiModelProperty(value = "单件重量")
     private Double weight;
 
+    private Integer quantity;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;

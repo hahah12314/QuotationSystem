@@ -4,7 +4,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        material_id, material_code, material_name, unit_price, weight, create_time, update_time，is_external_procurement
+        material_id, material_code, material_name, unit_price, weight, create_time, update_time，is_external_procurement,quantity
     </sql>
 
 </mapper>

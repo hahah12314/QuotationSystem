@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.MaterialQueryDto;
+import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.Materials;
 import com.wanshu.cost.mapper.MaterialsMapper;
 import com.wanshu.cost.service.IMaterialsService;
@@ -12,6 +13,8 @@ import com.wanshu.sys.entity.SysRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -33,4 +36,12 @@ public class MaterialsServiceImpl extends ServiceImpl<MaterialsMapper, Materials
         Page<Materials> page = this.page(materialQueryDto.page(),wrapper);
         return new PageUtils(page);
     }
+
+    @Override
+    public List<Materials> queryAll() {
+        QueryWrapper<Materials> wrapper = new QueryWrapper<>();
+        return materialsMapper.selectList(wrapper);
+    }
+
+
 }

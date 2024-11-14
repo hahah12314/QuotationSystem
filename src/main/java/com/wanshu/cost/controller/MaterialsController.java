@@ -3,9 +3,8 @@ package com.wanshu.cost.controller;
 
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.MaterialQueryDto;
-import com.wanshu.cost.mapper.MaterialsMapper;
+import com.wanshu.cost.entity.Materials;
 import com.wanshu.cost.service.IMaterialsService;
-import com.wanshu.sys.dto.SysRoleQueryDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,6 +38,13 @@ public class MaterialsController {
         log.info("queryPage{}",materialQueryDto);
 
         return this.materialsService.queryPageMaterial(materialQueryDto);
+    }
+
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有物料")
+    public List<Materials> queryAll(){
+        log.info("queryAll");
+        return this.materialsService.queryAll();
     }
 
 }
