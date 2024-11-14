@@ -11,6 +11,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" size="medium" @click="submitLoginForm">登录</el-button>
+                    <!-- <el-button type="info" size="medium" @click="goToRegister">注册</el-button> -->
                 </el-form-item>
             </el-form>
         </div>
@@ -57,6 +58,9 @@
                         return false;
                     }
                 });
+            },
+            goToRegister() {
+                this.$router.push('/register');
             }
         }
     };

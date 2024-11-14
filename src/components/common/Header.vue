@@ -1,13 +1,15 @@
 <template>
-    <div class='header-container'>
+    <div class='header-container' style="margin-left:-5px">
         <div class="l-content" style="margin-left:-5px">
             <el-button icon="el-icon-menu" size="medium" @click="handleMenu"></el-button>
             <el-breadcrumb separator="/" style="margin-left: 20px;">
-                <el-breadcrumb-item v-for="item in tags" :key="item.path" :to="item.path !== $route.path ? item.path : null" >
+                <el-breadcrumb-item v-for="item in tags" :key="item.path"
+                    :to="item.path !== $route.path ? item.path : null">
                     {{item.name}}
                 </el-breadcrumb-item>
 
             </el-breadcrumb>
+
         </div>
         <div class="r-content">
             <el-dropdown @command="handleCommand">
@@ -32,17 +34,17 @@
             handleMenu() {
                 this.$store.commit('ChangeCollapse')
             },
-            handleCommand(command){
+            handleCommand(command) {
                 console.log(command)
-                if(command==='b'){
+                if (command === 'b') {
                     sessionStorage.clear()
-                    
+
                     this.$router.push('/login')
-                }else{
-                    if(this.$route.path!=='/' && this.$route.path!=='/firstPage'){
+                } else {
+                    if (this.$route.path !== '/' && this.$route.path !== '/firstPage') {
                         this.$router.push('/')
                     }
-                    
+
                 }
             }
 
@@ -66,6 +68,7 @@
         justify-content: space-between;
         align-items: center;
 
+
         .firstPage {
             color: #fff;
             font-size: 18px;
@@ -73,12 +76,16 @@
         }
 
         .r-content {
+
             padding-right: 20px;
+
 
             .user-img {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
+              
+
 
             }
         }

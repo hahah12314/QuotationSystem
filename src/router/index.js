@@ -87,14 +87,89 @@ const routes = [
         path: '/quotationReview',
         name: 'quotationReview',
         component: () => import('@/components/pages/quotation/QuotationReview')
-      }
+      },
+      {
+        path: '/addQuotation',
+        name: 'addQuotation',
+        component: () => import('@/components/pages/quotation/AddQuotation')
+      },
+      {
+        path: '/processCost',
+        name: 'processCost',
+        component: () => import('@/components/pages/data/ProcessingCost')
+      },
+      {
+        path: '/materialCost',
+        name: 'materialCost',
+        component: () => import('@/components/pages/data/materialCost')
+      },
+      {
+        path: '/cuttingCost',
+        name: 'cuttingCost',
+        component: () => import('@/components/pages/data/cuttingCost')
+      },
+      {
+        path: '/paintingCost',
+        name: 'paintingCost',
+        component: () => import('@/components/pages/data/paintingCost')
+      },
+      {
+        path: '/sufaceTreatment',
+        name: 'sufaceTreatment',
+        component: () => import('@/components/pages/data/sufaceTreatment')
+      },
+      {
+        path: '/orderAnalysis',
+        name: 'orderAnalysis',
+        component: () => import('@/components/pages/analysis/OrderAnalysis')
+      },
+      {
+        path: '/customerAnalysis',
+        name: 'customerAnalysis',
+        component: () => import('@/components/pages/analysis/CustomerAnalysis')
+      },
+      {
+        path: '/profitAnalysis',
+        name: 'profitAnalysis',
+        component: () => import('@/components/pages/analysis/ProfitAnalysis')
+      },
+      {
+        path: '/cost/materialDetail/:id',
+        name: 'materialDetail',
+        component: () => import('@/components/detail/MaterialInfo')
+      },
+      {
+        path: '/workerManagement',
+        name: 'workerManagement',
+        component: () => import('@/components/pages/worker/workerManage')
+      },
+      {
+        path: '/hourManagement',
+        name: 'hourManagement',
+        component: () => import('@/components/pages/worker/hourManage')
+      },
+      {
+        path: '/quoteGeneration',
+        name: 'quoteGeneration',
+        component: () => import('@/components/detail/QuotationInfo')
+      },
+      {
+        path: '/auditQuotation',
+        name: 'auditQuotation',
+        component: () => import('@/components/pages/quotation/AuditQuotation')
+      },
+      
     ]
   },
   {
     path:'/login',
     name:'login',
     component:Login
-
+  },
+  {
+    path:'/register',
+    name:'register',
+    component:()=> import('@/components/common/Register')
   }
 
 ]

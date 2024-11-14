@@ -1,368 +1,288 @@
 <template>
-    <div id='id'>
-        <el-row>
-            <el-col :span="8">
-
-                <el-card class="box-card">
-                    <div class="user">
-                        <img src="@/assets/images/user1.png" alt="">
-                        <div class="userinfo">
-                            <p class="name">Admin</p>
-                            <p class="access">超级管理员</p>
-                        </div>
-                    </div>
-                    <div class="login-info">
-                        <p>上次登录的时间:<span>2022-10-20</span></p>
-                        <p>上次登录的地点:<span>上海</span></p>
-                    </div>
-                </el-card>
-                <el-card class="box-card" style="margin-top: 20px;">
-                    <el-table :data="tableData" stripe style="width: 100%">
-                        <el-table-column prop="date" label="日期" width="180">
-                        </el-table-column>
-                        <el-table-column prop="name" label="姓名" width="180">
-                        </el-table-column>
-                        <el-table-column prop="address" label="地址">
-                        </el-table-column>
-                    </el-table>
-                </el-card>
-                <el-card class="box-card" style="margin-top: 20px;">
-                    <div ref="echarts1" style="height:300px"></div>
-                </el-card>
-
-
-            </el-col>
-            <el-col :span="16" style="padding-left:20px">
-                <el-card class="box-card system-bulletin" style="margin-bottom:20px">
-                    <div slot="header" class="system-title">
-                        <span>系统公告</span>
-                    </div>
-                    <div v-for="item in systemData" :key="item.id" class="system-content item">
-                        <div>
-                            {{item.title}}
-                        </div>
-                        <div>
-                            <i :class="`el-icon-${item.icon}`">{{item.date}}</i>
-                        </div>
-                    </div>
-                </el-card>
-                <el-card class="box-card" style="margin-bottom:20px">
-                    <div ref="echarts2" style="height:300px">
-
-                    </div>
-                </el-card>
-                <el-card class="box-card">
-                    <div ref="echarts3" style="height:300px">
-
-                    </div>
-                </el-card>
-            </el-col>
-        </el-row>
+    <div id="app" class="home-page">
+      <el-row gutter="20">
+        <el-col :span="6">
+          <el-card class="box-card1 user-card">
+            <div class="card-content">
+              <i class="el-icon-message"></i>
+              <p>消息</p>
+            </div>
+            <div class="card-footer">
+              <span>2023-10-01</span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="6">
+          <el-card class="box-card1 user-card">
+            <div class="card-content">
+              <i class="el-icon-circle-check"></i>
+              <p>待办</p>
+            </div>
+            <div class="card-footer">
+              <span>2023-10-01</span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="6">
+          <el-card class="box-card1 user-card">
+            <div class="card-content">
+              <i class="el-icon-user"></i>
+              <p>我的</p>
+            </div>
+            <div class="card-footer">
+              <span>2023-10-01</span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="6">
+          <el-card class="box-card1 user-card">
+            <div class="card-content">
+              <i class="el-icon-setting"></i>
+              <p>设置</p>
+            </div>
+            <div class="card-footer">
+              <span>2023-10-01</span>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+  
+      <el-row style="margin-top: 20px;" gutter="20">
+        <el-col :span="7">
+          <el-card class="box-card common-functions">
+            <h3>常用功能</h3>
+            <el-list>
+              <el-list-item class="function-item" @click="navigateTo('报价管理')">报价管理</el-list-item>
+              <el-list-item class="function-item" @click="navigateTo('客户管理')">客户管理</el-list-item>
+              <el-list-item class="function-item" @click="navigateTo('材料管理')">材料管理</el-list-item>
+              <el-list-item class="function-item" @click="navigateTo('统计分析')">统计分析</el-list-item>
+            </el-list>
+          </el-card>
+        </el-col>
+  
+        <el-col :span="7">
+          <el-card class="box-card pending-tasks">
+            <h3>待处理事项</h3>
+            <el-table :data="pendingTasks" stripe>
+              <el-table-column prop="task" label="任务"></el-table-column>
+              <el-table-column prop="status" label="状态"></el-table-column>
+            </el-table>
+          </el-card>
+        </el-col>
+  
+        <el-col :span="10">
+          <el-card class="box-card calendar">
+            <h3>行事历</h3>
+            <el-calendar v-model="currentDate" @date-change="onDateChange"></el-calendar>
+          </el-card>
+        </el-col>
+      </el-row>
+  
+      <el-row style="margin-top: 20px;" gutter="20">
+        <el-col :span="12">
+          <el-card class="box-card weekly-stats">
+            <h3>本周操作统计</h3>
+            <div ref="weeklyChart" class="chart-container"></div>
+          </el-card>
+        </el-col>
+  
+        <el-col :span="12">
+          <el-card class="box-card quote-stats">
+            <h3>报价统计</h3>
+            <div ref="quoteChart" class="chart-container"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+  
+      <el-row gutter="20" style="margin-top: 20px;">
+        <el-col :span="12">
+          <el-card class="box-card1 announcements">
+            <h3>系统公告</h3>
+            <div v-for="item in systemAnnouncements" :key="item.id" class="announcement-item">
+              <div>{{ item.title }}</div>
+              <div><i :class="`el-icon-${item.icon}`">{{ item.date }}</i></div>
+            </div>
+          </el-card>
+        </el-col>
+  
+        <el-col :span="12">
+          <el-card class="box-card recent-activities">
+            <h3>近期活动</h3>
+            <el-list>
+              <el-list-item v-for="activity in recentActivities" :key="activity.id">
+                {{ activity.message }}
+              </el-list-item>
+            </el-list>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
-</template>
-
-<script>
-    import * as echarts from 'echarts';
-
-
-    export default {
-        name: 'firstPage',
-        data() {
-            return {
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1516 弄'
-                }],
-                systemData: [
-                    {
-                        id: 1,
-                        date: "2022-10-21 09:00",
-                        title: "【内部分享】如何建立良好的客户关系",
-                        icon: 'timer'
-                    },
-                    {
-                        id: 2,
-                        date: "2022-10-21 09:00",
-                        title: "【内部分享】如何建立良好的客户关系",
-                        icon: 'timer'
-                    },
-                    {
-                        id: 3,
-                        date: "2022-10-21 09:00",
-                        title: "【内部分享】如何建立良好的客户关系",
-                        icon: 'timer'
-                    },
-                    {
-                        id: 4,
-                        date: "2022-10-21 09:00",
-                        title: "【内部分享】如何建立良好的客户关系",
-                        icon: 'timer'
-                    },
-                    {
-                        id: 5,
-                        date: "2022-10-21 09:00",
-                        title: "【内部分享】如何建立良好的客户关系",
-                        icon: 'timer'
-                    },
-                    {
-                        id: 6,
-                        date: "2022-10-21 09:00",
-                        title: "【内部分享】如何建立良好的客户关系",
-                        icon: 'timer'
-                    },
-                ]
-            }
-        },
-        mounted() {
-            // 基于准备好的dom，初始化echarts实例
-            var myChart1 = echarts.init(this.$refs.echarts1);
-            var myChart2 = echarts.init(this.$refs.echarts2);
-            var myChart3 = echarts.init(this.$refs.echarts3);
-            var option1 = {
-                title: {
-                    text: 'ECharts 入门示例'
-                },
-                tooltip: {},
-                xAxis: {
-                    data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-                },
-                yAxis: {},
-                series: [
-                    {
-                        name: '销量',
-                        type: 'bar',
-                        data: [5, 20, 36, 10, 10, 20]
-                    }
-                ]
-            };
-            var option2 = {
-                title: {
-                    text: 'Stacked Area Chart'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#6a7985'
-                        }
-                    }
-                },
-                legend: {
-                    data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        name: 'Email',
-                        type: 'line',
-                        stack: 'Total',
-                        areaStyle: {},
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: 'Union Ads',
-                        type: 'line',
-                        stack: 'Total',
-                        areaStyle: {},
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: 'Video Ads',
-                        type: 'line',
-                        stack: 'Total',
-                        areaStyle: {},
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: 'Direct',
-                        type: 'line',
-                        stack: 'Total',
-                        areaStyle: {},
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name: 'Search Engine',
-                        type: 'line',
-                        stack: 'Total',
-                        label: {
-                            show: true,
-                            position: 'top'
-                        },
-                        areaStyle: {},
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [820, 932, 901, 934, 1290, 1330, 1320]
-                    }
-                ]
-            };
-            // prettier-ignore
-            const hours = [
-                '12a', '1a', '2a', '3a', '4a', '5a', '6a',
-                '7a', '8a', '9a', '10a', '11a',
-                '12p', '1p', '2p', '3p', '4p', '5p',
-                '6p', '7p', '8p', '9p', '10p', '11p'
-            ];
-            // prettier-ignore
-            const days = [
-                'Saturday', 'Friday', 'Thursday',
-                'Wednesday', 'Tuesday', 'Monday', 'Sunday'
-            ];
-            // prettier-ignore
-            const data = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [0, 7, 0], [0, 8, 0], [0, 9, 0], [0, 10, 0], [0, 11, 2], [0, 12, 4], [0, 13, 1], [0, 14, 1], [0, 15, 3], [0, 16, 4], [0, 17, 6], [0, 18, 4], [0, 19, 4], [0, 20, 3], [0, 21, 3], [0, 22, 2], [0, 23, 5], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [1, 7, 0], [1, 8, 0], [1, 9, 0], [1, 10, 5], [1, 11, 2], [1, 12, 2], [1, 13, 6], [1, 14, 9], [1, 15, 11], [1, 16, 6], [1, 17, 7], [1, 18, 8], [1, 19, 12], [1, 20, 5], [1, 21, 5], [1, 22, 7], [1, 23, 2], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [2, 7, 0], [2, 8, 0], [2, 9, 0], [2, 10, 3], [2, 11, 2], [2, 12, 1], [2, 13, 9], [2, 14, 8], [2, 15, 10], [2, 16, 6], [2, 17, 5], [2, 18, 5], [2, 19, 5], [2, 20, 7], [2, 21, 4], [2, 22, 2], [2, 23, 4], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [3, 7, 0], [3, 8, 1], [3, 9, 0], [3, 10, 5], [3, 11, 4], [3, 12, 7], [3, 13, 14], [3, 14, 13], [3, 15, 12], [3, 16, 9], [3, 17, 5], [3, 18, 5], [3, 19, 10], [3, 20, 6], [3, 21, 4], [3, 22, 4], [3, 23, 1], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [4, 7, 0], [4, 8, 0], [4, 9, 2], [4, 10, 4], [4, 11, 4], [4, 12, 2], [4, 13, 4], [4, 14, 4], [4, 15, 14], [4, 16, 12], [4, 17, 1], [4, 18, 8], [4, 19, 5], [4, 20, 3], [4, 21, 7], [4, 22, 3], [4, 23, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [5, 7, 0], [5, 8, 2], [5, 9, 0], [5, 10, 4], [5, 11, 1], [5, 12, 5], [5, 13, 10], [5, 14, 5], [5, 15, 7], [5, 16, 11], [5, 17, 6], [5, 18, 0], [5, 19, 5], [5, 20, 3], [5, 21, 4], [5, 22, 2], [5, 23, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0], [6, 7, 0], [6, 8, 0], [6, 9, 0], [6, 10, 1], [6, 11, 0], [6, 12, 2], [6, 13, 1], [6, 14, 3], [6, 15, 4], [6, 16, 0], [6, 17, 0], [6, 18, 0], [6, 19, 0], [6, 20, 1], [6, 21, 2], [6, 22, 2], [6, 23, 6]];
-            const title = [];
-            const singleAxis = [];
-            const series = [];
-            days.forEach(function (day, idx) {
-                title.push({
-                    textBaseline: 'middle',
-                    top: ((idx + 0.5) * 100) / 7 + '%',
-                    text: day
-                });
-                singleAxis.push({
-                    left: 150,
-                    type: 'category',
-                    boundaryGap: false,
-                    data: hours,
-                    top: (idx * 100) / 7 + 5 + '%',
-                    height: 100 / 7 - 10 + '%',
-                    axisLabel: {
-                        interval: 2
-                    }
-                });
-                series.push({
-                    singleAxisIndex: idx,
-                    coordinateSystem: 'singleAxis',
-                    type: 'scatter',
-                    data: [],
-                    symbolSize: function (dataItem) {
-                        return dataItem[1] * 4;
-                    }
-                });
-            });
-            data.forEach(function (dataItem) {
-                series[dataItem[0]].data.push([dataItem[1], dataItem[2]]);
-            });
-            var option3 = {
-                tooltip: {
-                    position: 'top'
-                },
-                title: title,
-                singleAxis: singleAxis,
-                series: series
-            };
-            myChart1.setOption(option1);
-            myChart2.setOption(option2);
-            myChart3.setOption(option3);
-        }
-
+  </template>
+  
+  <script>
+  import * as echarts from 'echarts';
+  
+  export default {
+    name: 'HomePage',
+    data() {
+      return {
+        currentDate: new Date(),
+        todayEvents: [
+          { id: 1, title: '项目会议', time: '14:00 - 15:00' },
+          { id: 2, title: '材料审核', time: '10:00 - 11:00' },
+        ],
+        pendingTasks: [
+          { task: '审核报价申请', status: '待处理' },
+          { task: '更新客户信息', status: '已处理' },
+          { task: '准备下周会议', status: '待处理' },
+        ],
+        systemAnnouncements: [
+          { id: 1, date: '2022-10-21 09:00', title: '系统升级公告', icon: 'info' },
+          { id: 2, date: '2022-10-22 10:00', title: '维护通知', icon: 'warning' },
+        ],
+        roleFunctions: [
+          { role: '管理员', function: '管理所有数据' },
+          { role: '报价员', function: '生成报价单' },
+          { role: '审核员', function: '审核报价及材料' },
+        ],
+        recentActivities: [
+          { id: 1, message: '用户张三更新了报价单' },
+          { id: 2, message: '用户李四提交了材料申请' },
+          { id: 3, message: '用户王五审核了报价申请' },
+        ],
+      };
+    },
+    mounted() {
+      this.initCharts();
+    },
+    methods: {
+      initCharts() {
+        const weeklyChart = echarts.init(this.$refs.weeklyChart);
+        const weeklyOption = {
+          title: { text: '本周操作统计' },
+          tooltip: {},
+          xAxis: { data: ['周一', '周二', '周三', '周四', '周五'] },
+          yAxis: {},
+          series: [{ name: '操作量', type: 'bar', data: [120, 200, 150, 80, 70] }]
+        };
+        weeklyChart.setOption(weeklyOption);
+  
+        const quoteChart = echarts.init(this.$refs.quoteChart);
+        const quoteOption = {
+          title: { text: '报价统计' },
+          tooltip: {},
+          xAxis: { data: ['报价A', '报价B', '报价C', '报价D'] },
+          yAxis: {},
+          series: [{ name: '成交量', type: 'line', data: [500, 300, 400, 600] }]
+        };
+        quoteChart.setOption(quoteOption);
+      },
+      onDateChange(date) {
+        console.log(`Selected date: ${date}`);
+      },
+      navigateTo(page) {
+        console.log(`Navigating to ${page}`);
+      },
     }
-</script>
-
-<style scoped lang="less">
-    .user {
-        display: flex;
-        align-items: center;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #999;
-
-        img {
-            width: 150px;
-            height: 150px;
-            margin-left: 20px;
-            border-radius: 50%;
-        }
-
-        .userinfo {
-            margin-left: 40px;
-
-            .name {
-                font-size: 32px;
-                margin-bottom: 10px;
-            }
-
-            .access {
-                color: #999;
-            }
-        }
+  };
+  </script>
+  
+  <style scoped lang="less">
+  .home-page {
+    
+  }
+  
+  .user-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 200px;
+  
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
     }
-
-    .login-info {
-        margin-top: 20px;
-
-        p {
-            color: #999;
-            font-size: 16px;
-            line-height: 28px;
-
-            span {
-                color: #666;
-                margin-left: 20px;
-            }
-        }
+  
+    .card-content i {
+      font-size: 24px;
+      color: #409eff;
+      margin-bottom: 10px;
     }
-
-    .system-bulletin {
-        .system-title {
-            font-size: 22px;
-            color: #000;
-        }
-
-        .system-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f2f2f2;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-        }
+  
+    .card-content p {
+      margin: 0;
+      font-size: 16px;
     }
-</style>
+  
+    .card-footer {
+      background-color: #f5f7fa;
+      padding: 10px;
+      border-top: 1px solid #dcdfe6;
+      font-size: 14px;
+      color: #909399;
+    }
+  }
+  
+  .common-functions,
+  .pending-tasks,
+  .calendar,
+  .weekly-stats,
+  .quote-stats,
+  .announcements,
+  .recent-activities {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-height: 250px;
+    /* Ensure minimum height for consistency */
+  }
+  
+  h3 {
+    margin: 0 0 15px;
+    font-size: 18px;
+    color: #333;
+    border-bottom: 2px solid #409EFF;
+    padding-bottom: 5px;
+  }
+  
+  .function-item {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+  }
+  
+  .function-item:hover {
+    background: #f5f7fa;
+  }
+  
+  .event-list {
+    margin-top: 10px;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+  
+  .el-calendar {
+    height: 400px;
+    overflow: auto;
+  }
+  
+  .announcement-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  </style>

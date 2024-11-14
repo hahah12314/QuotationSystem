@@ -22,7 +22,7 @@ axios.interceptors.request.use(config => {
 router.beforeEach((to, from, next) => {
   const username = sessionStorage.getItem('username')
   
-  if (to.name !== 'login' && !username) next({ name: 'login' })
+  if ((to.name !== 'login' && !username)&& to.name!=='register') next({ name: 'login' })
   else next()
 })
 new Vue({

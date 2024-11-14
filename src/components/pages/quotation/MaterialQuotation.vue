@@ -2,55 +2,21 @@
 
     <el-card class="box-card">
         <div id='sysRole'>
-            <el-form :inline="true" :model="dataForm" class="demo-form-inline">
-                <el-form-item>
-                    <el-input v-model="dataForm.materialName" placeholder="报价名称" clearable></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button @click="getDataList()">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="openDialog">新增</el-button>
-                </el-form-item>
-            </el-form>
-            <el-table :data="dataList" border style="width: 100%">
-
-                <el-table-column type="selection" width="55">
-                </el-table-column>
-                <el-table-column prop="quotationId" label="ID">
-                </el-table-column>
-                <el-table-column prop="quotationName" label="报价名称">
-                </el-table-column>
-                <el-table-column prop="materialCode" label="物料编码">
-                </el-table-column>
-                <el-table-column prop="materialName" label="物料名称">
-                </el-table-column>
-
-                <el-table-column prop="unitPrice" label="单价">
-                </el-table-column>
-                <el-table-column prop="count" label="数量">
-                </el-table-column>
-                <el-table-column prop="specification" label="材料规格">
-                </el-table-column>
-                <el-table-column prop="isExternalProcurement" label="是否外采">
-                   
-                </el-table-column>
-                <el-table-column prop="totalCost" label="产品合计报价" width="150">
-                </el-table-column>
-                <el-table-column prop="createTime" label="创建时间">
-                </el-table-column>
-                <el-table-column prop="updateTime" label="更新时间">
-                </el-table-column>
-                <el-table-column prop="auditStatus" label="审核状态">
-                 
-                </el-table-column>
-                <el-table-column label="操作" width="150">
+            <el-table :data="dataList" border style="width: 100%" v-loading="dataListLoading">
+                <el-table-column prop="company.name" label="公司名称" width="150"></el-table-column>
+                <el-table-column prop="company.responsiblePerson" label="负责人" width="150"></el-table-column>
+                <el-table-column prop="company.contactInfo" label="联系方式" width="150"></el-table-column>
+                <el-table-column prop="customer.name" label="客户名称" width="150"></el-table-column>
+                <el-table-column prop="customer.contactInfo" label="客户联系方式" width="150"></el-table-column>
+                <el-table-column prop="customer.email" label="客户邮箱" width="150"></el-table-column>
+                <el-table-column prop="customer.address" label="客户地址" width="200"></el-table-column>
+                <el-table-column prop="customer.paymentMethod" label="支付方式" width="150"></el-table-column>
+                <el-table-column label="操作" width="240">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary"
-                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger"
                             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="mini" type="info" @click="handleDetails(scope.row)">详情</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -59,24 +25,63 @@
                 layout="total, sizes, prev, pager, next, jumper" style="margin-top:30px;">
             </el-pagination>
         </div>
+        <el-dialog title="报价单详情" :visible.sync="isDetailsModalVisible" width="70%" custom-class="custom-modal">
+            <add-quotation :outQuotationForm="selectedQuotation" :isReadOnly="true"></add-quotation>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="handleCloseDetailsModal">关 闭</el-button>
+            </span>
+        </el-dialog>
+        <!-- 弹出框显示 MaterialInfo -->
+        <el-dialog :visible.sync="dialogVisible" title="原材料明细" width="50%">
+            <MaterialInfo :row="selectedMaterialInfo" v-if="selectedMaterialInfo" />
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">关闭</el-button>
+            </span>
+        </el-dialog>
 
-        <el-dialog :title="this.dataDialogForm.roleId===0 ? '新增物料' : '更新物料' " :visible.sync="dialogFormVisible"
-            width="35%" @close="closeDialog">
-            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm">
-                <el-form-item label="物料编码" :label-width="formLabelWidth" prop="materialCode">
+        <el-dialog :title="this.dataDialogForm.quotationId === 0 ? '新增报价' : '更新报价'" :visible.sync="dialogFormVisible"
+            width="35%">
+            <el-form :model="dataDialogForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <!-- <el-form-item label="ID" prop="quotationId">
+                <el-input v-model="dataDialogForm.quotationId" autocomplete="off" style="width: 300px;"></el-input>
+              </el-form-item> -->
+                <el-form-item label="报价名称" prop="quotationName">
+                    <el-input v-model="dataDialogForm.quotationName" autocomplete="off"
+                        style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="物料编码" prop="materialCode">
                     <el-input v-model="dataDialogForm.materialCode" autocomplete="off" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="物料名称" :label-width="formLabelWidth" prop="materialName">
+                <el-form-item label="物料名称" prop="materialName">
                     <el-input v-model="dataDialogForm.materialName" autocomplete="off" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="物料单价" :label-width="formLabelWidth" prop="unitPrice">
+                <el-form-item label="单价" prop="unitPrice">
                     <el-input v-model="dataDialogForm.unitPrice" autocomplete="off" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="单件重量" :label-width="formLabelWidth" prop="weight">
-                    <el-input v-model="dataDialogForm.weight" autocomplete="off" style="width: 300px;"></el-input>
+                <el-form-item label="数量" prop="count">
+                    <el-input v-model="dataDialogForm.count" autocomplete="off" style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="材料规格" prop="specification">
+                    <el-input v-model="dataDialogForm.specification" autocomplete="off"
+                        style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="是否外采" prop="isExternalProcurement">
+                    <el-select v-model="dataDialogForm.isExternalProcurement" placeholder="请选择">
+                        <el-option label="是" value="1"></el-option>
+                        <el-option label="否" value="0"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="产品合计报价" prop="totalCost">
+                    <el-input v-model="dataDialogForm.totalCost" autocomplete="off" style="width: 300px;"></el-input>
                 </el-form-item>
 
-
+                <el-form-item label="审核状态" prop="auditStatus">
+                    <el-select v-model="dataDialogForm.auditStatus" placeholder="请选择">
+                        <el-option label="待审核" value="0"></el-option>
+                        <el-option label="审核通过" value="1"></el-option>
+                        <el-option label="审核不通过" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -88,8 +93,15 @@
 </template>
 
 <script>
+    import AddQuotation from '@/components/pages/quotation/AddQuotation';
+    import MaterialInfo from '@/components/common/MaterialInfo';
     export default {
         name: 'materialQuotation',
+        components: {
+            MaterialInfo,
+            AddQuotation
+
+        },
         data() {
             var validateName = (rule, value, callback) => {
                 if (this.dataDialogForm.roleId === 0) {
@@ -119,6 +131,8 @@
                     materialId: 0,
 
                 },
+                isDetailsModalVisible: false,
+                selectedQuotation: null,
 
                 dataList: [],
 
@@ -132,14 +146,16 @@
                 checks: [],
                 rules: {
 
-                }
+                },
+                dialogVisible: false, // 控制弹框显示
+                selectedMaterialInfo: null, // 存储后端返回的详情数据
             }
         },
         computed: {
-           
+
         },
         methods: {
-            
+
             async getDataList() {
                 if (this.dataListLoading) {
                     return;
@@ -155,6 +171,7 @@
 
                 try {
                     const res = await this.$http.get('/quotations/list', params);
+
                     console.log(res);
                     this.dataList = res.data.data.list;
                     this.totalPage = res.data.data.totalCount;
@@ -172,8 +189,44 @@
                 this.dataList.forEach(row => {
                     row.auditStatus = row.auditStatus === 1 ? '审核' : '未审核';
                     row.isExternalProcurement = row.isExternalProcurement === 1 ? '是外采' : '不是外采';
-                  });
+                });
                 console.log(this.dataList);
+            },
+            async fetchMaterialInfo(row) {
+                if (this.dataListLoading) {
+                    return;
+                }
+                this.dataListLoading = true;
+                const params = {
+                    params: {
+
+                        specification: row.specification // 新增物料编码筛选条件
+                    }
+                };
+                console.log(params);
+
+                try {
+                    const res = await this.$http.get('/quotations/getDetail', params);
+                    this.selectedMaterialInfo = res.data.data;
+                    console.log(this.selectedMaterialInfo);
+                    this.dialogVisible = true;
+                    this.dataListLoading = false;
+                } catch (error) {
+                    console.error('获取数据列表时出错:', error);
+                    this.dataListLoading = false;
+                    this.$message({
+                        message: '获取数据列表时发生错误',
+                        type: 'error'
+                    });
+                }
+            },
+            handleDetails(row) {
+                this.selectedQuotation = row;
+                this.isDetailsModalVisible = true;
+            },
+            handleCloseDetailsModal() {
+                this.isDetailsModalVisible = false;
+                this.selectedQuotation = null;
             },
             sizeChangeHandle(val) {
                 this.pageIndex = 1;
