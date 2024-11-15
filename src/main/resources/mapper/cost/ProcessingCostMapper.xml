@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.cost.mapper.ProcessingCostMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, detail_id, saw_time, saw_workhour_id, saw_fee, bend_time, bend_fee, bend_workhour_id, drill_time, drill_fee, drill_workhour_id, turn_workhour_id, turn_time, turn_fee, grind_time, grind_fee, grind_workhour_id, mill_time, mill_fee, mill_workhour_id, calibrate_time, calibrate_fee, calibrate_workhour_id, bore_mill_time, bore_mill_workhour_id, bore_mill_fee, weld_time, weld_workhour_id, weld_fee, polish_time, polish_fee, polish_workhour_id, assemble_time, assemble_fee, total_process_cost, assemble_workhour_id
+    </sql>
+    <select id="selectByDetailId" resultType="com.wanshu.cost.entity.ProcessingCost"
+            parameterType="java.lang.Integer">
+        select * from processing_cost where detail_id = #{detailId}
+    </select>
+
+</mapper>

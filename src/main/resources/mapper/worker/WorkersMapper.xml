@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.worker.mapper.WorkersMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, worker_name, age, gender, level, hire_date
+    </sql>
+    <select id="getWorkerName" resultType="java.lang.String">
+        select worker_name from workers where id = #{workerId}
+    </select>
+    <select id="getWorkerById" resultType="com.wanshu.worker.entity.Workers">
+        select * from workers where id = #{workerId}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.cost.mapper.SurfaceTreatmentMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, detail_id, zinc_weight, zinc_fee, tempering_weight, tempering_fee, sand_weight, sand_fee, qpq_weight, qpq_fee, nick_area,nick_fee,chrome_area,chrome_fee,total_coating_cost
+    </sql>
+    <select id="selectByDetailId" resultType="com.wanshu.cost.entity.SurfaceTreatment"
+            parameterType="java.lang.Integer">
+        select * from surface_treatment where detail_id = #{detailId}
+    </select>
+
+</mapper>

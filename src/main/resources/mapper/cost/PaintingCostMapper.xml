@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.cost.mapper.PaintingCostMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, detail_id, acid_wash_cost, acid_wash_weight, spray_plastic_cost, primer_cost, primer_area, spray_plastic_area, electroswimming_cost, electroswimming_area, total_painting_cost, topcoat_cost, topcoat_area
+    </sql>
+    <select id="selectByDetailId" resultType="com.wanshu.cost.entity.PaintingCost"
+            parameterType="java.lang.Integer">
+        select * from painting_cost where detail_id = #{detailId}
+    </select>
+
+</mapper>

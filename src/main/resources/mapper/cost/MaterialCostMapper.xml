@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanshu.cost.mapper.MaterialCostMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, detail_id, length, width, height, blank_weight, material_unit_price, blank_fee, scrap_weight, scrap_unit_price, scrap_fee, total_material_cost
+    </sql>
+    <select id="selectByDetailId" resultType="com.wanshu.cost.entity.MaterialCost"
+            parameterType="java.lang.Integer">
+        select * from material_cost where detail_id = #{detailId}
+    </select>
+
+</mapper>
