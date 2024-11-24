@@ -10,4 +10,13 @@
         select * from workhours where process_name = #{processName}
     </select>
 
+    <delete id="deleteWorkhoursById" parameterType="java.lang.Integer">
+        DELETE FROM workhours WHERE id = #{id}
+    </delete>
+
+
+
+
+
+
 </mapper>

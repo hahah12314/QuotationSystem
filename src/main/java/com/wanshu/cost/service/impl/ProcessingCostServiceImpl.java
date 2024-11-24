@@ -2,6 +2,8 @@ package com.wanshu.cost.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.ProcessingCost;
@@ -9,10 +11,10 @@ import com.wanshu.cost.entity.RawMaterials;
 import com.wanshu.cost.mapper.ProcessingCostMapper;
 import com.wanshu.cost.mapper.RawMaterialsMapper;
 import com.wanshu.cost.service.IProcessingCostService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,5 +51,25 @@ public class ProcessingCostServiceImpl extends ServiceImpl<ProcessingCostMapper,
         return new PageUtils(page);
 
 
+    }
+
+    @Override
+    public boolean saveProcessingCost(ProcessingCost processingCost) {
+        this.baseMapper.insert(processingCost);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    @SystemLog(value = "删除单件加工费用")
+    public String deleteProcessingCost(int id) {
+        this.baseMapper.deleteProcessingCostById(id);
+        return "success";
+    }
+
+    @Override
+    public boolean updateProcessingCost(ProcessingCost processingCost) {
+        this.updateById(processingCost);
+        return true;
     }
 }

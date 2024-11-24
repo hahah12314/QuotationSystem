@@ -1,7 +1,7 @@
 package com.wanshu.worker.mapper;
 
-import com.wanshu.worker.entity.Workhours;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanshu.worker.entity.Workhours;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,4 +18,6 @@ import java.util.List;
 public interface WorkhoursMapper extends BaseMapper<Workhours> {
 
     List<Workhours> getWorkhoursByProcess(String processName);
+
+    void deleteWorkhoursById(int id);
 }

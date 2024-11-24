@@ -1,7 +1,7 @@
 package com.wanshu.cost.mapper;
 
-import com.wanshu.cost.entity.MaterialCost;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanshu.cost.entity.MaterialCost;
 
 /**
  * <p>
@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface MaterialCostMapper extends BaseMapper<MaterialCost> {
 
     MaterialCost selectByDetailId(Integer detailId);
+
+    void deleteMaterialCostById(int id);
 }

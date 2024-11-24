@@ -9,4 +9,5 @@ import lombok.Data;
 public class MaterialQueryDto extends PageDTO {
     @Schema(description = "物料名")
     private String materialName;
+
 }

@@ -11,4 +11,8 @@
         select * from painting_cost where detail_id = #{detailId}
     </select>
 
+    <delete id="deletePaintingCostById" parameterType="java.lang.Integer">
+        DELETE FROM painting_cost WHERE id = #{id}
+    </delete>
+
 </mapper>

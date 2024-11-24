@@ -1,8 +1,8 @@
 package com.wanshu.cost.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.cost.entity.RawMaterials;
 
 import java.util.List;
@@ -23,4 +23,10 @@ public interface IRawMaterialsService extends IService<RawMaterials> {
     Map<String, Object> getRawMaterialDetail(Long detailId);
 
     List<RawMaterials> queryAll();
+
+    boolean saverawMaterials(RawMaterials rawMaterials);
+
+    String deleteRawMaterials(int id);
+
+    boolean updateRawMaterials(RawMaterials rawMaterials);
 }

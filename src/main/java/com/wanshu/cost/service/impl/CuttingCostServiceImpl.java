@@ -2,6 +2,8 @@ package com.wanshu.cost.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.CuttingCost;
@@ -9,10 +11,10 @@ import com.wanshu.cost.entity.RawMaterials;
 import com.wanshu.cost.mapper.CuttingCostMapper;
 import com.wanshu.cost.mapper.RawMaterialsMapper;
 import com.wanshu.cost.service.ICuttingCostService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,4 +48,28 @@ public class CuttingCostServiceImpl extends ServiceImpl<CuttingCostMapper,Cuttin
         });
         return new PageUtils(page);
     }
+
+    @Override
+    public boolean saveCuttingCost(CuttingCost cuttingCost) {
+        this.baseMapper.insert(cuttingCost);
+        return true;
+
+    }
+
+    @Override
+    @Transactional
+    @SystemLog(value = "删除工人")
+    public String deleteCuttingCost(int id) {
+        this.baseMapper.deleteCuttingCostById(id);
+        return "success";
+
+    }
+
+    @Override
+    public boolean updateCuttingCost(CuttingCost cuttingCost) {
+        this.updateById(cuttingCost);
+        return true;
+    }
+
+
 }

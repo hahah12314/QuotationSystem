@@ -11,4 +11,8 @@
         select * from processing_cost where detail_id = #{detailId}
     </select>
 
+    <delete id="deleteProcessingCostById" parameterType="java.lang.Integer">
+        DELETE FROM processing_cost WHERE id = #{id}
+    </delete>
+
 </mapper>

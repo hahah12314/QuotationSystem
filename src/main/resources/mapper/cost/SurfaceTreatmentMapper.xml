@@ -11,4 +11,8 @@
         select * from surface_treatment where detail_id = #{detailId}
     </select>
 
+    <delete id="deleteSurfaceTreatmentCostById" parameterType="java.lang.Integer">
+        DELETE FROM surface_treatment WHERE id = #{id}
+    </delete>
+
 </mapper>

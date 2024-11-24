@@ -1,11 +1,12 @@
 package com.wanshu.cost.vo;
-import java.math.BigDecimal;
 
 import com.wanshu.cost.entity.RawMaterials;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor

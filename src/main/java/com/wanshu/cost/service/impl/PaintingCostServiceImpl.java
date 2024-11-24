@@ -2,6 +2,8 @@ package com.wanshu.cost.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.PaintingCost;
@@ -10,10 +12,10 @@ import com.wanshu.cost.mapper.PaintingCostMapper;
 import com.wanshu.cost.mapper.ProcessingCostMapper;
 import com.wanshu.cost.mapper.RawMaterialsMapper;
 import com.wanshu.cost.service.IPaintingCostService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +49,25 @@ public class PaintingCostServiceImpl extends ServiceImpl<PaintingCostMapper, Pai
             item.setSpecification(rawMaterialsMapper.selectById(item.getDetailId()).getSpecification());
         });
         return new PageUtils(page);
+    }
+
+    @Override
+    public boolean savePaintingCost(PaintingCost paintingCost) {
+        this.baseMapper.insert(paintingCost);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    @SystemLog(value = "删除喷涂单件费用")
+    public String deletePaintingCost(int id) {
+        this.baseMapper.deletePaintingCostById(id);
+        return "success";
+    }
+
+    @Override
+    public boolean updatePaintingCost(PaintingCost paintingCost) {
+        this.updateById(paintingCost);
+        return true;
     }
 }

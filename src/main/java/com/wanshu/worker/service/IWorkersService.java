@@ -1,10 +1,10 @@
 package com.wanshu.worker.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.worker.dto.WorkDto;
 import com.wanshu.worker.dto.WorkerQueryDto;
 import com.wanshu.worker.entity.Workers;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
@@ -22,4 +22,18 @@ public interface IWorkersService extends IService<Workers> {
     PageUtils queryPageWorker(WorkerQueryDto workerQueryDto);
 
     Map<String, List<WorkDto>> queryAll();
+
+    //lzy写的
+
+    boolean saveworkers(Workers workers);
+
+    String deleteWorkers(Integer id);
+
+    boolean updateWorkers(Workers workers);
+
+
+
+
+
+
 }

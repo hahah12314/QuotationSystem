@@ -13,5 +13,12 @@
         select * from workers where id = #{workerId}
     </select>
 
+    <delete id="deleteWorkerById" parameterType="java.lang.Integer">
+        DELETE FROM workers WHERE id = #{id}
+    </delete>
+
+
+
+
 
 </mapper>

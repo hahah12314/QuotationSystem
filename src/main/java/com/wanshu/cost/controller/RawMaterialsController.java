@@ -9,11 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -53,7 +49,57 @@ public class RawMaterialsController {
         return this.rawMaterialsService.queryAll();
     }
 
+    @PostMapping("/save")
+    @ApiOperation(value= "新增原材料表")
+    public boolean save(@ApiParam(value = "原材料") @RequestBody RawMaterials rawMaterials){
+        log.info("save:{}",rawMaterials);
+        return this.rawMaterialsService.saverawMaterials(rawMaterials);
+    }
+    /*
+    {
+    "detailId": 9,
+    "nakedPrice": 100.00,
+    "profit": 20.00,
+    "miscellaneousFees": 5.00,
+    "totalProductQuote": 125.00,
+    "specification": "Spec A",
+    "unitWeight": 10.00,
+    "netWeight": 8.00,
+    "preTax": 110.00,
+    "pricePerkg": 12.50
+    }
+}
+     */
 
+    //这个表主键是detailed_id
+    //postman传json格式
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "删除原材料表")
+    public String deleteRawMaterials(@RequestBody Map<String, Object> request) {
+        int id = (int) request.get("detail_id");
+        log.info("deleteRawMaterials:{}", id);
+        return this.rawMaterialsService.deleteRawMaterials(id);
+    }
+    /*
+    {
+    "detail_id" : 7
+}
+     */
 
+    //postman传url格式
+//    @DeleteMapping("/delete")
+//    @ApiOperation(value = "删除原材料表")
+//    public String deleteRawMaterials(@ApiParam(value = "id") @RequestParam("id") Integer id) {
+//        log.info("deleteRawMaterials:{}", id);
+//        return this.rawMaterialsService.deleteRawMaterials(id);
+//    }
+
+    @PostMapping("/update")
+    @ApiOperation(value = "更新原材料表")
+    public boolean update(@ApiParam(value = "原材料表") @RequestBody RawMaterials rawMaterials){
+        log.info("update:{}",rawMaterials);
+        return this.rawMaterialsService.updateRawMaterials(rawMaterials);
+
+    }
 
 }

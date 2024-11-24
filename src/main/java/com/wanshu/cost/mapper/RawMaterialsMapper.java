@@ -13,4 +13,5 @@ import com.wanshu.cost.entity.RawMaterials;
  */
 public interface RawMaterialsMapper extends BaseMapper<RawMaterials> {
 
+    void deleteRawMaterialsByDetailId(int detailId);
 }

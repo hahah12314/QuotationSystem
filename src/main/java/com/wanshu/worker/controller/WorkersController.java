@@ -4,15 +4,13 @@ package com.wanshu.worker.controller;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.worker.dto.WorkDto;
 import com.wanshu.worker.dto.WorkerQueryDto;
+import com.wanshu.worker.entity.Workers;
 import com.wanshu.worker.service.IWorkersService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +43,52 @@ public class WorkersController {
 
         return this.workersService.queryAll();
     }
+
+    //lzy写的增删改后端皆实现
+    @PostMapping("/save")
+    @ApiOperation(value= "新增工人")
+    public boolean save(@ApiParam(value = "工人信息") @RequestBody Workers workers){
+        log.info("save:{}",workers);
+        return this.workersService.saveworkers(workers);
+    }
+    /*
+    {
+    "id" : 23,
+    "processName": "钻孔",
+    "workerId": 6,
+    "cost": 45.00,
+    "hour": 1
+}
+
+     */
+
+
+
+    @PostMapping("/update")
+    @ApiOperation(value = "更新用户")
+    public boolean update(@ApiParam(value = "用户信息") @RequestBody Workers workers){
+        log.info("update:{}",workers);
+        return this.workersService.updateWorkers(workers);
+
+    }
+
+    //postman传json字符串删除
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "删除工人")
+    public String deleteWorkers(@RequestBody Map<String, Object> request) {
+        int id = (int) request.get("id");
+        log.info("deleteWorkers:{}", id);
+        return this.workersService.deleteWorkers(id);
+    }
+
+
+    //postman传url形式
+//    @DeleteMapping("/delete")
+//    @ApiOperation(value = "删除工人")
+//    public String deleteWorkers(@ApiParam(value = "id") @RequestParam("id") Integer id) {
+//        //System.out.println("Controller收到的id: " + id);
+//        return this.workersService.deleteWorkers(id);
+//    }
+
+
 }

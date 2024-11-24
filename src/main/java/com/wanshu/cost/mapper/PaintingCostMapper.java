@@ -1,7 +1,7 @@
 package com.wanshu.cost.mapper;
 
-import com.wanshu.cost.entity.PaintingCost;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanshu.cost.entity.PaintingCost;
 
 /**
  * <p>
@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface PaintingCostMapper extends BaseMapper<PaintingCost> {
 
     PaintingCost selectByDetailId(Integer detailId);
+
+    void deletePaintingCostById(int id);
 }

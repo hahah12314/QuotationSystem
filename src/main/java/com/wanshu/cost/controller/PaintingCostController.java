@@ -3,16 +3,15 @@ package com.wanshu.cost.controller;
 
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
-import com.wanshu.cost.service.ICuttingCostService;
+import com.wanshu.cost.entity.PaintingCost;
 import com.wanshu.cost.service.IPaintingCostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 /**
  * <p>
@@ -35,5 +34,53 @@ public class PaintingCostController {
         log.info("queryPage{}",rawMaterialQueryDto);
 
         return paintingCostService.queryPagePaintingCost(rawMaterialQueryDto);
+    }
+
+    @PostMapping("/save")
+    @ApiOperation(value= "新增喷涂表")
+    public boolean save(@ApiParam(value = "喷涂") @RequestBody PaintingCost paintingCost){
+        log.info("save:{}",paintingCost);
+        return this.paintingCostService.savePaintingCost(paintingCost);
+    }
+    /*
+    {
+    "id" : 12,
+    "detailId": 9,
+    "acidWashCost": 2.00,
+    "acidWashWeight": 150.00,
+    "sprayPlasticCost": 3.50,
+    "primerCost": 1.50,
+    "primerArea": 100.00,
+    "sprayPlasticArea": 80.00,
+    "electroswimmingCost": 5.00,
+    "electroswimmingArea": 120.00,
+    "totalPaintingCost": 250.00,
+    "topcoatCost": 2.50,
+    "topcoatArea": 50.00
+}
+     */
+    //postman传json格式
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "删除喷涂表")
+    public String deletePaintingCost(@RequestBody Map<String, Object> request) {
+        int id = (int) request.get("id");
+        log.info("deletePaintingCost:{}", id);
+        return this.paintingCostService.deletePaintingCost(id);
+    }
+
+    //postman传url格式
+//    @DeleteMapping("/delete")
+//    @ApiOperation(value = "删除喷涂表")
+//    public String deletePaintingCost(@ApiParam(value = "id") @RequestParam("id") Integer id) {
+//        log.info("deletePaintingCost:{}", id);
+//        return this.paintingCostService.deletePaintingCost(id);
+//    }
+
+    @PostMapping("/update")
+    @ApiOperation(value = "更新喷涂表")
+    public boolean update(@ApiParam(value = "喷涂表") @RequestBody PaintingCost paintingCost){
+        log.info("update:{}",paintingCost);
+        return this.paintingCostService.updatePaintingCost(paintingCost);
+
     }
 }

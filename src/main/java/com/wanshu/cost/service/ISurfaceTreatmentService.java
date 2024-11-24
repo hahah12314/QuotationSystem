@@ -1,8 +1,8 @@
 package com.wanshu.cost.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.cost.entity.SurfaceTreatment;
 
 /**
@@ -16,4 +16,10 @@ import com.wanshu.cost.entity.SurfaceTreatment;
 public interface ISurfaceTreatmentService extends IService<SurfaceTreatment> {
 
     PageUtils queryPageSufaceCost(RawMaterialQueryDto rawMaterialQueryDto);
+
+    boolean saveSurfaceTreatment(SurfaceTreatment surfaceTreatment);
+
+    String deleteSurfaceTreatment(int id);
+
+    boolean updateSurfaceTreatment(SurfaceTreatment surfaceTreatment);
 }

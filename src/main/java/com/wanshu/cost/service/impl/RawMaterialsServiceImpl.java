@@ -2,24 +2,22 @@ package com.wanshu.cost.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
-import com.wanshu.cost.dto.RawMaterialDetailDto;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.*;
 import com.wanshu.cost.mapper.*;
 import com.wanshu.cost.service.IRawMaterialsService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wanshu.cost.vo.RawMaterialQueryVo;
 import org.apache.commons.lang3.StringUtils;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -114,5 +112,29 @@ public class RawMaterialsServiceImpl extends ServiceImpl<RawMaterialsMapper, Raw
     public List<RawMaterials> queryAll() {
         QueryWrapper<RawMaterials> queryWrapper = new QueryWrapper<>();
         return rawMaterialsMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public boolean saverawMaterials(RawMaterials rawMaterials) {
+        rawMaterials.setCreateTime(LocalDateTime.now());
+        rawMaterials.setUpdateTime(LocalDateTime.now());
+        this.baseMapper.insert(rawMaterials);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    @SystemLog(value = "删除原材料")
+    //这个表主键是detailed_id
+    public String deleteRawMaterials(int id) {
+        this.baseMapper.deleteRawMaterialsByDetailId(id);
+        return "success";
+    }
+
+    @Override
+    public boolean updateRawMaterials(RawMaterials rawMaterials) {
+        rawMaterials.setUpdateTime(LocalDateTime.now());
+        this.updateById(rawMaterials);
+        return true;
     }
 }

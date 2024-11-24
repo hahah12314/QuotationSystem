@@ -1,9 +1,9 @@
 package com.wanshu.cost.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.MaterialQueryDto;
 import com.wanshu.cost.entity.Materials;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -21,4 +21,10 @@ public interface IMaterialsService extends IService<Materials> {
 
 
     List<Materials> queryAll();
+
+    boolean saveMaterials(Materials materials);
+
+    String deleteMaterials(int id);
+
+    boolean updateMaterials(Materials materials);
 }

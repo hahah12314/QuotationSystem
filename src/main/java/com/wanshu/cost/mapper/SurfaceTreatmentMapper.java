@@ -1,7 +1,7 @@
 package com.wanshu.cost.mapper;
 
-import com.wanshu.cost.entity.SurfaceTreatment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanshu.cost.entity.SurfaceTreatment;
 
 /**
  * <p>
@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface SurfaceTreatmentMapper extends BaseMapper<SurfaceTreatment> {
 
     SurfaceTreatment selectByDetailId(Integer detailId);
+
+    void deleteSurfaceTreatmentCostById(int id);
 }

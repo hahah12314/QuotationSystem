@@ -1,7 +1,7 @@
 package com.wanshu.cost.mapper;
 
-import com.wanshu.cost.entity.Materials;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanshu.cost.entity.Materials;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -16,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MaterialsMapper extends BaseMapper<Materials> {
 
+    void deleteMaterialsByMaterialId(int materialId);
 }

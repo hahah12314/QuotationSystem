@@ -29,4 +29,8 @@ public interface IQuotationsService extends IService<Quotations> {
     List<QuotationFormDto> queryAuditPageQuotation();
 
     void auditQuotation(Long quotationId);
+
+    String deleteQuotation(int id);
+
+    boolean updateQuotation(QuotationFormDto quotationFormDto);
 }

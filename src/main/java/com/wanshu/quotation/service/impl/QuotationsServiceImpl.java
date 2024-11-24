@@ -373,6 +373,37 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
         quotationsMapper.updateById(quotations);
     }
 
+    @Override
+    public String deleteQuotation(int id) {
+        QueryWrapper<Quotations> wrapper=new QueryWrapper<>();
+        wrapper.eq("id",id);
+
+        quotationsMapper.delete(wrapper);
+
+        return "success";
+    }
+
+    @Override
+    public boolean updateQuotation(QuotationFormDto quotationFormDto) {
+        QueryWrapper<Quotations> wrapper=new QueryWrapper<>();
+        wrapper.eq("id",quotationFormDto.getQuotationId());
+        Quotations quotations =quotationsMapper.selectOne(wrapper);
+        QueryWrapper<Company> wrapper1=new QueryWrapper<>();
+        wrapper1.eq("id",quotations.getCompanyId());
+        QueryWrapper<Customer> wrapper2=new QueryWrapper<>();
+        wrapper2.eq("id",quotations.getCustomerId());
+        Company company = new Company();
+        BeanUtils.copyProperties(quotationFormDto.getCompany(),company);
+        company.setId(quotations.getCompanyId());
+        Customer customer = new Customer();
+        BeanUtils.copyProperties(quotationFormDto.getCustomer(),customer);
+        customer.setId(quotations.getCustomerId());
+        companyMapper.update(company,wrapper1);
+        customerMapper.update(customer,wrapper2);
+        return true;
+
+    }
+
 
 }
 

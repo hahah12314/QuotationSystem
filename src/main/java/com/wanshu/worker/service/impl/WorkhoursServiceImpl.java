@@ -4,20 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.worker.dto.WorkHourDto;
 import com.wanshu.worker.dto.WorkerHourQueryDto;
-import com.wanshu.worker.dto.WorkerQueryDto;
-import com.wanshu.worker.entity.Workers;
 import com.wanshu.worker.entity.Workhours;
 import com.wanshu.worker.mapper.WorkersMapper;
 import com.wanshu.worker.mapper.WorkhoursMapper;
 import com.wanshu.worker.service.IWorkhoursService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,12 +39,8 @@ public class WorkhoursServiceImpl extends ServiceImpl<WorkhoursMapper, Workhours
 
     @Override
     public PageUtils queryPageWorkerHour(WorkerHourQueryDto workerHourQueryDto) {
-        LambdaQueryWrapper<Workhours> wrapper = Wrappers.lambdaQuery();
-
-        // 根据 processName 构建查询条件
-        if (StringUtils.isNotEmpty(workerHourQueryDto.getProcessName())) {
-            wrapper.like(Workhours::getProcessName, workerHourQueryDto.getProcessName());
-        }
+        QueryWrapper<Workhours> wrapper=new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(workerHourQueryDto.getProcessName()),"process_name",workerHourQueryDto.getProcessName());
 
         // 执行分页查询
         Page<Workhours> page = this.page(workerHourQueryDto.page(), wrapper);
@@ -69,4 +65,25 @@ public class WorkhoursServiceImpl extends ServiceImpl<WorkhoursMapper, Workhours
         // 返回分页结果
         return new PageUtils(dtoPage);
     }
+
+    @Override
+    public boolean saveworkhours(Workhours workhours) {
+        this.baseMapper.insert(workhours);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    @SystemLog(value = "删除工人")
+    public String deleteWorkhours(int id) {
+        this.baseMapper.deleteWorkhoursById(id);
+        return "success";
+    }
+
+    @Override
+    public boolean updateWorkhours(Workhours workhours) {
+        this.updateById(workhours);
+        return true;
+    }
+
 }

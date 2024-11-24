@@ -1,6 +1,8 @@
 package com.wanshu.quotation.dto;
 
 import com.wanshu.cost.entity.*;
+import com.wanshu.quotation.entity.Company;
+import com.wanshu.quotation.entity.Customer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,14 +19,14 @@ public class QuotationFormDto {
     private Long quotationId;
 
     @Data
-    public static class Company {
+    public static class Company  {
         private String name;
         private String responsiblePerson;
         private String contactInfo;
     }
 
     @Data
-    public static class Customer {
+    public static class Customer  {
         private String name;
         private String contactInfo;
         private String email;

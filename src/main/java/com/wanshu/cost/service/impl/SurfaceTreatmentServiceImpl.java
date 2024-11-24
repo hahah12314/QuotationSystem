@@ -2,6 +2,8 @@ package com.wanshu.cost.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.RawMaterials;
@@ -9,10 +11,10 @@ import com.wanshu.cost.entity.SurfaceTreatment;
 import com.wanshu.cost.mapper.RawMaterialsMapper;
 import com.wanshu.cost.mapper.SurfaceTreatmentMapper;
 import com.wanshu.cost.service.ISurfaceTreatmentService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,5 +48,25 @@ public class SurfaceTreatmentServiceImpl extends ServiceImpl<SurfaceTreatmentMap
             item.setSpecification(rawMaterialsMapper.selectById(item.getDetailId()).getSpecification());
         });
         return new PageUtils(page);
+    }
+
+    @Override
+    public boolean saveSurfaceTreatment(SurfaceTreatment surfaceTreatment) {
+        this.baseMapper.insert(surfaceTreatment);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    @SystemLog(value = "删除表面处理单件费用")
+    public String deleteSurfaceTreatment(int id) {
+        this.baseMapper.deleteSurfaceTreatmentCostById(id);
+        return "success";
+    }
+
+    @Override
+    public boolean updateSurfaceTreatment(SurfaceTreatment surfaceTreatment) {
+        this.updateById(surfaceTreatment);
+        return true;
     }
 }

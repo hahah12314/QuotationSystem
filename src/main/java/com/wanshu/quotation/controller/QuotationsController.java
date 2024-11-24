@@ -7,6 +7,7 @@ import com.wanshu.quotation.dto.QuotationFormDto;
 import com.wanshu.quotation.dto.QuotationQueryDto;
 import com.wanshu.quotation.service.IQuotationsService;
 import com.wanshu.quotation.vo.RawMaterialQueryVo;
+import com.wanshu.worker.entity.Workhours;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -61,6 +63,20 @@ public class QuotationsController {
     public void saveQuotation(@RequestBody QuotationFormDto quotationForm) {
         log.info("saveQuotation{}", quotationForm);
         this.quotationsService.saveQuotation(quotationForm);
+    }
+     @DeleteMapping("/delete")
+    @ApiOperation(value = "删除报价单")
+    public String deleteWorkhours(@RequestBody Map<String, Object> request) {
+        int id = (int) request.get("id");
+        log.info("deleteQuotation:{}", id);
+        return this.quotationsService.deleteQuotation(id);
+    }
+     @PostMapping("/update")
+    @ApiOperation(value = "更新报价单")
+    public boolean update(@RequestBody  QuotationFormDto quotationFormDto){
+        log.info("update:{}",quotationFormDto);
+        return this.quotationsService.updateQuotation(quotationFormDto);
+
     }
 
 

@@ -1,8 +1,8 @@
 package com.wanshu.cost.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanshu.cost.entity.ProcessingCost;
 
 /**
@@ -16,4 +16,10 @@ import com.wanshu.cost.entity.ProcessingCost;
 public interface IProcessingCostService extends IService<ProcessingCost> {
 
     PageUtils queryPageProcessCost(RawMaterialQueryDto rawMaterialQueryDto);
+
+    boolean saveProcessingCost(ProcessingCost processingCost);
+
+    String deleteProcessingCost(int id);
+
+    boolean updateProcessingCost(ProcessingCost processingCost);
 }

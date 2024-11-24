@@ -7,4 +7,8 @@
         detail_id, create_time, update_time, naked_price, profit, miscellaneous_fees, total_product_quote, specification, unit_weight, net_weight, pre_tax, price_perkg
     </sql>
 
+    <delete id="deleteRawMaterialsByDetailId" parameterType="java.lang.Integer">
+        DELETE FROM raw_materials WHERE detail_id = #{detailId}
+    </delete>
+
 </mapper>

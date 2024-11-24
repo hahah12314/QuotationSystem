@@ -1,7 +1,7 @@
 package com.wanshu.worker.mapper;
 
-import com.wanshu.worker.entity.Workers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanshu.worker.entity.Workers;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +19,10 @@ public interface WorkersMapper extends BaseMapper<Workers> {
     String getWorkerName(@Param("workerId") Integer workerId);
 
     Workers getWorkerById(Integer workerId);
+
+
+    void delete(Integer id);
+
+
+    void deleteWorkerById(Integer id);
 }
