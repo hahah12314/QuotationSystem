@@ -19,10 +19,10 @@
           v-model="rejectionReason"
           class="rejection-textarea"
         ></el-input>
-        <span slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer">
           <el-button @click="handleCloseRejectModal">取 消</el-button>
           <el-button type="primary" @click="handleReject">确 定</el-button>
-        </span>
+        </div>
       </el-dialog>
     </div>
   </template>
@@ -109,6 +109,11 @@
   .custom-modal {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .dialog-footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .rejection-textarea {

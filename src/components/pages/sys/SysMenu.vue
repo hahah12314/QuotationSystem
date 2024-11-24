@@ -16,10 +16,8 @@
             </el-form>
             <el-table :data="dataList" border style="width: 100%" row-key="name"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                <el-table-column type="selection" width="55">
-                </el-table-column>
-                <el-table-column prop="menuId" label="菜单ID" width="180">
-                </el-table-column>
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="name" label="菜单名称" width="180">
                 </el-table-column>
   
@@ -277,5 +275,9 @@
   </script>
   
   <style scoped>
-  
+    .dialog-footer{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>

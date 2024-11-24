@@ -2,8 +2,10 @@
     <el-card class="box-card">
         <QuoteTimeline :currentStage="currentStage" />
         <div id='sysRole'>
-
+          
             <el-table :data="dataList" border style="width: 100%" v-loading="dataListLoading">
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="company.name" label="公司名称" width="150"></el-table-column>
                 <el-table-column prop="company.responsiblePerson" label="负责人" width="150"></el-table-column>
                 <el-table-column prop="company.contactInfo" label="联系方式" width="150"></el-table-column>
@@ -87,8 +89,7 @@
             return {
                 currentStage: 2,
                 dataForm: {
-                    materialName: '',
-                    materialCode: ''
+                   
                 },
                 dataDialogForm: {
                     materialId: 0,

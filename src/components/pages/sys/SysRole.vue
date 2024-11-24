@@ -15,10 +15,8 @@
                 </el-form-item>
             </el-form>
             <el-table :data="dataList" border style="width: 100%">
-                <el-table-column type="selection" width="55">
-                </el-table-column>
-                <el-table-column prop="roleId" label="ID" width="180">
-                </el-table-column>
+              <el-table-column type="selection" width="55"></el-table-column>
+              <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="roleName" label="角色名称" width="180">
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">
@@ -290,6 +288,10 @@
     }
   </script>
 
-<style scoped>
-
-</style>
+  <style scoped>
+    .dialog-footer{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>

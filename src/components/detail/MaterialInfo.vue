@@ -273,7 +273,7 @@
             },
             quantity: {
                 type: Number,
-                default: 0 // 设置默认值为 0
+                default: 1 // 设置默认值为 0
             }
         },
         created() {

@@ -1,8 +1,7 @@
-
- <template>
+<template>
   <div class='aside'>
-    <h3>
-      <i class="el-icon-takeaway-box"></i>
+    <h3 class="title-container">
+      <img src="../../assets/icon/首页图标.png" alt="" />
       <span class="title" v-if="!isCollapse">{{isCollapse ? '金威':'金威报价系统'}}</span>
     </h3>
     <div class="menu-container">
@@ -49,177 +48,7 @@
     },
     data() {
       return {
-        temList: [
-          {
-            menuId: 1,
-            name: '系统管理',
-            icon: 'setting',
-            path: '/system-management',
-            children: [
-              {
-                menuId: 11,
-                name: '用户管理',
-                icon: 'user',
-                path: '/system-management/users'
-              },
-              {
-                menuId: 12,
-                name: '权限管理',
-                icon: 'lock',
-                path: '/system-management/permissions'
-              },
-              {
-                menuId: 13,
-                name: '操作日志',
-                icon: 'document',
-                path: '/system-management/logs'
-              },
-              {
-                menuId: 14,
-                name: '菜单管理',
-                icon: 'document',
-                path: '/system-management/menus'
-              }
-            ]
-          },
-          {
-            menuId: 2,
-            name: '内容管理',
-            icon: 'tickets',
-            path: '/document',
-            children: [
-              {
-                menuId: 21,
-                name: '文档管理',
-                icon: 'notebook-2',
-                path: '/content-management/documents'
-              },
-              {
-                menuId: 22,
-                name: '知识库维护',
-                icon: 'database',
-                path: '/content-management/knowledge-base'
-              },
-              {
-                menuId: 23,
-                name: '内容审核',
-                icon: 'check',
-                path: '/content-management/content-review'
-              }
-            ]
-          },
-          {
-            menuId: 3,
-            name: '客服管理',
-            icon: 'chat-dot-square',
-            path: '/customer-service',
-            children: [
-              {
-                menuId: 31,
-                name: '对话记录',
-                icon: 'chat-dot-round',
-                path: '/customer-service/conversation-history'
-              },
-              {
-                menuId: 32,
-                name: '会话监控',
-                icon: 'monitor',
-                path: '/customer-service/session-monitoring'
-              },
-              {
-                menuId: 33,
-                name: '客服绩效',
-                icon: 'star-on',
-                path: '/customer-service/performance'
-              }
-            ]
-          },
-          {
-            menuId: 4,
-            name: '数据分析',
-            icon: 'pie-chart',
-            path: '/data-analysis',
-            children: [
-              {
-                menuId: 41,
-                name: '用户行为分析',
-                icon: 'bar-chart',
-                path: '/data-analysis/user-behavior'
-              },
-              {
-                menuId: 42,
-                name: '会话统计',
-                icon: 'line-chart',
-                path: '/data-analysis/session-stats'
-              },
-              {
-                menuId: 43,
-                name: '问题分类统计',
-                icon: 'area',
-                path: '/data-analysis/question-stats'
-              }
-            ]
-          },
-          {
-            menuId: 5,
-            name: '系统设置',
-            icon: 'edit',
-            path: '/system-settings',
-            children: [
-              {
-                menuId: 51,
-                name: '系统配置',
-                icon: 'setting',
-                path: '/system-settings/system-config'
-              },
-              {
-                menuId: 52,
-                name: '接口管理',
-                icon: 'link',
-                path: '/system-settings/api-management'
-              },
-              {
-                menuId: 53,
-                name: '版本更新',
-                icon: 'refresh-right',
-                path: '/system-settings/version-update'
-              }
-            ]
-          },
-          {
-            menuId: 6,
-            name: '问答管理',
-            icon: 'question',
-            path: '/qa-management',
-            children: [
-              {
-                menuId: 61,
-                name: '问答中心',
-                icon: 'message',
-                path: '/qa-management/chat-center'
-              },
-              {
-                menuId: 62,
-                name: '个人中心',
-                icon: 'user-solid',
-                path: '/qa-management/personal-center'
-              },
-              {
-                menuId: 63,
-                name: '帮助与支持',
-                icon: 'help',
-                path: '/qa-management/help-support'
-              },
-
-            ]
-          },
-          {
-            menuId: 7,
-            name: '首页',
-            icon: 'crop',
-            path: '/firstPage'
-          }
-        ],
+        
         menuList: [
 
         ]
@@ -238,6 +67,9 @@
           const res = await this.$http.get('/sys/sysMenu/getNowMenuChecked');
           console.log(res);
           this.menuList = res.data.data
+          localStorage.setItem('menuList', JSON.stringify(res.data.data))
+          
+          
           console.log(this.menuList)
 
         } catch (error) {
@@ -265,9 +97,22 @@
     height: 100vh;
     text-align: center;
 
-    .title {
-      margin-left: 10px;
+    .title-container {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 30px;
+        height: 30px;
+        margin-left: 10px;
+      }
+
+      .title {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
     }
+
 
     .menu-container {
       margin-top: 10px;

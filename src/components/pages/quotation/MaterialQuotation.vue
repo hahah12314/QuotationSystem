@@ -2,7 +2,18 @@
 
     <el-card class="box-card">
         <div id='sysRole'>
+            <!-- <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+                <el-form-item>
+                    <el-input v-model="dataForm.customer.name" placeholder="客户名称" clearable></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="getDataList()">查询</el-button>
+                </el-form-item>
+
+            </el-form> -->
             <el-table :data="dataList" border style="width: 100%" v-loading="dataListLoading">
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="company.name" label="公司名称" width="150"></el-table-column>
                 <el-table-column prop="company.responsiblePerson" label="负责人" width="150"></el-table-column>
                 <el-table-column prop="company.contactInfo" label="联系方式" width="150"></el-table-column>
@@ -11,14 +22,14 @@
                 <el-table-column prop="customer.email" label="客户邮箱" width="150"></el-table-column>
                 <el-table-column prop="customer.address" label="客户地址" width="200"></el-table-column>
                 <el-table-column prop="customer.paymentMethod" label="支付方式" width="150"></el-table-column>
+
                 <el-table-column label="状态"><el-button size="mini" type="success"
-                    @click="handleDelete(scope.$index, scope.row)">已审核</el-button></el-table-column>
+                        @click="handleDelete(scope.$index, scope.row)">已审核</el-button></el-table-column>
                 <el-table-column label="操作" width="240">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                        <el-button size="mini" type="info" @click="handleDetails(scope.row)">详情</el-button>
+                        <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+                        <el-button size="mini" type="info" @click="handleInfo(scope.row)">详情</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -41,53 +52,50 @@
             </span>
         </el-dialog>
 
-        <el-dialog :title="this.dataDialogForm.quotationId === 0 ? '新增报价' : '更新报价'" :visible.sync="dialogFormVisible"
-            width="35%">
-            <el-form :model="dataDialogForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <!-- <el-form-item label="ID" prop="quotationId">
-                <el-input v-model="dataDialogForm.quotationId" autocomplete="off" style="width: 300px;"></el-input>
-              </el-form-item> -->
-                <el-form-item label="报价名称" prop="quotationName">
-                    <el-input v-model="dataDialogForm.quotationName" autocomplete="off"
+        <el-dialog :title="dataDialogForm.id === 0 ? '新增记录' : '编辑记录'" :visible.sync="dialogFormVisible" width="35%"
+            @close="closeDialog">
+            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" label-width="120px">
+                <el-form-item label="公司名称" prop="company.name">
+                    <el-input v-model="dataDialogForm.company.name" autocomplete="off" style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="负责人" prop="company.responsiblePerson">
+                    <el-input v-model="dataDialogForm.company.responsiblePerson" autocomplete="off"
                         style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="物料编码" prop="materialCode">
-                    <el-input v-model="dataDialogForm.materialCode" autocomplete="off" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="物料名称" prop="materialName">
-                    <el-input v-model="dataDialogForm.materialName" autocomplete="off" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="单价" prop="unitPrice">
-                    <el-input v-model="dataDialogForm.unitPrice" autocomplete="off" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="数量" prop="count">
-                    <el-input v-model="dataDialogForm.count" autocomplete="off" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="材料规格" prop="specification">
-                    <el-input v-model="dataDialogForm.specification" autocomplete="off"
+                <el-form-item label="联系方式" prop="company.contactInfo">
+                    <el-input v-model="dataDialogForm.company.contactInfo" autocomplete="off"
                         style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="是否外采" prop="isExternalProcurement">
-                    <el-select v-model="dataDialogForm.isExternalProcurement" placeholder="请选择">
-                        <el-option label="是" value="1"></el-option>
-                        <el-option label="否" value="0"></el-option>
-                    </el-select>
+                <el-form-item label="客户名称" prop="customer.name">
+                    <el-input v-model="dataDialogForm.customer.name" autocomplete="off"
+                        style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="产品合计报价" prop="totalCost">
-                    <el-input v-model="dataDialogForm.totalCost" autocomplete="off" style="width: 300px;"></el-input>
+                <el-form-item label="客户联系方式" prop="customer.contactInfo">
+                    <el-input v-model="dataDialogForm.customer.contactInfo" autocomplete="off"
+                        style="width: 300px;"></el-input>
                 </el-form-item>
-
-                <el-form-item label="审核状态" prop="auditStatus">
-                    <el-select v-model="dataDialogForm.auditStatus" placeholder="请选择">
-                        <el-option label="待审核" value="0"></el-option>
-                        <el-option label="审核通过" value="1"></el-option>
-                        <el-option label="审核不通过" value="2"></el-option>
+                <el-form-item label="客户邮箱" prop="customer.email">
+                    <el-input v-model="dataDialogForm.customer.email" autocomplete="off"
+                        style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="客户地址" prop="customer.address">
+                    <el-input v-model="dataDialogForm.customer.address" autocomplete="off"
+                        style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="支付方式" prop="customer.paymentMethod">
+                    <el-select v-model="dataDialogForm.customer.paymentMethod" placeholder="请选择支付方式"
+                        style="width: 300px;">
+                        <el-option label="现金" value="现金"></el-option>
+                        <el-option label="信用卡" value="信用卡"></el-option>
+                        <el-option label="支付宝" value="支付宝"></el-option>
+                        <el-option label="银行转账" value="银行转账"></el-option>
+                        <el-option label="微信支付" value="微信支付"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="submitRole('ruleForm')">确 定</el-button>
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="submitData()">确定</el-button>
             </div>
         </el-dialog>
     </el-card>
@@ -126,11 +134,35 @@
 
             return {
                 dataForm: {
-                    materialName: ''
+                    customer: {
+                        name: ''
+                    }
                 },
                 dataDialogForm: {
+                    company: {
+                        name: '金威',
+                        responsiblePerson: '',
+                        contactInfo: '',
 
-                    materialId: 0,
+                    },
+                    customer: {
+                        name: '',
+                        contactInfo: '',
+                        email: '',
+                        minPrice: 0,
+                        maxPrice: 0,
+                        requirements: '',
+                        address: '',
+                        paymentMethod: ''
+                    },
+                    quotationId: ""
+
+
+
+
+
+
+
 
                 },
                 isDetailsModalVisible: false,
@@ -167,15 +199,17 @@
                     params: {
                         pageSize: this.pageSize,
                         pageIndex: this.pageIndex,
-                        roleName: this.dataForm.materialName
+                        customerName: this.dataForm.customer.name
+
                     }
                 };
 
                 try {
                     const res = await this.$http.get('/quotations/list', params);
 
-                    console.log(res);
+
                     this.dataList = res.data.data.list;
+                    console.log(this.dataList);
                     this.totalPage = res.data.data.totalCount;
                     this.dataListLoading = false;
 
@@ -222,9 +256,31 @@
                     });
                 }
             },
-            handleDetails(row) {
-                this.selectedQuotation = row;
-                this.isDetailsModalVisible = true;
+            handleDelete(row) {
+
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                })
+                    .then(async () => {
+                        try {
+                            await this.$http.delete('/quotations/delete', { data: { id: row.quotationId } });
+                            this.$message.success('删除成功');
+                            this.getDataList(); // 重新获取数据列表
+                        } catch (error) {
+                            console.error('删除失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    })
+                    .catch(() => {
+                        this.$message.info('已取消删除');
+                    });
+
+            },
+            handleInfo(row) {
+                this.selectedQuotation = row
+                this.isDetailsModalVisible = true
             },
             handleCloseDetailsModal() {
                 this.isDetailsModalVisible = false;
@@ -239,82 +295,51 @@
                 this.pageIndex = val;
                 this.getDataList();
             },
-            async handleEdit(index, item) {
-                console.log('roleId' + item.roleId);
-
-                try {
-                    const res = await this.$http.get('/sys/sysMenu/getMenuChecked?roleId=' + item.roleId);
-                    this.checks = res.data.data;
-                    this.$refs.tree.setCheckedKeys([]);
-                    this.$refs.tree.setCheckedKeys(this.checks);
-                    console.log(this.checks);
-                } catch (error) {
-                    console.error('获取已选菜单时出错:', error);
-                }
-
+            handleEdit(row) {
+                this.dataDialogForm = { ...row };
                 this.dialogFormVisible = true;
-                this.dataDialogForm.roleId = item.roleId;
-                this.dataDialogForm.roleName = item.roleName;
-                this.dataDialogForm.remark = item.remark;
+                console.log(this.dataDialogForm)
             },
-            async handleDelete(index, item) {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(async () => {
-                    console.log(item);
-                    try {
-                        const res = await this.$http.get('/sys/sysRole/delete?roleId=' + item.roleId);
-                        console.log(res);
-                        await this.getDataList();
-                        if (res.data.data === 'success') {
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                        } else {
-                            this.$message({
-                                type: 'warning',
-                                message: '该记录不允许删除!'
-                            });
-                        }
-                    } catch (error) {
-                        console.error('删除角色时出错:', error);
-                        this.$message({
-                            message: '删除时发生错误',
-                            type: 'error'
-                        });
-                    }
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-            },
+
             openDialog() {
                 this.dialogFormVisible = true;
-                this.$refs.tree.setCheckedKeys([]);
                 this.dataDialogForm = {
-                    roleId: 0,
-                    remark: '',
-                    roleName: '',
-                    menuList: []
+                    company: {
+                        name: '金威',
+                        responsiblePerson: '',
+                        contactInfo: '',
+
+                    },
+                    customer: {
+                        name: '',
+                        contactInfo: '',
+                        email: '',
+                        minPrice: 0,
+                        maxPrice: 0,
+                        requirements: '',
+                        address: '',
+                        paymentMethod: ''
+                    },
+                    quotationId: ""
                 };
             },
             closeDialog() {
                 this.dialogFormVisible = false;
-                this.dataDialogForm = {
-                    roleId: 0,
-                    remark: '',
-                    roleName: '',
-                    menuList: []
-                };
+
             },
-            async submitRole(ruleForm) {
-                await this.updateRole(ruleForm);
-                await this.getDataList();
+            async submitData() {
+                console.log(this.dataDialogForm)
+                this.dataDialogForm.auditStatus=1
+                const url = this.dataDialogForm.quotationId ? "/quotations/update" : "/quotations/save";
+                try {
+                    await this.$http.post(url, this.dataDialogForm);
+                    this.$message.success(this.dataDialogForm.id ? "编辑成功" : "新增成功");
+                    this.dialogFormVisible = false;
+                    this.getDataList();
+                } catch (error) {
+                    console.error("提交失败", error);
+                    this.$message.error("提交失败");
+                }
             },
             async updateRole(formName) {
                 const valid = await new Promise(resolve => {
@@ -364,5 +389,9 @@
 </script>
 
 <style scoped>
-
+    .dialog-footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
