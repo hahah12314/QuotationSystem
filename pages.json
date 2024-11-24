@@ -1,0 +1,184 @@
+{
+  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+
+    {
+      "path": "pages/home/home",
+      "style": {
+       
+        "enablePullDownRefresh": true //开启下拉刷新
+        
+      }
+    },
+    {
+      "path": "pages/my/my",
+      "style": {
+       
+        "enablePullDownRefresh": true //开启下拉刷新
+      }
+    },
+    {
+      "path": "pages/message/message",
+      "style": {
+        
+        "enablePullDownRefresh": true //开启下拉刷新
+      }
+    }
+  ],
+  "subPackages": [{
+    "root": "subpkg",
+    "pages": [
+      {
+        "path": "login/login",
+        "style": {
+          "navigationBarTitleText": "登录"
+        }
+      },
+      {
+        "path" : "worker/workerManagement/workerManagement",
+        "style" : 
+        {
+          "navigationBarTitleText" : "工人管理"
+        }
+      },
+      {
+        "path" : "worker/timeManagement/timeManagement",
+        "style" : 
+        {
+          "navigationBarTitleText" : "工时管理"
+        }
+      },
+      {
+        "path" : "cost/materialManagement/materialManagement",
+        "style" : 
+        {
+          "navigationBarTitleText" : "物料管理"
+        }
+      },
+      {
+        "path" : "cost/rawMaterialManagement/rawMaterialManagement",
+        "style" : 
+        {
+          "navigationBarTitleText" : "原材料管理"
+        }
+      },
+      {
+        "path" : "report/orderAnalysis/orderAnalysis",
+        "style" : 
+        {
+          "navigationBarTitleText" : "订单分析"
+        }
+      },
+      {
+        "path" : "report/profitAnalysis/profitAnalysis",
+        "style" : 
+        {
+          "navigationBarTitleText" : "利润分析"
+        }
+      },
+      {
+        "path" : "report/customerAnalysis/customerAnalysis",
+        "style" : 
+        {
+          "navigationBarTitleText" : "客户分析"
+        }
+      },
+      {
+        "path" : "quotation/quotationManagement/quotationManagement",
+        "style" : 
+        {
+          "navigationBarTitleText" : "报价单管理"
+        }
+      },
+      {
+        "path" : "quotation/quotationReview/quotationReview",
+        "style" : 
+        {
+          "navigationBarTitleText" : "审核报价单"
+        }
+      },
+      {
+        "path" : "quotation/quotationInfo/quotationInfo",
+        "style" : 
+        {
+          "navigationBarTitleText" : "报价单详情"
+        }
+      },
+      {
+        "path" : "quotation/auditQuotation/auditQuotation",
+        "style" : 
+        {
+          "navigationBarTitleText" : "审核报价单"
+        }
+      },
+      {
+        "path" : "expense/rawMaterialExpense/rawMaterialExpense",
+        "style" : 
+        {
+          "navigationBarTitleText" : "原材料费用"
+        }
+      },
+      {
+        "path" : "expense/surfaceTreatmentExpense/surfaceTreatmentExpense",
+        "style" : 
+        {
+          "navigationBarTitleText" : "表面处理单件费用"
+        }
+      },
+      {
+        "path" : "expense/paintingExpense/paintingExpense",
+        "style" : 
+        {
+          "navigationBarTitleText" : "喷涂单件费用"
+        }
+      },
+      {
+        "path" : "expense/cutExpense/cutExpense",
+        "style" : 
+        {
+          "navigationBarTitleText" : "数割费用"
+        }
+      },
+      {
+        "path" : "expense/singleProcessExpense/singleProcessExpense",
+        "style" : 
+        {
+          "navigationBarTitleText" : "单件加工费用"
+        }
+      }
+      
+     
+    ]
+  }],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "金威报价系统",
+    "navigationBarBackgroundColor": "#e7eaf4",
+    "backgroundColor": "#e7eaf4"
+  },
+  "uniIdRouter": {},
+  "tabBar": {
+    "fontSize": "14px",
+    "color": "#999", // 未选中状态的文字颜色，柔和的灰色
+    "selectedColor": "#3598fe", // 选中状态的文字颜色（亮蓝色，适合商务风格）
+    "borderStyle": "white", // 边框样式为白色，干净简洁
+    "backgroundColor": "#e7eaf4", // 浅灰色背景（更贴近商务小程序风格）
+    "list": [{
+        "pagePath": "pages/home/home",
+        "iconPath": "static/tabbar/首页.png",
+        "selectedIconPath": "static/tabbar/首页.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "iconPath": "static/tabbar/通知.png",
+        "selectedIconPath": "static/tabbar/通知.png",
+        "text": "消息"
+      }, {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/tabbar/设置.png",
+        "selectedIconPath": "static/tabbar/设置.png",
+        "text": "我的"
+      }
+    ]
+  }
+}
