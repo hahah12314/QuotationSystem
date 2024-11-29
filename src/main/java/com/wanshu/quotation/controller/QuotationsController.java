@@ -46,7 +46,7 @@ public class QuotationsController {
         return this.quotationsService.queryAuditPageQuotation();
     }
     @GetMapping("/auditQuotation")
-    @ApiOperation(value = "查询指定ID的审核报价单")
+    @ApiOperation(value = "指定ID的审核报价单")
     public void AuditQuotation(@RequestParam Long quotationId) {
         log.info("AuditQuotation{}",quotationId);
         this.quotationsService.auditQuotation(quotationId);

@@ -2,6 +2,7 @@ package com.wanshu.quotation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanshu.common.util.PageUtils;
@@ -62,7 +63,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     @Override
     public PageUtils queryPageQuotation(QuotationQueryDto quotationQueryDto) {
         QueryWrapper<Quotations> wrapper = new QueryWrapper<>();
-        wrapper.eq("audit_status", 1);
+//        wrapper.eq("audit_status", 1);
 
         Page<Quotations> page = new Page<>(quotationQueryDto.getPageIndex(), quotationQueryDto.getPageSize());
         Page<Quotations> quotationPage = quotationsMapper.selectPage(page, wrapper);
@@ -266,10 +267,11 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
                 surfaceTreatmentMapper.insert(surfaceTreatment);
             }
 
-        } else if (quotationForm.getMaterial().getType() == "history" && quotationForm.getMaterial().getHistoryDetails() != null && quotationForm.getMaterial().getHistoryDetails().getRawMaterials() != null) {
+        } else if (Objects.equals(quotationForm.getMaterial().getType(), "history") ) {
             if (quotationForm.getMaterial().getHistoryMaterialId() != null) {
                 quotations.setRawMaterialId(quotationForm.getMaterial().getHistoryMaterialId());
             }
+            quotations.setRawMaterialId(quotationForm.getMaterial().getHistoryMaterialId());
         }
         quotations.setAuditStatus(0);
 
@@ -400,6 +402,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
         customer.setId(quotations.getCustomerId());
         companyMapper.update(company,wrapper1);
         customerMapper.update(customer,wrapper2);
+        quotations.setAuditStatus(quotationFormDto.getAuditStatus());
         return true;
 
     }
