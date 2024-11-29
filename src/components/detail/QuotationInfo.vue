@@ -3,7 +3,7 @@
     <header class="header">
       <h1 class="title">金威报价单</h1>
     </header>
-   
+
     <div v-if="quotationForm">
       <table class="data-table">
         <thead>
@@ -301,5 +301,11 @@
 
   .submit-button:hover {
     background-color: #218838;
+  }
+
+  table {
+    font-size: 16px;
+    line-height: 30px;
+    height: 30px;
   }
 </style>

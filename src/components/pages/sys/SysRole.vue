@@ -2,7 +2,7 @@
 
     <el-card class="box-card">
         <div id='sysRole'>
-            <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+            <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
                 <el-form-item>
                     <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable></el-input>
                 </el-form-item>
@@ -14,7 +14,7 @@
                     <el-button type="primary" @click="openDialog">新增</el-button>
                 </el-form-item>
             </el-form>
-            <el-table :data="dataList" border style="width: 100%">
+            <el-table :data="dataList" border style="width: 100%" size="mini">
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="roleName" label="角色名称" width="180">
@@ -42,13 +42,13 @@
 
         <el-dialog :title="this.dataDialogForm.roleId===0 ? '新增角色' : '更新角色' " :visible.sync="dialogFormVisible"
             width="35%" @close="closeDialog">
-            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm">
+            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" size="mini">
                 <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
-                    <el-input v-model="dataDialogForm.roleName" autocomplete="off" style="width: 300px;"></el-input>
+                    <el-input v-model="dataDialogForm.roleName" autocomplete="off" style="width: 240px;"></el-input>
                 </el-form-item>
                 <el-form-item label="描述信息" :label-width="formLabelWidth" prop="remark">
                     <el-input v-model="dataDialogForm.remark" autocomplete="off" type="textarea"
-                        style="width: 300px;"></el-input>
+                        style="width: 240px;"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单权限" :label-width="formLabelWidth" prop="menuList">
                     <el-tree :data="menuAll" show-checkbox node-key="menuId" 

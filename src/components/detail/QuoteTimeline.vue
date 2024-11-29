@@ -90,6 +90,8 @@
         }
         else if (this.currentStage === 3) {
           return this.activities.filter((_, index) => [0, 1, 3, 7].includes(index));
+        } else if (this.currentStage === 7) {
+          return this.activities.filter((_, index) => [0, 1, 4, 5, 6, 7].includes(index));
         } else {
           return this.activities.filter((_, index) => [0, 1, 4, 5, 6, 7].includes(index));
         }
@@ -134,6 +136,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    height: 40px;
   }
 
   .horizontal-timeline {

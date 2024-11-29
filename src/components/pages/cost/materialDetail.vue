@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <div id="materialDetail">
-      <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+      <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-input v-model="dataForm.materialName" placeholder="材料名称" clearable></el-input>
         </el-form-item>
@@ -13,17 +13,17 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="dataList" border style="width: 100%">
+      <el-table :data="dataList" border style="width: 100%" size="mini">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="55"></el-table-column>
-        <el-table-column prop="specification" label="材料规格"></el-table-column>
-        <el-table-column prop="unitWeight" label="单位重量 (公斤)"></el-table-column>
-        <el-table-column prop="netWeight" label="净重 (公斤)"></el-table-column>
+        <el-table-column prop="specification" label="材料规格" width="140"></el-table-column>
+        <el-table-column prop="unitWeight" label="单位重量 (公斤)" width="140"></el-table-column>
+        <el-table-column prop="netWeight" label="净重 (公斤)" width="120"></el-table-column>
         <el-table-column prop="nakedPrice" label="裸价"></el-table-column>
         <el-table-column prop="profit" label="利润"></el-table-column>
         <el-table-column prop="miscellaneousFees" label="杂费"></el-table-column>
-        <el-table-column prop="preTax" label="税前总价"></el-table-column>
-        <el-table-column prop="pricePerkg" label="产品总价"></el-table-column>
+        <el-table-column prop="preTax" label="税前总价" width="100"></el-table-column>
+        <el-table-column prop="pricePerkg" label="产品总价" width="100"></el-table-column>
         <el-table-column label="操作" width="240">
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="handleDetail(scope.row)">详情</el-button>
@@ -39,7 +39,8 @@
     </div>
 
     <el-dialog :title="dataDialogForm.detailId ? '编辑材料' : '新增材料'" :visible.sync="dialogFormVisible" width="35%">
-      <el-form :model="dataDialogForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+        size="mini">
         <el-form-item label="材料规格" prop="specification">
           <el-input v-model="dataDialogForm.specification" autocomplete="off"></el-input>
         </el-form-item>
@@ -66,18 +67,34 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitMaterial">确定</el-button>
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="submitMaterial()">确定</el-button>
       </div>
+    </el-dialog>
+    <!-- 弹出框显示 MaterialInfo -->
+    <el-dialog :visible.sync="dialogVisible" title="原材料明细" width="80%" custom-class="custom-modal">
+      <el-card>
+        <MaterialInfo :detailId="selectedMaterialInfo.detailId" v-if="selectedMaterialInfo" />
+
+      </el-card>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseDetailsModal">关 闭</el-button>
+      </span>
     </el-dialog>
   </el-card>
 </template>
 
 <script>
+  import MaterialInfo from "@/components/detail/MaterialInfo";
   export default {
     name: "materialDetail",
+    components: {
+      MaterialInfo
+    },
     data() {
       return {
+        selectedMaterialInfo: null,
+        dialogVisible: false,
         dataForm: {
           materialName: "",
         },
@@ -97,6 +114,37 @@
         pageIndex: 1,
         totalPage: 0,
         dialogFormVisible: false,
+        rules: {
+          specification: [{ required: true, message: "材料规格不能为空", trigger: "blur" }],
+          unitWeight: [
+            { required: true, message: "请输入单位重量", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          netWeight: [
+            { required: true, message: "请输入净重", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          nakedPrice: [
+            { required: true, message: "请输入裸价", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          profit: [
+            { required: true, message: "请输入利润", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          miscellaneousFees: [
+            { required: true, message: "请输入杂费", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          preTax: [
+            { required: true, message: "请输入税前总价", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          pricePerkg: [
+            { required: true, message: "请输入产品总价", trigger: "blur" },
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+        },
       };
     },
     methods: {
@@ -126,6 +174,7 @@
       },
       openDialog() {
         this.dialogFormVisible = true;
+        this.$refs.ruleForm?.resetFields(); // 重置表单校验
         this.dataDialogForm = {
           detailId: null,
           specification: "",
@@ -140,52 +189,56 @@
       },
       async handleEdit(row) {
         this.dialogFormVisible = true;
+        this.$refs.ruleForm?.resetFields(); // 重置表单校验
         this.dataDialogForm = { ...row };
       },
-      // async handleDelete(row) {
-      //   try {
-      //     await this.$http.delete("/raw-materials/delete", { data: { detail_id: row.detailId } });
-      //     this.$message.success("删除成功");
-      //     this.getDataList();
-      //   } catch (error) {
-      //     console.error("删除失败:", error);
-      //     this.$message.error("删除失败");
-      //   }
-      // },
+      handleDetail(row) {
+        this.selectedMaterialInfo = row
+        console.log('row', row)
+        this.dialogVisible = true
+      },
+      handleCloseDetailsModal() {
+        this.selectedMaterialInfo = null
+        this.dialogVisible = false
+      },
       async handleDelete(row) {
-        this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+        this.$confirm("此操作将永久删除该信息, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         })
           .then(async () => {
             try {
               await this.$http.delete("/raw-materials/delete", { data: { detail_id: row.detailId } });
-              this.$message.success('删除成功');
-              this.getDataList(); // 重新获取数据列表
+              this.$message.success("删除成功");
+              this.getDataList();
             } catch (error) {
-              console.error('删除失败:', error);
-              this.$message.error('删除失败');
+              console.error("删除失败:", error);
+              this.$message.error("删除失败");
             }
           })
           .catch(() => {
-            this.$message.info('已取消删除');
+            this.$message.info("已取消删除");
           });
       },
       async submitMaterial() {
-        const url = this.dataDialogForm.detailId ? "/raw-materials/update" : "/raw-materials/save";
-        try {
-          await this.$http.post(url, this.dataDialogForm);
-          this.$message.success(this.dataDialogForm.detailId ? "编辑成功" : "新增成功");
-          this.dialogFormVisible = false;
-          this.getDataList();
-        } catch (error) {
-          console.error("提交失败:", error);
-          this.$message.error("提交失败");
-        }
+        this.$refs.ruleForm.validate(async (valid) => {
+          if (!valid) return;
+          const url = this.dataDialogForm.detailId ? "/raw-materials/update" : "/raw-materials/save";
+          try {
+            await this.$http.post(url, this.dataDialogForm);
+            this.$message.success(this.dataDialogForm.detailId ? "编辑成功" : "新增成功");
+            this.dialogFormVisible = false;
+            this.getDataList();
+          } catch (error) {
+            console.error("提交失败:", error);
+            this.$message.error("提交失败");
+          }
+        });
       },
-      handleDetail(row) {
-        this.$router.push(`/cost/materialDetail/${row.detailId}`);
+      closeDialog() {
+        this.dialogFormVisible = false;
+        this.$refs.ruleForm?.resetFields(); // 清除表单校验提示
       },
     },
     mounted() {
@@ -195,7 +248,7 @@
 </script>
 
 <style scoped>
-  .dialog-footer{
+  .dialog-footer {
     display: flex;
     justify-content: center;
     align-items: center;

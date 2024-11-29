@@ -828,6 +828,11 @@
         .back-button-bottom-right:hover {
             background-color: #218838;
         }
+        table {
+            font-size: 16px;
+            line-height: 30px;
+            height: 30px;
+          }
 
 
 

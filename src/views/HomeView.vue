@@ -1,22 +1,22 @@
 <template>
   <div id="id">
-    <el-container class="app-container">
+    <el-container class="app-container" style="margin: 0;">
       <!-- 左侧菜单 -->
-      <el-aside width="auto" class="aside-container">
+      <el-aside class="aside-container" width="auto">
         <Aside />
       </el-aside>
 
       <el-container class="main-container">
         <!-- 头部区域 -->
-        <el-header class="header-container">
+        <el-header class="header-container" style="height: 40px;">
           <Header />
         </el-header>
 
         <!-- 主要内容区域 -->
         <el-main class="main-content">
-          
-            <router-view></router-view>
-         
+
+          <router-view></router-view>
+
         </el-main>
       </el-container>
     </el-container>
@@ -35,12 +35,18 @@
       Header,
       CommonTag,
     },
-    data(){
+    data() {
       return {
-        cachedPages: [] 
+        cachedPages: []
       }
     },
-   
+    computed: {
+      isCollapse() {
+        return this.$store.state.tab.isCollapse
+
+      }
+    }
+
   }
 </script>
 
@@ -81,18 +87,18 @@
 
   /* 头部区域 */
   .header-container {
-    height: 60px;
-    
+    height: 40px;
+
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
-    padding: 0 20px;
+    padding: 0 10px;
     overflow: hidden;
   }
 
   /* 标签导航 */
   .common-tag {
-    height: 40px;
-    line-height: 40px;
+    height: 20px;
+    line-height: 20px;
     background-color: #fafafa;
     border-bottom: 1px solid #e0e0e0;
     overflow: hidden;
@@ -102,9 +108,10 @@
   .main-content {
     flex: 1;
     /* 填充剩余空间 */
+    height: 100vh;
     overflow-y: auto;
     /* 独立滚动条 */
-    padding: 20px;
+    padding: 0px;
     background-color: #fff;
   }
 </style>

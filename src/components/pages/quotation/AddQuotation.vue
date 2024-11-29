@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <div class="quotation-form">
       <h1 class="main-title" v-if="!isReadOnly">新增报价单</h1>
 
@@ -18,7 +18,8 @@
           </tr>
           <tr>
             <td>负责人:</td>
-            <td><input v-model="quotationForm.company.responsiblePerson" class="input-field" :readonly="isReadOnly" /></td>
+            <td><input v-model="quotationForm.company.responsiblePerson" class="input-field" :readonly="isReadOnly" />
+            </td>
             <td>负责人联系方式:</td>
             <td><input v-model="quotationForm.company.contactInfo" class="input-field" :readonly="isReadOnly" /></td>
           </tr>
@@ -34,9 +35,11 @@
             <td>预期价格:</td>
             <td>
               <div class="price-inputs">
-                <input v-model="quotationForm.customer.minPrice" placeholder="最低价格" class="input-field small-input" :readonly="isReadOnly" />
+                <input v-model="quotationForm.customer.minPrice" placeholder="最低价格" class="input-field small-input"
+                  :readonly="isReadOnly" />
                 <span class="separator">至</span>
-                <input v-model="quotationForm.customer.maxPrice" placeholder="最高价格" class="input-field small-input" :readonly="isReadOnly" />
+                <input v-model="quotationForm.customer.maxPrice" placeholder="最高价格" class="input-field small-input"
+                  :readonly="isReadOnly" />
               </div>
             </td>
           </tr>
@@ -53,29 +56,34 @@
             </td>
             <td>客户要求:</td>
             <td colspan="2">
-              <textarea v-model="quotationForm.customer.requirements" class="textarea-field" :readonly="isReadOnly"></textarea>
+              <textarea v-model="quotationForm.customer.requirements" class="textarea-field"
+                :readonly="isReadOnly"></textarea>
             </td>
           </tr>
           <tr>
-            <td>报价物料:</td>
+            <td>报价物料<span class="required">*</span>:</td>
             <td>
               <select v-model="quotationForm.material.quotedMaterialId" class="input-field" :disabled="isReadOnly">
-                <option v-for="(material,index) in quotedMaterials" :key="material.materialId" :value="material.materialId">
+                <option v-for="(material,index) in quotedMaterials" :key="material.materialId"
+                  :value="material.materialId">
                   {{material.materialName }}
                 </option>
               </select>
             </td>
-            <td>原材料:</td>
+            <td>原材料<span class="required">*</span>:</td>
             <td>
               <div>
                 <label>
-                  <input type="radio" v-model="quotationForm.material.type" value="custom" :disabled="isReadOnly" /> 自定义明细
+                  <input type="radio" v-model="quotationForm.material.type" value="custom" :disabled="isReadOnly" />
+                  自定义明细
                 </label>
                 <label>
-                  <input type="radio" v-model="quotationForm.material.type" value="history" :disabled="isReadOnly" /> 历史明细
+                  <input type="radio" v-model="quotationForm.material.type" value="history" :disabled="isReadOnly" />
+                  历史明细
                 </label>
                 <select v-model="quotationForm.material.historyMaterialId" class="input-field" :disabled="isReadOnly">
-                  <option v-for="(material,index) in historyMaterials" :key="material.detailId" :value="material.detailId">
+                  <option v-for="(material,index) in historyMaterials" :key="material.detailId"
+                    :value="material.detailId">
                     {{index+1}}. {{ material.specification}}
                   </option>
                 </select>
@@ -110,13 +118,15 @@
             <td><input v-model.number="item.quantity" class="input-field" :readonly="isReadOnly" /></td>
             <td>
               <select v-model="quotationForm.material.historyMaterialId" class="input-field" :disabled="isReadOnly">
-                <option v-for="(material,index) in historyMaterials" :key="material.detailId" :value="material.detailId">
+                <option v-for="(material,index) in historyMaterials" :key="material.detailId"
+                  :value="material.detailId">
                   {{ material.specification}}
                 </option>
               </select>
             </td>
             <td>
-              <select v-model="item.isExternalProcurement" class="input-field" :disabled="isReadOnly">
+              <select v-model="quotationForm.material.quotedMaterials.isExternalProcurement" class="input-field"
+                :disabled="isReadOnly">
                 <option value="1">是</option>
                 <option value="0">否</option>
               </select>
@@ -128,12 +138,12 @@
       <!-- 条件渲染部分 -->
       <div v-if="quotationForm.material.type === 'history'">
         <MaterialInfo ref="historyDetail" :detailId="quotationForm.material.historyMaterialId"
-          :quantity="selectedQuotedMaterials[0]?.quantity ?? 0" />
+          :quantity="selectedQuotedMaterials[0]?.quantity ?? 1" />
         <hr class="divider" />
       </div>
       <div v-else>
         <CustomDetail ref="customDetail" :detailId="quotationForm.material.historyMaterialId"
-          :quantity="selectedQuotedMaterials[0]?.quantity ?? 0" />
+          :quantity="selectedQuotedMaterials[0]?.quantity ?? 1" />
       </div>
 
       <button class="btn-submit" @click="generateQuote" v-show="!isReadOnly">生成报价单</button>
@@ -150,14 +160,14 @@
       CustomDetail
 
     },
-    props:{
+    props: {
       outQuotationForm: {
         type: Object,
-        required:false
+        required: false
       }
 
     },
-    
+
     data() {
       return {
         isReadOnly: false,
@@ -188,7 +198,7 @@
               materialCode: '',
               materialName: '',
               unitPrice: 0,
-              quantity: 0,
+              quantity: 1,
               specification: '',
               isExternalProcurement: 0
             }
@@ -204,11 +214,13 @@
         ],
       };
     },
-    
+
     computed: {
       selectedQuotedMaterials() {
-        // 返回选中的报价物料
-        return this.quotedMaterials.filter(material => material.materialId === this.quotationForm.material.quotedMaterialId);
+        // 返回选中的报价物料，并将数量设置为1
+      return this.quotedMaterials
+      .filter(material => material.materialId === this.quotationForm.material.quotedMaterialId)
+      .map(material => ({ ...material, quantity: 1 }));
       },
       subtotal() {
         // 计算选中的报价物料的小计
@@ -226,10 +238,10 @@
       this.fetchQuotationInfo()
     },
     methods: {
-      fetchQuotationInfo(){
+      fetchQuotationInfo() {
         this.isReadOnly = !!this.outQuotationForm;
-        if(this.isReadOnly){
-          this.quotationForm=this.outQuotationForm
+        if (this.isReadOnly) {
+          this.quotationForm = this.outQuotationForm
         }
       },
       fetchDataFromQuery() {
@@ -275,6 +287,15 @@
 
       },
       generateQuote() {
+        if (!this.quotationForm.material.quotedMaterialId) {
+          this.$message.error('请选择报价物料');
+          return;
+        }
+
+        if (!this.quotationForm.material.historyMaterialId) {
+          this.$message.error('请选择原材料类型');
+          return;
+        }
         // 获取子组件的 customDetails
         if (this.quotationForm.material.type === 'custom' && this.quotationForm.material.historyMaterialId) {
           const customDetails = this.$refs.customDetail.getCustomDetails();
@@ -291,9 +312,10 @@
         if (this.selectedQuotedMaterials.length > 0) {
           this.quotationForm.material.quotedMaterials = this.selectedQuotedMaterials[0]
         }
-
+        this.quotationForm.material.quotedMaterials.isExternalProcurement = this.quotationForm.material.quotedMaterials.isExternalProcurement ? 1 : 0
         // 将 quotationForm 转换为 JSON 字符串
         const formData = JSON.stringify(this.quotationForm);
+        console.log('fff', formData, 'aaa', this.quotationForm)
 
         // 跳转到生成报价单的页面，并传递数据
         this.$router.push({
@@ -316,7 +338,7 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+
     padding: 0;
     background-color: #f9f9f9;
   }
@@ -425,5 +447,15 @@
   .divider {
     border: 1px solid #bcbfc2;
     margin: 20px 0;
+  }
+
+  table {
+    font-size: 16px;
+    line-height: 30px;
+    height: 30px;
+  }
+
+  .required {
+    color: red;
   }
 </style>

@@ -2,7 +2,7 @@
 
   <el-card class="box-card">
     <div id='sysRole'>
-      <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+      <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-input v-model="dataForm.username" placeholder="用户名称" clearable></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
           <el-button type="danger" @click="deleteBatch()">批量删除</el-button>
         </el-form-item>
       </el-form>
-      <el-table :data="dataList" border style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table :data="dataList" border style="width: 100%" @selection-change="handleSelectionChange" size="mini">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="55"></el-table-column>
         <el-table-column prop="username" label="用户名称" width="180">
@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column prop="updateTime" label="更新时间">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleStatus(scope.$index, scope.row)"
@@ -45,7 +45,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination @size-change="sizeChangeHandle" @current-change="currentChangeHandle" :current-page="pageIndex"
+      <el-pagination @size-change="sizeChangeHandle" @cu新增用户width: 240px;rrent-change="currentChangeHandle" :current-page="pageIndex"
         :page-sizes="[5, 10, 20, 50, 100]" :page-size="pageSize" :total="totalPage"
         layout="total, sizes, prev, pager, next, jumper" style="margin-top:30px;">
       </el-pagination>
@@ -53,20 +53,20 @@
 
     <el-dialog :title="this.dataDialogForm.userId===0 ? '新增用户' : '更新用户' " :visible.sync="dialogFormVisible" width="35%"
       @close="closeDialog">
-      <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm">
+      <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" size="mini">
         <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
-          <el-input v-model="dataDialogForm.username" autocomplete="off" style="width: 300px;"
+          <el-input v-model="dataDialogForm.username" autocomplete="off" style="width: 240px;"
             :disabled="dataDialogForm.userId!==0"></el-input>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" prop="password" v-if="dataDialogForm.userId===0">
-          <el-input v-model="dataDialogForm.password" autocomplete="off" style="width: 300px;"
+          <el-input v-model="dataDialogForm.password" autocomplete="off" style="width: 240px;"
             type="password"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
-          <el-input v-model="dataDialogForm.email" autocomplete="off" style="width: 300px;"></el-input>
+          <el-input v-model="dataDialogForm.email" autocomplete="off" style="width: 240px;"></el-input>
         </el-form-item>
         <el-form-item label="电话" :label-width="formLabelWidth" prop="mobile">
-          <el-input v-model="dataDialogForm.mobile" autocomplete="off" style="width: 300px;"></el-input>
+          <el-input v-model="dataDialogForm.mobile" autocomplete="off" style="width: 240px;"></el-input>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
           <el-select v-model="dataDialogForm.status" placeholder="请选择">
@@ -354,7 +354,7 @@
 </script>
 
 <style scoped>
-  .dialog-footer{
+  .dialog-footer {
     display: flex;
     justify-content: center;
     align-items: center;

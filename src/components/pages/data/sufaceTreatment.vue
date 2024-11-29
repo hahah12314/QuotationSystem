@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <div id="surfaceTreatment">
-      <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+      <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-input
               v-model="dataForm.specification"
@@ -20,11 +20,11 @@
       <el-table
           :data="dataList"
           style="width: 100%"
-          @selection-change="handleSelectionChange"
+          @selection-change="handleSelectionChange" size="mini"
       >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column type="index" label="序号" width="55"></el-table-column>
-       
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="index" label="序号" width="55"></el-table-column>
+
         <el-table-column prop="specification" label="材料规格" width="130"></el-table-column>
         <el-table-column prop="zincWeight" label="镀锌重量"></el-table-column>
         <el-table-column prop="zincFee" label="镀锌费用"></el-table-column>
@@ -36,19 +36,11 @@
         <el-table-column prop="qpqFee" label="QPQ费用"></el-table-column>
         <el-table-column prop="totalCoatingCost" label="总涂层费用"></el-table-column>
         <el-table-column label="操作" width="250">
-          <template slot-scope="scope">
-            <el-button
-                size="mini"
-                type="primary"
-                @click="handleEdit(scope.row)"
-            >
+          <template #default="scope">
+            <el-button size="mini" type="primary" @click="handleEdit(scope.row)">
               编辑
             </el-button>
-            <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.row)"
-            >
+            <el-button size="mini" type="danger" @click="handleDelete(scope.row)">
               删除
             </el-button>
           </template>
@@ -72,11 +64,13 @@
         :title="dataDialogForm.id === 0 ? '新增表面处理费用' : '编辑表面处理费用'"
         :visible.sync="dialogFormVisible"
         width="50%"
+        @close="closeDialog"
     >
       <el-form
           :model="dataDialogForm"
+          :rules="rules"
           ref="ruleForm"
-          label-width="120px"
+          label-width="120px" size="mini"
       >
         <el-form-item label="detail id" prop="detailId">
           <el-input
@@ -140,7 +134,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button @click="closeDialog()">取消</el-button>
         <el-button type="primary" @click="submitMaterial()">保存</el-button>
       </div>
     </el-dialog>
@@ -174,6 +168,41 @@ export default {
       pageSize: 5,
       totalPage: 0,
       dialogFormVisible: false,
+      rules: {
+        specification: [{ required: true, message: "材料规格不能为空", trigger: "blur" }],
+        zincWeight: [
+          { required: true, message: "镀锌重量不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        zincFee: [
+          { required: true, message: "镀锌费用不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        temperingWeight: [
+          { required: true, message: "淬火重量不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        temperingFee: [
+          { required: true, message: "淬火费用不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        sandWeight: [
+          { required: true, message: "砂光重量不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        sandFee: [
+          { required: true, message: "砂光费用不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        qpqWeight: [
+          { required: true, message: "QPQ重量不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        qpqFee: [
+          { required: true, message: "QPQ费用不能为空", trigger: "blur" },
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -192,6 +221,7 @@ export default {
       }
     },
     openDialog() {
+      this.$refs.ruleForm?.resetFields();
       this.dialogFormVisible = true;
       this.dataDialogForm = {
         id: 0,
@@ -208,44 +238,51 @@ export default {
         totalCoatingFee: "",
       };
     },
+    closeDialog() {
+      this.dialogFormVisible = false;
+      this.$refs.ruleForm?.resetFields();
+    },
     async handleEdit(row) {
+      this.$refs.ruleForm?.resetFields();
       this.dataDialogForm = { ...row };
       this.dialogFormVisible = true;
     },
+    async submitMaterial() {
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (!valid) return;
+        const url = this.dataDialogForm.id === 0 ? "/surface-treatment/save" : "/surface-treatment/update";
+        try {
+          await this.$http.post(url, this.dataDialogForm);
+          this.$message.success("保存成功");
+          this.dialogFormVisible = false;
+          this.getDataList();
+        } catch (error) {
+          console.error("保存失败：", error);
+          this.$message.error("保存失败");
+        }
+      });
+    },
     async handleDelete(row) {
-      this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm("此操作将永久删除该信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
           .then(async () => {
             try {
-              await this.$http.delete('/surface-treatment/delete', { data: { id: row.id } });
-              this.$message.success('删除成功');
-              this.getDataList(); // 重新获取数据列表
+              await this.$http.delete("/surface-treatment/delete", {
+                data: { id: row.id },
+              });
+              this.$message.success("删除成功");
+              this.getDataList();
             } catch (error) {
-              console.error('删除失败:', error);
-              this.$message.error('删除失败');
+              console.error("删除失败：", error);
+              this.$message.error("删除失败");
             }
           })
           .catch(() => {
-            this.$message.info('已取消删除');
+            this.$message.info("已取消删除");
           });
-    },
-    async submitMaterial() {
-      try {
-        const url =
-            this.dataDialogForm.id === 0
-                ? "/surface-treatment/save"
-                : "/surface-treatment/update";
-        await this.$http.post(url, this.dataDialogForm);
-        this.$message.success("操作成功");
-        this.dialogFormVisible = false;
-        this.getDataList();
-      } catch (error) {
-        console.error("操作失败：", error);
-        this.$message.error("操作失败");
-      }
     },
     sizeChangeHandle(val) {
       this.pageSize = val;
@@ -261,10 +298,11 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-  .dialog-footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

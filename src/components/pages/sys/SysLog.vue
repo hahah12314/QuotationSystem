@@ -2,7 +2,7 @@
 
     <el-card class="box-card">
         <div id='sysLog'>
-            <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+            <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
                 <el-form-item>
                     <el-input v-model="dataForm.msg" placeholder="用户名/用户操作" clearable></el-input>
                 </el-form-item>
@@ -13,7 +13,7 @@
                 
   
             </el-form>
-            <el-table :data="dataList" border style="width: 100%">
+            <el-table :data="dataList" border style="width: 100%" size="mini">
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="username" label="用户名称" width="180">

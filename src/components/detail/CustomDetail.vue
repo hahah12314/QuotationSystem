@@ -348,8 +348,8 @@
           topcoatFee: 0,
           totalPaintingCost: 0
         },
-        customDetails:{
-          
+        customDetails: {
+
         }
 
       }
@@ -718,13 +718,13 @@
         }
       },
       getCustomDetails() {
-        this.customDetails={
-          rawMaterials:this.rawMaterials,
-          paintingCost:this.paintingCost,
-          materialCost:this.materialCost,
-          cuttingCost:this.cuttingCost,
-          processingCost:this.processingCost,
-          surfaceTreatment:this.surfaceTreatment
+        this.customDetails = {
+          rawMaterials: this.rawMaterials,
+          paintingCost: this.paintingCost,
+          materialCost: this.materialCost,
+          cuttingCost: this.cuttingCost,
+          processingCost: this.processingCost,
+          surfaceTreatment: this.surfaceTreatment
         }
         return this.customDetails;
       }
@@ -737,6 +737,12 @@
   .detail-container {
 
     position: relative;
+
+    table {
+      font-size: 16px;
+      line-height: 30px;
+      height: 30px;
+    }
 
     .table-container {
 

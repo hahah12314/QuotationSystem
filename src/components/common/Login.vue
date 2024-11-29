@@ -9,11 +9,12 @@
                 <el-form-item label="密码" prop="password">
                     <el-input type="password" v-model="form.password" placeholder="请输入密码"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" size="medium" @click="submitLoginForm">登录</el-button>
-                    <!-- <el-button type="info" size="medium" @click="goToRegister">注册</el-button> -->
-                </el-form-item>
+
+
             </el-form>
+
+            <el-button type="primary" size="medium" @click="submitLoginForm">登录</el-button>
+            <!-- <el-button type="info" size="medium" @click="goToRegister">注册</el-button> -->
         </div>
     </div>
 </template>
@@ -81,6 +82,10 @@
         align-items: center;
 
         .login_form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             width: 510px;
             margin: 0px auto;
             padding: 0 55px 15px 35px;
@@ -99,6 +104,11 @@
                 margin-top: 50px;
                 margin-bottom: 30px;
                 text-align: center;
+            }
+
+            .demo-ruleForm {
+                width: 450px;
+                margin-right: 20px;
             }
         }
     }

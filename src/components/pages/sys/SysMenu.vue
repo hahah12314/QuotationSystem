@@ -2,7 +2,7 @@
 
     <el-card class="box-card">
         <div id='sysRole'>
-            <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+            <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
                 <el-form-item>
                     <el-input v-model="dataForm.name" placeholder="菜单名称" clearable></el-input>
                 </el-form-item>
@@ -15,7 +15,7 @@
                 </el-form-item>
             </el-form>
             <el-table :data="dataList" border style="width: 100%" row-key="name"
-                :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                :tree-props="{children: 'children', hasChildren: 'hasChildren'}" size="mini">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="name" label="菜单名称" width="180">
@@ -45,15 +45,15 @@
   
         <el-dialog :title="this.dataDialogForm.menuId===0 ? '新增菜单' : '更新菜单' " :visible.sync="dialogFormVisible"
             width="35%" @close="closeDialog">
-            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm">
+            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" size="mini">
                 <el-form-item label="菜单名称" :label-width="formLabelWidth" prop="name">
-                    <el-input v-model="dataDialogForm.name" autocomplete="off" style="width: 300px;"></el-input>
+                    <el-input v-model="dataDialogForm.name" autocomplete="off" style="width: 240px;"></el-input>
                 </el-form-item>
                 <el-form-item label="路径" :label-width="formLabelWidth" prop="path">
-                    <el-input v-model="dataDialogForm.path" autocomplete="off" style="width: 300px;"></el-input>
+                    <el-input v-model="dataDialogForm.path" autocomplete="off" style="width: 240px;"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单图标" :label-width="formLabelWidth" prop="icon">
-                    <el-input v-model="dataDialogForm.icon" autocomplete="off" style="width: 300px;"></el-input>
+                    <el-input v-model="dataDialogForm.icon" autocomplete="off" style="width: 240px;"></el-input>
                 </el-form-item>
                 <el-form-item label="父菜单" :label-width="formLabelWidth" prop="parentId">
                     <el-select v-model="dataDialogForm.parentId" placeholder="本身为父菜单">

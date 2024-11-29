@@ -19,7 +19,7 @@
           <div class="card-title-text">报价管理</div>
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-card class="manager-card">
+        <el-card class="manager-card" style="height:110px">
           <div class="manager-card-content">
             <div class="card-content" @click="handleClick('/quotationReview')">
               <div class="card-icon">
@@ -53,7 +53,7 @@
           <div class="card-title-text">资源管理</div>
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-card class="manager-card">
+        <el-card class="manager-card" style="height:110px">
           <div class="manager-card-content">
             <div class="card-content" @click="handleClick('/materialManage')">
               <div class="card-icon">
@@ -79,7 +79,7 @@
           <div class="card-title-text">工种管理</div>
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-card class="manager-card">
+        <el-card class="manager-card" style="height:110px">
           <div class="manager-card-content">
             <div class="card-content" @click="handleClick('/workerManagement')">
               <div class="card-icon">
@@ -229,9 +229,31 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-row gutter="20" >
+      <el-col :span="12">
+        <el-card class="box-card1 announcements">
+          <h3>系统公告</h3>
+          <div v-for="item in systemAnnouncements" :key="item.id" class="announcement-item">
+            <div>{{ item.title }}</div>
+            <div><i :class="`el-icon-${item.icon}`">{{ item.date }}</i></div>
+          </div>
+        </el-card>
+      </el-col>
+
+      <el-col :span="12">
+        <el-card class="box-card recent-activities">
+          <h3>近期活动</h3>
+          <el-list>
+            <div v-for="activity in recentActivities" :key="activity.id" class="activity">
+              {{ activity.message }}
+            </div>
+          </el-list>
+        </el-card>
+      </el-col>
+    </el-row>
 
 
-    <el-row style="margin-top: 20px;" gutter="20">
+    <el-row gutter="20" style="margin-top: 15px;">
       <el-col :span="12">
         <el-card class="box-card weekly-stats">
           <h3>本周操作统计</h3>
@@ -247,28 +269,7 @@
       </el-col>
     </el-row>
 
-    <el-row gutter="20" style="margin-top: 20px;">
-      <el-col :span="12">
-        <el-card class="box-card1 announcements">
-          <h3>系统公告</h3>
-          <div v-for="item in systemAnnouncements" :key="item.id" class="announcement-item">
-            <div>{{ item.title }}</div>
-            <div><i :class="`el-icon-${item.icon}`">{{ item.date }}</i></div>
-          </div>
-        </el-card>
-      </el-col>
 
-      <el-col :span="12">
-        <el-card class="box-card recent-activities">
-          <h3>近期活动</h3>
-          <el-list>
-            <div v-for="activity in recentActivities" :key="activity.id">
-              {{ activity.message }}
-            </div>
-          </el-list>
-        </el-card>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -345,7 +346,7 @@
       initCharts() {
         const weeklyChart = echarts.init(this.$refs.weeklyChart);
         const weeklyOption = {
-          title: { text: '本周操作统计' },
+
           tooltip: {},
           xAxis: { data: ['周一', '周二', '周三', '周四', '周五'] },
           yAxis: {},
@@ -355,7 +356,7 @@
 
         const quoteChart = echarts.init(this.$refs.quoteChart);
         const quoteOption = {
-          title: { text: '报价统计' },
+
           tooltip: {},
           xAxis: { data: ['报价A', '报价B', '报价C', '报价D'] },
           yAxis: {},
@@ -378,6 +379,8 @@
     .time-card {
       margin-bottom: 10px;
     }
+
+    padding: 10px 20px;
   }
 
   .card-title {
@@ -387,6 +390,7 @@
 
     .card-title-text {
       font-weight: bold;
+      font-size: 16px;
       color: #000000;
       margin-right: 5px;
     }
@@ -402,13 +406,13 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    height: 180px;
+    height: 140px;
 
     .card-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-right: 20px;
+      margin-right: 10px;
       cursor: pointer;
       /* 鼠标指针变成小手 */
       transition: background-color 0.3s ease;
@@ -416,9 +420,13 @@
 
       .card-icon {
         img {
-          width: 60px;
-          height: 60px;
+          width: 40px;
+          height: 40px;
         }
+      }
+
+      .card-text {
+        font-size: 14px;
       }
 
       .card-text:hover {
@@ -431,7 +439,7 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: 200px;
+    height: 120px;
 
     .card-content {
       display: flex;
@@ -461,27 +469,24 @@
     }
   }
 
+
   .common-functions,
   .pending-tasks,
-  .calendar,
-  .weekly-stats,
-  .quote-stats,
-  .announcements,
-  .recent-activities {
+  .calendar {
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    min-height: 250px;
+
     /* Ensure minimum height for consistency */
   }
 
   h3 {
-    margin: 0 0 15px;
+    padding: 5px;
     font-size: 18px;
     color: #333;
     border-bottom: 2px solid #409EFF;
-    padding-bottom: 5px;
+
   }
 
   .function-item {
@@ -500,7 +505,7 @@
   }
 
   .chart-container {
-    height: 250px;
+    height: 240px;
   }
 
   .el-calendar {
@@ -508,9 +513,15 @@
     overflow: auto;
   }
 
-  .announcement-item {
-    margin-bottom: 10px;
-    padding: 10px;
+  .announcements,
+  .recent-activities {
+    height: 160px;
+  }
+
+  .announcement-item,
+  .activity {
+    margin-bottom: 5px;
+    padding: 5px;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
@@ -519,5 +530,7 @@
     &:last-child {
       border-bottom: none;
     }
+
+    font-size: 14px;
   }
 </style>

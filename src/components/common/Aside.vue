@@ -19,7 +19,7 @@
           <el-menu-item-group>
 
             <el-menu-item v-for="sub in item.children" :key="sub.menuId" :index="sub.menuId"
-              @click="handleClick(sub)">{{sub.name}}</el-menu-item>
+              @click="handleClick(sub)" >{{sub.name}}</el-menu-item>
 
           </el-menu-item-group>
 
@@ -48,7 +48,7 @@
     },
     data() {
       return {
-        
+
         menuList: [
 
         ]
@@ -67,9 +67,18 @@
           const res = await this.$http.get('/sys/sysMenu/getNowMenuChecked');
           console.log(res);
           this.menuList = res.data.data
-          localStorage.setItem('menuList', JSON.stringify(res.data.data))
-          
-          
+          // 定义排序顺序
+          const order = ['首页', '报价管理', '资源管理', '工种管理', '费用管理', '系统管理', '统计分析'];
+
+          // 对 menuList 进行排序
+          this.menuList = this.menuList.sort((a, b) => {
+            return order.indexOf(a.name) - order.indexOf(b.name);
+          });
+
+          // 将排序后的 menuList 存储到 localStorage
+          localStorage.setItem('menuList', JSON.stringify(this.menuList));
+
+
           console.log(this.menuList)
 
         } catch (error) {
@@ -92,30 +101,34 @@
 
 <style scoped lang="less">
   .aside {
-    padding-top: 20px;
-    width: auto;
+    padding-top: 10px;
+
     height: 100vh;
-    text-align: center;
 
     .title-container {
       display: flex;
       align-items: center;
 
       img {
-        width: 30px;
-        height: 30px;
-        margin-left: 10px;
+        width: 18px;
+        height: 18px;
+        margin-left: 24px;
       }
 
       .title {
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 5px;
+        margin-right: 6px;
+        font-size: 16px;
       }
     }
 
 
     .menu-container {
       margin-top: 10px;
+
+
+
+
     }
   }
 </style>

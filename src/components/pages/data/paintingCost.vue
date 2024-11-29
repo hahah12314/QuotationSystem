@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <div id="paintingCost">
-      <el-form :inline="true" :model="dataForm" class="demo-form-inline">
+      <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-input v-model="dataForm.specification" placeholder="材料规格" clearable />
         </el-form-item>
@@ -13,10 +13,10 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="dataList" style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table :data="dataList" style="width: 100%" @selection-change="handleSelectionChange" size="mini">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="55"></el-table-column>
-       
+
         <el-table-column prop="specification" label="材料规格" width="130" />
         <el-table-column prop="acidWashWeight" label="酸洗/磷化重量" />
         <el-table-column prop="acidWashCost" label="酸洗/磷化金额" />
@@ -50,7 +50,7 @@
     </div>
 
     <el-dialog :title="dataDialogForm.id === 0 ? '新增喷涂记录' : '编辑喷涂记录'" :visible.sync="dialogFormVisible" width="50%">
-      <el-form :model="dataDialogForm" ref="ruleForm" label-width="120px">
+      <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" label-width="120px" size="mini">
         <el-form-item label="detail id" prop="detailId">
           <el-input v-model="dataDialogForm.detailId" autocomplete="off" />
         </el-form-item>
@@ -87,12 +87,9 @@
         <el-form-item label="面漆金额" prop="topcoatCost">
           <el-input v-model="dataDialogForm.topcoatCost" autocomplete="off" />
         </el-form-item>
-<!--        <el-form-item label="总喷涂费用" prop="totalPaintingCost">-->
-<!--          <el-input v-model="dataDialogForm.totalPaintingCost" autocomplete="off" />-->
-<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button @click="closeDialog()">取消</el-button>
         <el-button type="primary" @click="submitMaterial()">保存</el-button>
       </div>
     </el-dialog>
@@ -127,6 +124,50 @@ export default {
       pageSize: 5,
       totalPage: 0,
       dialogFormVisible: false,
+      rules: {
+        specification: [{ required: true, message: "材料规格不能为空", trigger: "blur" }],
+        acidWashWeight: [
+          {required: true, message: "请输入酸洗/磷化重量", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        acidWashCost: [
+          {required: true, message: "请输入酸洗/磷化金额", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        // 添加其他字段的规则
+        sprayPlasticArea: [
+          {required: true, message: "请输入喷塑面积", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        sprayPlasticCost: [
+          {required: true, message: "请输入喷塑金额", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        electroswimmingArea: [
+          {required: true, message: "请输入电泳面积", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        electroswimmingCost: [
+          {required: true, message: "请输入电泳金额", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        primerArea: [
+          {required: true, message: "请输入底漆面积", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        primerCost: [
+          {required: true, message: "请输入底漆金额", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        topcoatArea: [
+          {required: true, message: "请输入面漆面积", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+        topcoatCost: [
+          {required: true, message: "请输入面漆金额", trigger: "blur"},
+          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -145,6 +186,7 @@ export default {
       }
     },
     openDialog() {
+      this.$refs.ruleForm?.resetFields();
       this.dialogFormVisible = true;
       this.dataDialogForm = {
         id: 0,
@@ -164,40 +206,28 @@ export default {
       };
     },
     async handleEdit(row) {
+      this.$refs.ruleForm?.resetFields();
       this.dataDialogForm = { ...row };
       this.dialogFormVisible = true;
     },
-    async handleDelete(row) {
-      this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-          .then(async () => {
-            try {
-              await this.$http.delete('/painting-cost/delete', { data: { id: row.id } });
-              this.$message.success('删除成功');
-              this.getDataList(); // 重新获取数据列表
-            } catch (error) {
-              console.error('删除失败:', error);
-              this.$message.error('删除失败');
-            }
-          })
-          .catch(() => {
-            this.$message.info('已取消删除');
-          });
+    closeDialog() {
+      this.dialogFormVisible = false;
+      this.$refs.ruleForm?.resetFields();
     },
     async submitMaterial() {
-      const url = this.dataDialogForm.id === 0 ? "/painting-cost/save" : "/painting-cost/update";
-      try {
-        await this.$http.post(url, this.dataDialogForm);
-        this.$message.success("保存成功");
-        this.dialogFormVisible = false;
-        this.getDataList();
-      } catch (error) {
-        console.error("保存失败：", error);
-        this.$message.error("保存失败");
-      }
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (!valid) return;
+        const url = this.dataDialogForm.id === 0 ? "/painting-cost/save" : "/painting-cost/update";
+        try {
+          await this.$http.post(url, this.dataDialogForm);
+          this.$message.success("保存成功");
+          this.dialogFormVisible = false;
+          this.getDataList();
+        } catch (error) {
+          console.error("保存失败：", error);
+          this.$message.error("保存失败");
+        }
+      });
     },
     sizeChangeHandle(val) {
       this.pageSize = val;
@@ -213,10 +243,11 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-  .dialog-footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
