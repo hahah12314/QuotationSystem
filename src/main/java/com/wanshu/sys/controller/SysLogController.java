@@ -5,6 +5,7 @@ package com.wanshu.sys.controller;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.sys.dto.SysLogQueryDto;
 import com.wanshu.sys.service.ISysLogService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequestMapping("/sys/sysLog")
+@Api(tags = "日志管理")
 public class SysLogController {
     @Autowired
     private ISysLogService sysLogService;

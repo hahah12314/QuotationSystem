@@ -117,31 +117,38 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
                 customDetails.setRawMaterials(rawMaterials);
 
                 // 获取 PaintingCost 信息
-                PaintingCost paintingCost = paintingCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setPaintingCost(paintingCost);
+                List<PaintingCost> paintingCostList = paintingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (paintingCostList != null && !paintingCostList.isEmpty()) {
+                    customDetails.setPaintingCost(paintingCostList.get(paintingCostList.size() - 1));
+                }
 
                 // 获取 MaterialCost 信息
-                MaterialCost materialCost = materialCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setMaterialCost(materialCost);
+                List<MaterialCost> materialCostList = materialCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (materialCostList != null && !materialCostList.isEmpty()) {
+                    customDetails.setMaterialCost(materialCostList.get(materialCostList.size() - 1));
+                }
 
                 // 获取 CuttingCost 信息
-                CuttingCost cuttingCost = cuttingCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setCuttingCost(cuttingCost);
+                List<CuttingCost> cuttingCostList = cuttingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (cuttingCostList != null && !cuttingCostList.isEmpty()) {
+                    customDetails.setCuttingCost(cuttingCostList.get(cuttingCostList.size() - 1));
+                }
 
                 // 获取 ProcessingCost 信息
-                ProcessingCost processingCost = processingCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setProcessingCost(processingCost);
+                List<ProcessingCost> processingCostList = processingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (processingCostList != null && !processingCostList.isEmpty()) {
+                    customDetails.setProcessingCost(processingCostList.get(processingCostList.size() - 1));
+                }
 
                 // 获取 SurfaceTreatment 信息
-                SurfaceTreatment surfaceTreatment = surfaceTreatmentMapper.selectByDetailId(rawMaterials.getDetailId());
-                customDetails.setSurfaceTreatment(surfaceTreatment);
+                List<SurfaceTreatment> surfaceTreatmentList = surfaceTreatmentMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (surfaceTreatmentList != null && !surfaceTreatmentList.isEmpty()) {
+                    customDetails.setSurfaceTreatment(surfaceTreatmentList.get(surfaceTreatmentList.size() - 1));
+                }
 
                 materialDto.setCustomDetails(customDetails);
             }
+
 
             quotationFormDto.setAuditOpinion(quotation.getAuditOpinion());
 
@@ -168,17 +175,43 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
         RawMaterials rawMaterials = rawMaterialsMapper.selectOne(wrapper);
         Integer detailId = rawMaterials.getDetailId();
         System.out.println(detailId);
-        MaterialCost materialCost = materialCostMapper.selectById(detailId);
-        CuttingCost cuttingCost = cuttingCostMapper.selectById(detailId);
-        ProcessingCost processingCost = processingCostMapper.selectById(detailId);
-        SurfaceTreatment surfaceTreatment = surfaceTreatmentMapper.selectById(detailId);
-        PaintingCost paintingCost = paintingCostMapper.selectById(detailId);
+
+        MaterialCost materialCost = null;
+        CuttingCost cuttingCost=null;
+        ProcessingCost processingCost=null ;
+        SurfaceTreatment surfaceTreatment =null;
+        PaintingCost paintingCost=null;
+        // 获取 PaintingCost 信息
+        List<PaintingCost> paintingCostList = paintingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+        if (paintingCostList != null && !paintingCostList.isEmpty()) {
+            paintingCost=paintingCostList.get(paintingCostList.size() - 1);
+        }
+
+        // 获取 MaterialCost 信息
+        List<MaterialCost> materialCostList = materialCostMapper.selectByDetailId(rawMaterials.getDetailId());
+        if (materialCostList != null && !materialCostList.isEmpty()) {
+            materialCost=materialCostList.get(materialCostList.size() - 1);
+        }
+
+        // 获取 CuttingCost 信息
+        List<CuttingCost> cuttingCostList = cuttingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+        if (cuttingCostList != null && !cuttingCostList.isEmpty()) {
+            cuttingCost=cuttingCostList.get(cuttingCostList.size() - 1);
+        }
+
+        // 获取 ProcessingCost 信息
+        List<ProcessingCost> processingCostList = processingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+        if (processingCostList != null && !processingCostList.isEmpty()) {
+            processingCost=processingCostList.get(processingCostList.size() - 1);
+        }
+
+        // 获取 SurfaceTreatment 信息
+        List<SurfaceTreatment> surfaceTreatmentList = surfaceTreatmentMapper.selectByDetailId(rawMaterials.getDetailId());
+        if (surfaceTreatmentList != null && !surfaceTreatmentList.isEmpty()) {
+            surfaceTreatment=surfaceTreatmentList.get(surfaceTreatmentList.size() - 1);
+        }
         RawMaterialQueryVo rawMaterialQueryVo = new RawMaterialQueryVo();
-        List<MaterialCost> materialCostList = materialCostMapper.selectList(
-                new QueryWrapper<MaterialCost>()
-                        .in("detail_id", detailId)
-        );
-        materialCost = materialCostList.get(0);
+
         if (rawMaterials != null) {
             BeanUtils.copyProperties(rawMaterials, rawMaterialQueryVo);
         }
@@ -297,7 +330,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     @Transactional
     public List<QuotationFormDto> queryAuditPageQuotation() {
         QueryWrapper<Quotations> wrapper = new QueryWrapper<>();
-        wrapper.in("audit_status", Arrays.asList(0, -1));
+        wrapper.in("audit_status", Arrays.asList(0));
 
         List<Quotations> quotations = quotationsMapper.selectList(wrapper);
 
@@ -342,31 +375,38 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
                 customDetails.setRawMaterials(rawMaterials);
 
                 // 获取 PaintingCost 信息
-                PaintingCost paintingCost = paintingCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setPaintingCost(paintingCost);
+                List<PaintingCost> paintingCostList = paintingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (paintingCostList != null && !paintingCostList.isEmpty()) {
+                    customDetails.setPaintingCost(paintingCostList.get(paintingCostList.size() - 1));
+                }
 
                 // 获取 MaterialCost 信息
-                MaterialCost materialCost = materialCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setMaterialCost(materialCost);
+                List<MaterialCost> materialCostList = materialCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (materialCostList != null && !materialCostList.isEmpty()) {
+                    customDetails.setMaterialCost(materialCostList.get(materialCostList.size() - 1));
+                }
 
                 // 获取 CuttingCost 信息
-                CuttingCost cuttingCost = cuttingCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setCuttingCost(cuttingCost);
+                List<CuttingCost> cuttingCostList = cuttingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (cuttingCostList != null && !cuttingCostList.isEmpty()) {
+                    customDetails.setCuttingCost(cuttingCostList.get(cuttingCostList.size() - 1));
+                }
 
                 // 获取 ProcessingCost 信息
-                ProcessingCost processingCost = processingCostMapper.selectByDetailId(rawMaterials.getDetailId());
-
-                customDetails.setProcessingCost(processingCost);
+                List<ProcessingCost> processingCostList = processingCostMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (processingCostList != null && !processingCostList.isEmpty()) {
+                    customDetails.setProcessingCost(processingCostList.get(processingCostList.size() - 1));
+                }
 
                 // 获取 SurfaceTreatment 信息
-                SurfaceTreatment surfaceTreatment = surfaceTreatmentMapper.selectByDetailId(rawMaterials.getDetailId());
-                customDetails.setSurfaceTreatment(surfaceTreatment);
+                List<SurfaceTreatment> surfaceTreatmentList = surfaceTreatmentMapper.selectByDetailId(rawMaterials.getDetailId());
+                if (surfaceTreatmentList != null && !surfaceTreatmentList.isEmpty()) {
+                    customDetails.setSurfaceTreatment(surfaceTreatmentList.get(surfaceTreatmentList.size() - 1));
+                }
 
                 materialDto.setCustomDetails(customDetails);
             }
+
             quotationFormDto.setAuditOpinion(quotation.getAuditOpinion());
 
             quotationFormDto.setMaterial(materialDto);

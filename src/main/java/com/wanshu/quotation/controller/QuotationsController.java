@@ -8,6 +8,7 @@ import com.wanshu.quotation.dto.QuotationQueryDto;
 import com.wanshu.quotation.service.IQuotationsService;
 import com.wanshu.quotation.vo.RawMaterialQueryVo;
 import com.wanshu.worker.entity.Workhours;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/quotations")
 @Slf4j
+@Api(tags = "报价单管理")
 public class QuotationsController {
     @Autowired
     private IQuotationsService quotationsService;

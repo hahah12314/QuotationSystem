@@ -5,6 +5,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.CuttingCost;
 import com.wanshu.cost.service.ICuttingCostService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @Slf4j
+@Api(tags = "数割费用管理")
 @RequestMapping("/cutting-cost")
 public class CuttingCostController {
     @Autowired

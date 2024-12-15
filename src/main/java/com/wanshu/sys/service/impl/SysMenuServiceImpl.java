@@ -144,6 +144,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         Set<SysMenu> sysMenuSet=new HashSet<>();
         for (SysRole sysRole : sysRoles) {
             List<Long> menuList = sysMenuMapper.queryMenuByRoleId(sysRole.getRoleId());
+
             QueryWrapper<SysMenu> wrapper = new QueryWrapper<>();
             wrapper.eq("parent_id",0);
             wrapper.in("menu_id",menuList);

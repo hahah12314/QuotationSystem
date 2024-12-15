@@ -7,6 +7,7 @@ import com.wanshu.sys.dto.SysMenuQueryDto;
 import com.wanshu.sys.entity.SysMenu;
 import com.wanshu.sys.service.ISysMenuService;
 import com.wanshu.sys.vo.SysMenuVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/sysMenu")
 @Slf4j
+@Api(tags = "菜单管理")
 public class SysMenuController {
     @Autowired
     private ISysMenuService sysMenuService;

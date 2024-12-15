@@ -5,6 +5,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.MaterialQueryDto;
 import com.wanshu.cost.entity.Materials;
 import com.wanshu.cost.service.IMaterialsService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.Map;
 @RequestMapping("/materials")
 @Slf4j
 @CrossOrigin
+@Api(tags = "物料管理")
 public class MaterialsController {
     @Autowired
     private IMaterialsService materialsService;

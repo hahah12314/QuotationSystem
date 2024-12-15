@@ -5,6 +5,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.RawMaterials;
 import com.wanshu.cost.service.IRawMaterialsService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/raw-materials")
 @Slf4j
+@Api(tags = "原材料管理")
 public class RawMaterialsController {
     @Autowired
     private IRawMaterialsService rawMaterialsService;
@@ -48,6 +50,8 @@ public class RawMaterialsController {
         log.info("queryAll");
         return this.rawMaterialsService.queryAll();
     }
+
+
 
     @PostMapping("/save")
     @ApiOperation(value= "新增原材料表")

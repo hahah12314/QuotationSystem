@@ -14,7 +14,7 @@ public class MyFastGeneratorConfiguration {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/wanshu_crm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true"
                         , "root" , "1234")
                 .globalConfig(builder -> {
-                    builder.author("波哥") // 设置作者
+                    builder.author("hehe") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
                             .outputDir("D://wanshu-crm"); // 指定输出目录

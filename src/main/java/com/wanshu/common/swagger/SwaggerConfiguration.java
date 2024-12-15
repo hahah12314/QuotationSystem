@@ -42,7 +42,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title(applicationName)
                 .description(applicationName + "接口文档。")
-                .contact(new Contact("婉舒CRM系统", "", "dengpbs@163.com"))
+                .contact(new Contact("金威报价系统", "", "dengpbs@163.com"))
                 .version("1.0")
                 .build();
     }

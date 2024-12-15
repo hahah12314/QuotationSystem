@@ -7,6 +7,7 @@ import com.wanshu.sys.dto.SysUserQueryDto;
 import com.wanshu.sys.entity.SysMenu;
 import com.wanshu.sys.entity.SysUser;
 import com.wanshu.sys.service.ISysUserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/sysUser")
 @Slf4j
+@Api(tags = "用户管理")
 public class SysUserController {
     @Autowired
     private ISysUserService sysUserService;

@@ -2,6 +2,7 @@ package com.wanshu.sys.controller;
 
 
 import com.wanshu.common.util.QiniuUploadUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping
+@Api(tags = "文件上传")
 public class FileUploadController {
 
     @Autowired

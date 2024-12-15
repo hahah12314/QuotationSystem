@@ -5,6 +5,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.SurfaceTreatment;
 import com.wanshu.cost.service.ISurfaceTreatmentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @Slf4j
+@Api(tags = "表面处理费用管理")
 @RequestMapping("/surface-treatment")
 public class SurfaceTreatmentController {
     @Autowired

@@ -3,6 +3,8 @@ package com.wanshu.cost.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wanshu.cost.entity.PaintingCost;
 
+import java.util.List;
+
 /**
  * <p>
  * 喷涂单件费用表 Mapper 接口
@@ -13,7 +15,7 @@ import com.wanshu.cost.entity.PaintingCost;
  */
 public interface PaintingCostMapper extends BaseMapper<PaintingCost> {
 
-    PaintingCost selectByDetailId(Integer detailId);
+    List<PaintingCost> selectByDetailId(Integer detailId);
 
     void deletePaintingCostById(int id);
 }

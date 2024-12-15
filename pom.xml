@@ -159,10 +159,19 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.7.RELEASE</version>
                 <configuration>
-                    <mainClass>com.wanshu.WscrmApplication</mainClass>
+                    <mainClass>com.wanshu.CrmProjectApplication</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
 
             </plugin>
+
+
         </plugins>
     </build>
 

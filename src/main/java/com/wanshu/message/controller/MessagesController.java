@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanshu.message.entity.Messages;
 import com.wanshu.message.mapper.MessagesMapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@Api(tags = "消息管理")
 @RequestMapping("/messages")
 public class MessagesController {
 
@@ -42,7 +44,8 @@ public class MessagesController {
     public List<Messages> getReadMessages(@RequestParam Long receiverId, @RequestParam Long senderId) {
         QueryWrapper<Messages> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("sender_id", senderId);
-        queryWrapper.eq("receiver_id", receiverId).eq("is_read", 1);
+        queryWrapper.eq("receiver_id", receiverId);
+        queryWrapper.eq("is_read", 1);
         Page<Messages> page = new Page<>(1, 5);
         return messagesMapper.selectPage(page, queryWrapper).getRecords();
     }

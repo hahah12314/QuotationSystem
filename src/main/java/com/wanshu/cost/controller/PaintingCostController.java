@@ -5,6 +5,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.PaintingCost;
 import com.wanshu.cost.service.IPaintingCostService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @Slf4j
+@Api(tags = "喷涂费用管理")
 @RequestMapping("/painting-cost")
 public class PaintingCostController {
     @Autowired

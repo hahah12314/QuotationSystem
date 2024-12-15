@@ -5,6 +5,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.worker.dto.WorkerHourQueryDto;
 import com.wanshu.worker.entity.Workhours;
 import com.wanshu.worker.service.IWorkhoursService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/workhours")
 @Slf4j
+@Api(tags = "工时管理")
 public class WorkhoursController {
     @Autowired
     private IWorkhoursService workhoursService;

@@ -6,6 +6,7 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.sys.dto.SysRoleQueryDto;
 import com.wanshu.sys.entity.SysRole;
 import com.wanshu.sys.service.ISysRoleService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
+@Api(tags = "角色管理")
 @RequestMapping("/sys/sysRole")
 public class SysRoleController {
     @Autowired

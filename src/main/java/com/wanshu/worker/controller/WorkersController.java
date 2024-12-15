@@ -6,6 +6,7 @@ import com.wanshu.worker.dto.WorkDto;
 import com.wanshu.worker.dto.WorkerQueryDto;
 import com.wanshu.worker.entity.Workers;
 import com.wanshu.worker.service.IWorkersService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/workers")
 @Slf4j
+@Api(tags = "工人管理")
 public class WorkersController {
     @Autowired
     private IWorkersService workersService;
@@ -36,6 +38,13 @@ public class WorkersController {
 
         return this.workersService.queryPageWorker(workerQueryDto);
     }
+    @GetMapping("/getWorkerAll")
+    @ApiOperation(value = "查询工人")
+    public List<Workers> queryAllWorker(){
+        log.info("queryAllWorker");
+        return  this.workersService.list();
+    }
+
     @GetMapping("/getAll")
     @ApiOperation(value = "查询工人")
     public Map<String, List<WorkDto>> queryAll(){

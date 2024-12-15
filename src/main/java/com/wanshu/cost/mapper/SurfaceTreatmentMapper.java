@@ -3,6 +3,8 @@ package com.wanshu.cost.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wanshu.cost.entity.SurfaceTreatment;
 
+import java.util.List;
+
 /**
  * <p>
  * 表面处理单件费用表 Mapper 接口
@@ -13,7 +15,7 @@ import com.wanshu.cost.entity.SurfaceTreatment;
  */
 public interface SurfaceTreatmentMapper extends BaseMapper<SurfaceTreatment> {
 
-    SurfaceTreatment selectByDetailId(Integer detailId);
+    List<SurfaceTreatment> selectByDetailId(Integer detailId);
 
     void deleteSurfaceTreatmentCostById(int id);
 }

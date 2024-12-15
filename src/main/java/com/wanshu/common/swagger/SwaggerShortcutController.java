@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author 波哥
+ * @author hehe
  */
 @Controller
 public class SwaggerShortcutController {

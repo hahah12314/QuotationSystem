@@ -36,7 +36,7 @@ public class MySpringSecurityConfiguration extends WebSecurityConfigurerAdapter 
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/doc.html", "/doc.html/**", "/webjars/**", "/v2/**", "/swagger-resources",
-                        "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui.html/**","/v3/**","/favicon.ico").permitAll()
+                        "/swagger-resources/**", "/swagger-ui.html","/swagger-ui.html/**", "/swagger-ui/**","/swagger-ui/index.html","/v3/**","/favicon.ico","/webjars/**").permitAll()
                 .antMatchers("/api/*/auth/**","/test/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
