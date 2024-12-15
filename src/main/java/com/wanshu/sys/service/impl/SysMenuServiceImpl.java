@@ -16,6 +16,7 @@ import com.wanshu.sys.service.ISysMenuService;
 import com.wanshu.sys.vo.SysMenuVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -43,11 +44,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private SysRoleMapper sysRoleMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
-    public List<SysMenu> getParentMenu(QueryWrapper <SysMenu> wrapper){
+    public List<SysMenu> getParentMenu(QueryWrapper <SysMenu> wrapper, List<Long> menuIds){
         List<SysMenu> parentMenus = sysMenuMapper.selectList(wrapper);
         for (SysMenu parentMenu : parentMenus) {
             QueryWrapper<SysMenu> childWrapper = new QueryWrapper<>();
             childWrapper.eq("parent_id",parentMenu.getMenuId());
+            if(menuIds != null){
+                childWrapper.in("menu_id",menuIds);
+            }
             List<SysMenu> childMenus = sysMenuMapper.selectList(childWrapper);
             parentMenu.setChildren(childMenus);
 
@@ -59,7 +63,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         QueryWrapper<SysMenu> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_id",0);
-        List<SysMenu> parentMenus = getParentMenu(wrapper);
+        List<SysMenu> parentMenus = getParentMenu(wrapper,null);
         System.out.println(parentMenus);
         return new SysMenuVo(parentMenus,null);
     }
@@ -75,7 +79,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         QueryWrapper<SysMenu> wrapper = new QueryWrapper<>();
         wrapper.like("name",queryDTO.getName());
         wrapper.eq("parent_id",0);
-        List<SysMenu> parentMenus = getParentMenu(wrapper);
+        List<SysMenu> parentMenus = getParentMenu(wrapper,null);
         System.out.println(parentMenus);
         Page<SysMenu> page = this.page(queryDTO.page(),wrapper);
         page.setRecords(parentMenus);
@@ -96,8 +100,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     @SystemLog(value = "新增菜单")
     public boolean saveMenu(SysMenu sysMenu) {
-        sysMenu.setCreateTime(LocalDateTime.now());
-        sysMenu.setUpdateTime(LocalDateTime.now());
+
         this.baseMapper.insert(sysMenu);
 
 
@@ -107,7 +110,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     @SystemLog(value = "更新菜单")
     public boolean updateMenu(SysMenu sysMenu) {
-        sysMenu.setUpdateTime(LocalDateTime.now());
+
         this.updateById(sysMenu);
 
         return true;
@@ -120,7 +123,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         if(sysRoles!=null&&sysRoles.size()>0){
             return "fail";
         }
-        List<SysMenu> childMenus= sysMenuMapper.selectList(new QueryWrapper<SysMenu>().eq("parent_id",menuId));
+        List<SysMenu> childMenus= sysMenuMapper.selectList(new QueryWrapper<SysMenu>().eq("parentId",menuId));
         if(childMenus!=null&&childMenus.size()>0){
             return "fail";
         }
@@ -146,7 +149,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             wrapper.in("menu_id",menuList);
 
 
-            List<SysMenu> sysMenus = getParentMenu(wrapper);
+            List<SysMenu> sysMenus = getParentMenu(wrapper,menuList);
             sysMenuSet.addAll(sysMenus);
         }
         System.out.println(sysMenuSet);

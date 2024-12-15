@@ -48,14 +48,17 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
-    @ApiModelProperty(value = "盐")
-    private String salt;
+    @ApiModelProperty(value = "姓名")
+    private String name;
 
     @ApiModelProperty(value = "邮箱")
     private String email;
 
     @ApiModelProperty(value = "手机号")
     private String mobile;
+
+    @ApiModelProperty(value = "头像路径")
+    private String avatar;
 
     @ApiModelProperty(value = "状态  0：禁用   1：正常")
     private Integer status;
@@ -69,6 +72,9 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
-
+    @TableField(exist = false)
+    private String roleName;
+    @TableField(exist = false)
+    private Long roleId;
 
 }

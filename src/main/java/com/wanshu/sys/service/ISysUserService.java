@@ -30,4 +30,8 @@ public interface ISysUserService extends IService<SysUser> {
     String checkUsername(String username);
 
     String deleteBatch(List<Long> ids);
+
+    SysUser getNowUser();
+
+    boolean validatePassword(String username, String password);
 }

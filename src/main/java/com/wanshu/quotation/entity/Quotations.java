@@ -64,4 +64,6 @@ public class Quotations implements Serializable {
 
     private Integer auditStatus;
 
+    private String auditOpinion;
+
 }

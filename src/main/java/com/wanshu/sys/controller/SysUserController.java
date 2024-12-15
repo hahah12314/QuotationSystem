@@ -4,6 +4,7 @@ package com.wanshu.sys.controller;
 
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.sys.dto.SysUserQueryDto;
+import com.wanshu.sys.entity.SysMenu;
 import com.wanshu.sys.entity.SysUser;
 import com.wanshu.sys.service.ISysUserService;
 import io.swagger.annotations.ApiOperation;
@@ -59,6 +60,21 @@ public class SysUserController {
     public String deleteBatch(@ApiParam(value = "用户id集合") @RequestBody List<Long> ids){
         log.info("deleteBatch{}",ids);
         return sysUserService.deleteBatch(ids);
+    }
+    @GetMapping("/getNowUser")
+    @ApiOperation(value = "获取当前用户信息")
+    private SysUser getNowUser(){
+
+        return sysUserService.getNowUser();
+
+    }
+    @PostMapping("/validatePassword")
+    @ApiOperation(value = "检验密码是否正确")
+    public boolean validatePassword(@RequestBody SysUser sysUser) {
+        log.info("validatePassword: user={}", sysUser);
+        String username = sysUser.getUsername();
+        String password = sysUser.getPassword();
+        return sysUserService.validatePassword(username, password);
     }
 
 

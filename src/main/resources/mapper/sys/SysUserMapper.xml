@@ -4,7 +4,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        username, userId, password, email, mobile, status, create_time, update_time
+        username, userId, password, email, mobile, status, create_time, update_time,name,avatar
     </sql>
     <insert id="insertRoleByUserId">
         insert into sys_user_role(user_id,role_id) values

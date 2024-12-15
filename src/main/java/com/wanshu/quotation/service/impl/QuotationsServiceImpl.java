@@ -61,6 +61,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     private CustomerMapper customerMapper;
 
     @Override
+    @Transactional
     public PageUtils queryPageQuotation(QuotationQueryDto quotationQueryDto) {
         QueryWrapper<Quotations> wrapper = new QueryWrapper<>();
 //        wrapper.eq("audit_status", 1);
@@ -91,10 +92,17 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
                 // 获取 QuotedMaterials 信息
                 QuotationFormDto.QuotedMaterials quotedMaterials = new QuotationFormDto.QuotedMaterials();
                 // 这里假设有一个方法可以获取 QuotedMaterials 信息
-                // quotedMaterials = getQuotedMaterialsById(quotation.getMaterialId());
-                materialDto.setQuotedMaterials(quotedMaterials);
+                Materials materials = materialsMapper.selectById(quotation.getMaterialId());
+
+                BeanUtils.copyProperties(materials, quotedMaterials);
+                // 获取 RawMaterials 信息
+                RawMaterials rawMaterials = rawMaterialsMapper.selectById(quotation.getRawMaterialId());
+
                 quotedMaterials.setQuantity(quotation.getQuantity());
+                quotedMaterials.setSpecification(rawMaterials.getSpecification());
+                materialDto.setQuotedMaterials(quotedMaterials);
             }
+
 
             if (quotation.getRawMaterialId() != null) {
                 materialDto.setType("history");
@@ -135,6 +143,8 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
                 materialDto.setCustomDetails(customDetails);
             }
 
+            quotationFormDto.setAuditOpinion(quotation.getAuditOpinion());
+
             quotationFormDto.setMaterial(materialDto);
             quotationFormDto.setAuditStatus(quotation.getAuditStatus());
             quotationFormDto.setCreateTime(quotation.getCreateTime());
@@ -149,6 +159,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     }
 
     @Override
+    @Transactional
     public RawMaterialQueryVo queryRawMaterial(RawMaterialQueryDto queryDto) {
         QueryWrapper<RawMaterials> wrapper = new QueryWrapper<>();
         if (StringUtils.isNoneEmpty(queryDto.getSpecification())) {
@@ -273,6 +284,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
             }
             quotations.setRawMaterialId(quotationForm.getMaterial().getHistoryMaterialId());
         }
+
         quotations.setAuditStatus(0);
 
         quotations.setCreateTime(LocalDateTime.now());
@@ -282,9 +294,11 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     }
 
     @Override
+    @Transactional
     public List<QuotationFormDto> queryAuditPageQuotation() {
         QueryWrapper<Quotations> wrapper = new QueryWrapper<>();
-        wrapper.eq("audit_status", 0);
+        wrapper.in("audit_status", Arrays.asList(0, -1));
+
         List<Quotations> quotations = quotationsMapper.selectList(wrapper);
 
         List<QuotationFormDto> result = new ArrayList<>();
@@ -353,6 +367,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
 
                 materialDto.setCustomDetails(customDetails);
             }
+            quotationFormDto.setAuditOpinion(quotation.getAuditOpinion());
 
             quotationFormDto.setMaterial(materialDto);
             quotationFormDto.setAuditStatus(quotation.getAuditStatus());
@@ -386,6 +401,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     }
 
     @Override
+    @Transactional
     public boolean updateQuotation(QuotationFormDto quotationFormDto) {
         QueryWrapper<Quotations> wrapper=new QueryWrapper<>();
         wrapper.eq("id",quotationFormDto.getQuotationId());
@@ -402,7 +418,13 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
         customer.setId(quotations.getCustomerId());
         companyMapper.update(company,wrapper1);
         customerMapper.update(customer,wrapper2);
+        quotations.setAuditOpinion(quotationFormDto.getAuditOpinion());
+        quotations.setUpdateTime(LocalDateTime.now());
+
+
+        BeanUtils.copyProperties(quotationFormDto,quotations);
         quotations.setAuditStatus(quotationFormDto.getAuditStatus());
+        quotationsMapper.update(quotations,wrapper);
         return true;
 
     }

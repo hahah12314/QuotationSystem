@@ -17,6 +17,7 @@ public class QuotationFormDto {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Long quotationId;
+    private String auditOpinion;
 
     @Data
     public static class Company  {

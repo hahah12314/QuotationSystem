@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   profiles:
     active: dev
@@ -39,3 +43,15 @@ server:
 springdoc:
   swagger-ui:
     path : /swagger-ui.html
+qiniuyun:
+  upload:
+    # 七牛云访问ak
+    accessKey: txVD4rx4HE4YUjI8nvH7T9q6Cdh5JnX-xG2l-HoU
+    # 七牛云访问sk
+    secretKey: 2Ozn-OlAwGVsk_ZpJGk9vPrPX2ch3WBb5PO6dOkL
+    # 你自己创建的空间名
+    bucket: myserve12
+    # 表示在空间下穿件什么目录存储上传的图片
+    mkdir: images/
+    # 七牛云分配给你空间的域名
+    domain: http://so9r96ky6.hn-bkt.clouddn.com/

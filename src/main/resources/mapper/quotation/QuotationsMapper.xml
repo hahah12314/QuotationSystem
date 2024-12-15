@@ -4,7 +4,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, company_id, customer_id, material_id, raw_material_id,quantity, create_time, update_time,audit_status
+        id, company_id, customer_id, material_id, raw_material_id,quantity, create_time, update_time,audit_status,audit_opinion
     </sql>
 
 
