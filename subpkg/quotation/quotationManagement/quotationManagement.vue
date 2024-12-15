@@ -26,10 +26,10 @@
             <text>支付方式: {{ quotation.customer.paymentMethod || '无' }}</text>
             <text>状态: 已审核</text>
           </view>
-          <view class="card-footer">
+<!--          <view class="card-footer">
             <button class="custom-button edit" @click="fetchQuotationInfo(quotation)">详情</button>
             <button class="custom-button delete" @click="handleDelete(quotation)">删除</button>
-          </view>
+          </view> -->
         </view>
       </view>
 

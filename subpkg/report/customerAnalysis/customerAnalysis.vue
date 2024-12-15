@@ -3,7 +3,7 @@
     <view class="card-container">
       <view class="card">
         <view class="card-header">每月增长率趋势</view>
-        <view style="width: 650rpx; height: 750rpx">
+        <view style="width: 680rpx; height: 750rpx">
           <l-echart ref="growthRateChart" @finished="initGrowthRateChart"></l-echart>
         </view>
       </view>
@@ -177,6 +177,10 @@
     border-radius: 4px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .card-header {

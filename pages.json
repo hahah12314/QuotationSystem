@@ -4,9 +4,7 @@
     {
       "path": "pages/home/home",
       "style": {
-       
         "enablePullDownRefresh": true //开启下拉刷新
-        
       }
     },
     {
@@ -144,9 +142,35 @@
         {
           "navigationBarTitleText" : "单件加工费用"
         }
+      },
+      {
+        "path" : "change/changeInfo/changeInfo",
+        "style" : 
+        {
+          "navigationBarTitleText" : "修改信息"
+        }
+      },
+      {
+        "path" : "change/changPassword/changPassword",
+        "style" : 
+        {
+          "navigationBarTitleText" : "修改密码"
+        }
+      },
+      {
+        "path" : "message/processInfo/processInfo",
+        "style" : 
+        {
+          "navigationBarTitleText" : "待审核消息"
+        }
+      },
+      {
+        "path" : "message/assistantInfo/assistantInfo",
+        "style" : 
+        {
+          "navigationBarTitleText" : "仓储助手"
+        }
       }
-      
-     
     ]
   }],
   "globalStyle": {

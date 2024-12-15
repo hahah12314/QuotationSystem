@@ -28,9 +28,9 @@
             <text>支付方式: {{ quotation.customer.paymentMethod || '无' }}</text>
             <text>状态: 未审核</text>
           </view>
-          <view class="card-footer">
+<!--          <view class="card-footer">
             <button class="custom-button edit" @click="fetchQuotationInfo(quotation)">审核</button>
-          </view>
+          </view> -->
         </view>
       </view>
 

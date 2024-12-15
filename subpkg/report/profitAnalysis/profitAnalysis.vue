@@ -3,7 +3,7 @@
     <view class="card-container">
       <view class="card">
         <view class="card-header">月度利润趋势</view>
-        <view style="width: 650rpx; height: 750rpx">
+        <view style="width: 650rpx; height: 750rpx ">
           <l-echart ref="monthlyProfitTrend" @finished="initMonthlyProfitTrend"></l-echart>
         </view>
       </view>
@@ -195,6 +195,10 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .card-header {
