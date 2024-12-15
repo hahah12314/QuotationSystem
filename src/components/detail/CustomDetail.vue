@@ -649,12 +649,12 @@
 
         try {
           const res = await this.$http.get('/raw-materials/getDetail?detailId=' + this.detailId);
-          this.rawMaterials = res.data.data.rawMaterials;
-          this.materialCost = res.data.data.materialCost;
 
-          this.surfaceTreatment = res.data.data.surfaceTreatment;
-          this.cuttingCost = res.data.data.cuttingCost;
-          this.paintingCost = res.data.data.paintingCost;
+          this.rawMaterials = res.data.data.rawMaterials !== null ? res.data.data.rawMaterials : this.rawMaterials;
+          this.materialCost = res.data.data.materialCost !== null ? res.data.data.materialCost : this.materialCost;
+          this.surfaceTreatment = res.data.data.surfaceTreatment !== null ? res.data.data.surfaceTreatment : this.surfaceTreatment;
+          this.cuttingCost = res.data.data.cuttingCost !== null ? res.data.data.cuttingCost : this.cuttingCost;
+          this.paintingCost = res.data.data.paintingCost !== null ? res.data.data.paintingCost : this.paintingCost;
           console.log(res, this.rawMaterials);
         } catch (error) {
           console.error('获取已选菜单时出错:', error);
