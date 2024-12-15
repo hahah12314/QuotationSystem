@@ -67,31 +67,42 @@ public class RawMaterialsServiceImpl extends ServiceImpl<RawMaterialsMapper, Raw
                         .eq("detail_id", detailId)
         );
 
-        // 查询各个表中的数据
-        MaterialCost materialCost = materialCostMapper.selectOne(
+// 查询各个表中的数据并获取最新的记录
+        List<MaterialCost> materialCostList = materialCostMapper.selectList(
                 new QueryWrapper<MaterialCost>()
                         .eq("detail_id", detailId)
-        );
 
-        PaintingCost paintingCost = paintingCostMapper.selectOne(
+        );
+        MaterialCost materialCost = materialCostList != null && !materialCostList.isEmpty() ? materialCostList.get(materialCostList.size() - 1) : null;
+
+        List<PaintingCost> paintingCostList = paintingCostMapper.selectList(
                 new QueryWrapper<PaintingCost>()
                         .eq("detail_id", detailId)
-        );
 
-        CuttingCost cuttingCost = cuttingCostMapper.selectOne(
+        );
+        PaintingCost paintingCost = paintingCostList != null && !paintingCostList.isEmpty() ? paintingCostList.get(paintingCostList.size() - 1) : null;
+
+        List<CuttingCost> cuttingCostList = cuttingCostMapper.selectList(
                 new QueryWrapper<CuttingCost>()
                         .eq("detail_id", detailId)
-        );
 
-        ProcessingCost processingCost = processingCostMapper.selectOne(
+        );
+        CuttingCost cuttingCost = cuttingCostList != null && !cuttingCostList.isEmpty() ? cuttingCostList.get(cuttingCostList.size() - 1) : null;
+
+        List<ProcessingCost> processingCostList = processingCostMapper.selectList(
                 new QueryWrapper<ProcessingCost>()
                         .eq("detail_id", detailId)
-        );
 
-        SurfaceTreatment surfaceTreatment = surfaceTreatmentMapper.selectOne(
+        );
+        ProcessingCost processingCost = processingCostList != null && !processingCostList.isEmpty() ? processingCostList.get(processingCostList.size() - 1) : null;
+
+        List<SurfaceTreatment> surfaceTreatmentList = surfaceTreatmentMapper.selectList(
                 new QueryWrapper<SurfaceTreatment>()
                         .eq("detail_id", detailId)
+
         );
+        SurfaceTreatment surfaceTreatment = surfaceTreatmentList != null && !surfaceTreatmentList.isEmpty() ? surfaceTreatmentList.get(surfaceTreatmentList.size() - 1) : null;
+
         // 创建返回的Map
         Map<String, Object> result = new HashMap<>();
         result.put("rawMaterials", rawMaterials);
