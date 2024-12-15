@@ -152,9 +152,11 @@
 
 <script>
   export default {
+
     data() {
       return {
-        quotationForm: {}
+        quotationForm: {},
+        fromOut: false
       };
     },
     created() {
@@ -176,6 +178,7 @@
         // 将 quotationForm 转换为 JSON 字符串
         const formData = JSON.stringify(this.quotationForm);
 
+
         // 跳转到生成报价单的页面，并传递数据
         this.$router.push({
           path: '/addQuotation',
@@ -186,6 +189,9 @@
       },
       async submitQuotation() {
         try {
+          if (this.fromOut && this.quotationForm.quotationId) {
+            await this.$http.delete('/quotations/delete', { data: { id: this.quotationForm.quotationId } });
+          }
           const response = await this.$http.post('/quotations/save', this.quotationForm);
           if (response.code === 200) {
             this.$message.success('报价单已提交审核！');
@@ -200,10 +206,12 @@
       },
       fetchDataFromQuery() {
         const formData = this.$route.query.formData;
+        this.fromOut = this.$route.query.fromOut;
+
         if (formData) {
           try {
             this.quotationForm = JSON.parse(formData);
-            console.log(this.quotationForm);
+            console.log(this.quotationForm, 'quotation', this.fromOut);
           } catch (error) {
             console.error('解析 formData 失败:', error);
           }

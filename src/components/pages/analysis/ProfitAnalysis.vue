@@ -54,7 +54,7 @@
 </template>
 <script>
     import * as echarts from 'echarts';
-    
+
     export default {
         name: 'ProfitAnalysis',
         data() {
@@ -92,7 +92,7 @@
                     ],
                     areaStyle: {}
                 });
-    
+
                 // 利润来源分布 - 饼图
                 const profitSourceDistributionChart = echarts.init(document.getElementById('profit-source-distribution'));
                 profitSourceDistributionChart.setOption({
@@ -111,7 +111,7 @@
                         ]
                     }]
                 });
-    
+
                 // 产品利润分布 - 横向条形图
                 const productProfitDistributionChart = echarts.init(document.getElementById('product-profit-distribution'));
                 productProfitDistributionChart.setOption({
@@ -120,7 +120,7 @@
                     yAxis: { type: 'category', data: ['产品A', '产品B', '产品C', '产品D', '产品E'] },
                     series: [{ data: [20000, 15000, 15000, 10000, 5000], type: 'bar' }]
                 });
-    
+
                 // 客户利润贡献 - 堆叠柱状图
                 const customerProfitContributionChart = echarts.init(document.getElementById('customer-profit-contribution'));
                 customerProfitContributionChart.setOption({
@@ -136,7 +136,7 @@
                         { name: '客户E', type: 'bar', stack: '总量', data: [1000, 1000, 1000, 1000, 1000, 1000] }
                     ]
                 });
-    
+
                 // 其他图表 - 散点图
                 const otherChart = echarts.init(document.getElementById('other-chart'));
                 otherChart.setOption({
@@ -164,21 +164,21 @@
             }
         }
     };
-    </script>
-    <style scoped>
-        .profit-analysis {
-            padding: 20px;
-        }
-        
-        .el-row {
-            margin-bottom: 20px;
-        }
-        
-        .el-card {
-            height: 300px;
-        }
-        
-        .chart {
-            height: 240px;
-        }
-        </style>
+</script>
+<style scoped>
+    .profit-analysis {
+        padding: 20px;
+    }
+
+    .el-row {
+        margin-bottom: 20px;
+    }
+
+    .el-card {
+        height: 300px;
+    }
+
+    .chart {
+        height: 240px;
+    }
+</style>

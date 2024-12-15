@@ -14,8 +14,23 @@
                 <el-table-column prop="customer.email" label="客户邮箱" width="150"></el-table-column>
                 <el-table-column prop="customer.address" label="客户地址" width="200"></el-table-column>
                 <el-table-column prop="customer.paymentMethod" label="支付方式" width="150"></el-table-column>
-                <el-table-column label="状态"><el-button size="mini" type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">未审核</el-button></el-table-column>
+                <el-table-column label="审核状态" width="120">
+                    <template slot-scope="scope">
+                        <el-tag :type="getAuditStatusType(scope.row.auditStatus)" effect="dark">
+                            {{ getAuditStatusLabel(scope.row.auditStatus) }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="auditOpinion" label="审核意见" width="150">
+                    <template slot-scope="scope">
+                        <el-tooltip placement="top" effect="light">
+                            <div slot="content">{{ scope.row.auditOpinion }}</div>
+                            <span class="ellipsis" @click="showFullOpinion(scope.row.auditOpinion)">
+                                {{ scope.row.auditOpinion | truncate(50) }}
+                            </span>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="fetchQuotationInfo(scope.row)">审核</el-button>
@@ -32,6 +47,13 @@
             <MaterialInfo :row="selectedMaterialInfo" v-if="selectedMaterialInfo" />
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">关闭</el-button>
+            </span>
+        </el-dialog>
+        <!-- 弹出框显示完整的审核意见 -->
+        <el-dialog :visible.sync="fullOpinionDialogVisible" title="审核意见详情" width="50%">
+            <p>{{ selectedAuditOpinion }}</p>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="fullOpinionDialogVisible = false">关闭</el-button>
             </span>
         </el-dialog>
 
@@ -83,6 +105,12 @@
             MaterialInfo,
             QuoteTimeline
         },
+        filters: {
+            truncate(value, length) {
+                if (!value) return '';
+                return value.length > length ? value.slice(0, length) + '...' : value;
+            }
+        },
 
 
         data() {
@@ -104,11 +132,37 @@
                 dialogSubmitForm: false,
                 checks: [],
                 rules: {},
+                fullOpinionDialogVisible: false, // 控制完整审核意见对话框显示
+                selectedAuditOpinion: '', // 存储选中的审核意见
                 dialogVisible: false, // 控制弹框显示
                 selectedMaterialInfo: null, // 存储后端返回的详情数据
             }
         },
         methods: {
+            getAuditStatusType(auditStatus) {
+                switch (auditStatus) {
+                    case 0:
+                        return 'danger'; // 未审核
+                    case -1:
+                        return 'warning'; // 已打回
+                    default:
+                        return 'success'; // 其他状态（如已审核）
+                }
+            },
+            getAuditStatusLabel(auditStatus) {
+                switch (auditStatus) {
+                    case 0:
+                        return '未审核';
+                    case -1:
+                        return '审核不通过';
+                    default:
+                        return '已审核';
+                }
+            },
+            showFullOpinion(opinion) {
+                this.selectedAuditOpinion = opinion;
+                this.fullOpinionDialogVisible = true;
+            },
             fetchQuotationInfo(row) {
                 // 将 quotationForm 转换为 JSON 字符串
                 const formData = JSON.stringify(row);
@@ -247,6 +301,15 @@
 
     .demo-form-inline {
         margin-bottom: 20px;
+    }
+
+    .ellipsis {
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
+        width: 100%;
     }
 
     .dialog-footer {

@@ -21,27 +21,30 @@
         </div>
         <el-card class="manager-card" style="height:110px">
           <div class="manager-card-content">
-            <div class="card-content" @click="handleClick('/quotationReview')">
+            <div class="card-content" @click="handleClick('/quotationReview')"
+              :class="{ 'has-permission': permissionMap['/quotationReview'], 'no-permission': !permissionMap['/quotationReview'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/报价单审核.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/quotationReview'] ? '#409EFF' : '' }">
                 报价审核
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/materialQuotation')">
+            <div class="card-content" @click="handleClick('/materialQuotation')"
+              :class="{ 'has-permission': permissionMap['/materialQuotation'], 'no-permission': !permissionMap['/materialQuotation'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/报价单管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/materialQuotation'] ? '#409EFF' : '' }">
                 报价单管理
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/addQuotation')">
+            <div class="card-content" @click="handleClick('/addQuotation')"
+              :class="{ 'has-permission': permissionMap['/addQuotation'], 'no-permission': !permissionMap['/addQuotation'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/新增报价.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/addQuotation'] ? '#409EFF' : '' }">
                 新增报价
               </div>
             </div>
@@ -55,19 +58,21 @@
         </div>
         <el-card class="manager-card" style="height:110px">
           <div class="manager-card-content">
-            <div class="card-content" @click="handleClick('/materialManage')">
+            <div class="card-content" @click="handleClick('/materialManage')"
+              :class="{ 'has-permission': permissionMap['/materialManage'], 'no-permission': !permissionMap['/materialManage'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/物料管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/materialManage'] ? '#409EFF' : '' }">
                 物料管理
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/materialDetail')">
+            <div class="card-content" @click="handleClick('/materialDetail')"
+              :class="{ 'has-permission': permissionMap['/materialDetail'], 'no-permission': !permissionMap['/materialDetail'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/原材料管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/materialDetail'] ? '#409EFF' : '' }">
                 材料管理
               </div>
             </div>
@@ -81,19 +86,21 @@
         </div>
         <el-card class="manager-card" style="height:110px">
           <div class="manager-card-content">
-            <div class="card-content" @click="handleClick('/workerManagement')">
+            <div class="card-content" @click="handleClick('/workerManagement')"
+              :class="{ 'has-permission': permissionMap['/workerManagement'], 'no-permission': !permissionMap['/workerManagement'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/工人管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/workerManagement'] ? '#409EFF' : '' }">
                 工人管理
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/hourManagement')">
+            <div class="card-content" @click="handleClick('/hourManagement')"
+              :class="{ 'has-permission': permissionMap['/hourManagement'], 'no-permission': !permissionMap['/hourManagement'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/工时管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/hourManagement'] ? '#409EFF' : '' }">
                 工时管理
               </div>
             </div>
@@ -109,43 +116,48 @@
         </div>
         <el-card class="manager-card">
           <div class="manager-card-content">
-            <div class="card-content" @click="handleClick('/processCost')">
+            <div class="card-content" @click="handleClick('/processCost')"
+              :class="{ 'has-permission': permissionMap['/processCost'], 'no-permission': !permissionMap['/processCost'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/单件加工费用.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/processCost'] ? '#409EFF' : '' }">
                 单间加工费用
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/cuttingCost')">
+            <div class="card-content" @click="handleClick('/cuttingCost')"
+              :class="{ 'has-permission': permissionMap['/cuttingCost'], 'no-permission': !permissionMap['/cuttingCost'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/数割费用.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/cuttingCost'] ? '#409EFF' : '' }">
                 数割费用
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/materialCost')">
+            <div class="card-content" @click="handleClick('/materialCost')"
+              :class="{ 'has-permission': permissionMap['/materialCost'], 'no-permission': !permissionMap['/materialCost'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/原材料费用.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/materialCost'] ? '#409EFF' : '' }">
                 原材料费用
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/sufaceTreatment')">
+            <div class="card-content" @click="handleClick('/sufaceTreatment')"
+              :class="{ 'has-permission': permissionMap['/sufaceTreatment'], 'no-permission': !permissionMap['/sufaceTreatment'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/表面处理单件费用.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/sufaceTreatment'] ? '#409EFF' : '' }">
                 表面处理单件费用
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/paintingCost')">
+            <div class="card-content" @click="handleClick('/paintingCost')"
+              :class="{ 'has-permission': permissionMap['/paintingCost'], 'no-permission': !permissionMap['/paintingCost'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/喷涂单件费用.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/paintingCost'] ? '#409EFF' : '' }">
                 喷涂单件费用
               </div>
             </div>
@@ -159,35 +171,39 @@
         </div>
         <el-card class="manager-card">
           <div class="manager-card-content">
-            <div class="card-content" @click="handleClick('/sysRole')">
+            <div class="card-content" @click="handleClick('/sysRole')"
+              :class="{ 'has-permission': permissionMap['/sysRole'], 'no-permission': !permissionMap['/sysRole'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/权限管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/sysRole'] ? '#409EFF' : '' }">
                 权限管理
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/sysMenu')">
+            <div class="card-content" @click="handleClick('/sysMenu')"
+              :class="{ 'has-permission': permissionMap['/sysMenu'], 'no-permission': !permissionMap['/sysMenu'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/菜单管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/sysMenu'] ? '#409EFF' : '' }">
                 菜单管理
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/sysLog')">
+            <div class="card-content" @click="handleClick('/sysLog')"
+              :class="{ 'has-permission': permissionMap['/sysLog'], 'no-permission': !permissionMap['/sysLog'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/操作日志.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/sysLog'] ? '#409EFF' : '' }">
                 操作日志
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/sysUser')">
+            <div class="card-content" @click="handleClick('/sysUser')"
+              :class="{ 'has-permission': permissionMap['/sysUser'], 'no-permission': !permissionMap['/sysUser'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/用户管理.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/sysUser'] ? '#409EFF' : '' }">
                 用户管理
               </div>
             </div>
@@ -201,27 +217,30 @@
         </div>
         <el-card class="manager-card">
           <div class="manager-card-content">
-            <div class="card-content" @click="handleClick('/customerAnalysis')">
+            <div class="card-content" @click="handleClick('/customerAnalysis')"
+              :class="{ 'has-permission': permissionMap['/customerAnalysis'], 'no-permission': !permissionMap['/customerAnalysis'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/费用分析.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/customerAnalysis'] ? '#409EFF' : '' }">
                 客户分析
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/orderAnalysis')">
+            <div class="card-content" @click="handleClick('/orderAnalysis')"
+              :class="{ 'has-permission': permissionMap['/orderAnalysis'], 'no-permission': !permissionMap['/orderAnalysis'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/公司订单分析.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/orderAnalysis'] ? '#409EFF' : '' }">
                 订单分析
               </div>
             </div>
-            <div class="card-content" @click="handleClick('/profitAnalysis')">
+            <div class="card-content" @click="handleClick('/profitAnalysis')"
+              :class="{ 'has-permission': permissionMap['/profitAnalysis'], 'no-permission': !permissionMap['/profitAnalysis'] }">
               <div class="card-icon">
                 <img src="../../assets/icon/利润分析.png" alt="">
               </div>
-              <div class="card-text">
+              <div class="card-text" :style="{ color: permissionMap['/profitAnalysis'] ? '#409EFF' : '' }">
                 利润分析
               </div>
             </div>
@@ -229,7 +248,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row gutter="20" >
+    <el-row gutter="20">
       <el-col :span="12">
         <el-card class="box-card1 announcements">
           <h3>系统公告</h3>
@@ -313,6 +332,29 @@
     mounted() {
       this.initCharts();
     },
+    computed: {
+      permissionMap() {
+        const menuListStr = localStorage.getItem('menuList');
+        let menuList = [];
+        if (menuListStr) {
+          try {
+            menuList = JSON.parse(menuListStr);
+          } catch (error) {
+            console.error('Failed to parse menuList:', error);
+          }
+        }
+        const flatMenuList = menuList.reduce((acc, item) => {
+          if (item.children && item.children.length > 0) {
+            acc.push(...item.children);
+          }
+          return acc;
+        }, []);
+        return flatMenuList.reduce((acc, menu) => {
+          acc[menu.path] = true;
+          return acc;
+        }, {});
+      },
+    },
     methods: {
       hasPermission(path) {
         const menuListStr = localStorage.getItem('menuList');
@@ -383,6 +425,7 @@
     padding: 10px 20px;
   }
 
+
   .card-title {
     display: flex;
     align-items: center;
@@ -397,6 +440,8 @@
 
 
   }
+
+
 
   .manager-card {
     margin-bottom: 20px;
@@ -423,6 +468,8 @@
           width: 40px;
           height: 40px;
         }
+
+
       }
 
       .card-text {
@@ -430,9 +477,34 @@
       }
 
       .card-text:hover {
-        color: #409EFF;
+        color: #b7f7c0;
       }
     }
+  }
+
+  .card-content.has-permission .card-icon {
+    width: 40px;
+    /* 调整容器大小 */
+    height: 40px;
+    /* 调整容器大小 */
+    border: 1px solid #409EFF;
+    /* 添加边框 */
+    box-shadow: 0 0 10px rgba(64, 158, 255, 0.7);
+    /* 添加阴影 */
+    border-radius: 50%;
+    /* 设置为圆形 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-content.has-permission .card-icon img {
+    width: 40px;
+    /* 调整图片大小以适应边框 */
+    height: 40px;
+    /* 调整图片大小以适应边框 */
+    border-radius: 50%;
+    /* 设置为圆形 */
   }
 
   .user-card {

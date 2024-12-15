@@ -37,25 +37,21 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination
-          @size-change="sizeChangeHandle"
-          @current-change="currentChangeHandle"
-          :current-page="pageIndex"
-          :page-sizes="[5, 10, 20, 50]"
-          :page-size="pageSize"
-          :total="totalPage"
-          layout="total, sizes, prev, pager, next, jumper"
-          style="margin-top: 30px"
-      ></el-pagination>
+      <el-pagination @size-change="sizeChangeHandle" @current-change="currentChangeHandle" :current-page="pageIndex"
+        :page-sizes="[5, 10, 20, 50]" :page-size="pageSize" :total="totalPage"
+        layout="total, sizes, prev, pager, next, jumper" style="margin-top: 30px"></el-pagination>
     </div>
 
     <el-dialog :title="dataDialogForm.id === 0 ? '新增喷涂记录' : '编辑喷涂记录'" :visible.sync="dialogFormVisible" width="50%">
       <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" label-width="120px" size="mini">
-        <el-form-item label="detail id" prop="detailId">
-          <el-input v-model="dataDialogForm.detailId" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="材料规格" prop="specification">
-          <el-input v-model="dataDialogForm.specification" autocomplete="off" />
+        <el-form-item label="材料规格" prop="detailId">
+          <el-select v-model="dataDialogForm.detailId" class="input-field" placeholder="请选择材料规格" >
+            <el-option v-for="(material, index) in historyMaterials" :key="material.detailId"
+              :label="`${index + 1}. ${material.specification}`" :value="material.detailId">
+            </el-option>
+          </el-select>
+
+
         </el-form-item>
         <el-form-item label="酸洗/磷化重量" prop="acidWashWeight">
           <el-input v-model="dataDialogForm.acidWashWeight" autocomplete="off" />
@@ -97,157 +93,264 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      dataForm: {
-        specification: "",
-      },
-      dataList: [],
-      dataDialogForm: {
-        id: 0,
-        detailId: "",
-        specification: "",
-        acidWashWeight: "",
-        acidWashCost: "",
-        sprayPlasticArea: "",
-        sprayPlasticCost: "",
-        electroswimmingArea: "",
-        electroswimmingCost: "",
-        primerArea: "",
-        primerCost: "",
-        topcoatArea: "",
-        topcoatCost: "",
-        totalPaintingCost: "",
-      },
-      pageIndex: 1,
-      pageSize: 5,
-      totalPage: 0,
-      dialogFormVisible: false,
-      rules: {
-        specification: [{ required: true, message: "材料规格不能为空", trigger: "blur" }],
-        acidWashWeight: [
-          {required: true, message: "请输入酸洗/磷化重量", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        acidWashCost: [
-          {required: true, message: "请输入酸洗/磷化金额", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        // 添加其他字段的规则
-        sprayPlasticArea: [
-          {required: true, message: "请输入喷塑面积", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        sprayPlasticCost: [
-          {required: true, message: "请输入喷塑金额", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        electroswimmingArea: [
-          {required: true, message: "请输入电泳面积", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        electroswimmingCost: [
-          {required: true, message: "请输入电泳金额", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        primerArea: [
-          {required: true, message: "请输入底漆面积", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        primerCost: [
-          {required: true, message: "请输入底漆金额", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        topcoatArea: [
-          {required: true, message: "请输入面漆面积", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-        topcoatCost: [
-          {required: true, message: "请输入面漆金额", trigger: "blur"},
-          { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
-        ],
-      },
-    };
-  },
-  methods: {
-    async getDataList() {
-      const params = {
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
-        specification: this.dataForm.specification,
-      };
-      try {
-        const res = await this.$http.get("/painting-cost/list", { params });
-        this.dataList = res.data.data.list || [];
-        this.totalPage = res.data.data.totalCount || 0;
-      } catch (error) {
-        console.error("获取数据失败：", error);
-      }
-    },
-    openDialog() {
-      this.$refs.ruleForm?.resetFields();
-      this.dialogFormVisible = true;
-      this.dataDialogForm = {
-        id: 0,
-        detailId: "",
-        specification: "",
-        acidWashWeight: "",
-        acidWashCost: "",
-        sprayPlasticArea: "",
-        sprayPlasticCost: "",
-        electroswimmingArea: "",
-        electroswimmingCost: "",
-        primerArea: "",
-        primerCost: "",
-        topcoatArea: "",
-        topcoatCost: "",
-        totalPaintingCost: "",
+  export default {
+    data() {
+      return {
+        dataForm: {
+          specification: "",
+        },
+        dataList: [],
+        dataDialogForm: {
+          id: 0,
+          detailId: "",
+          specification: "",
+          acidWashWeight: "",
+          acidWashCost: "",
+          sprayPlasticArea: "",
+          sprayPlasticCost: "",
+          electroswimmingArea: "",
+          electroswimmingCost: "",
+          primerArea: "",
+          primerCost: "",
+          topcoatArea: "",
+          topcoatCost: "",
+          totalPaintingCost: "",
+        },
+        historyMaterials: [], // 从后台获取的历史材料数据
+        pageIndex: 1,
+        pageSize: 5,
+        totalPage: 0,
+        dialogFormVisible: false,
+        rules: {
+          detailId: [{ required: true, message: "请选择材料规格", trigger: "blur" }],
+          acidWashWeight: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          acidWashCost: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          sprayPlasticArea: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          sprayPlasticCost: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          electroswimmingArea: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          electroswimmingCost: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          primerArea: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          primerCost: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          topcoatArea: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+          topcoatCost: [
+            { pattern: /^-?\d{1,8}(\.\d{1,2})?$/, message: "格式为数字，最多保留两位小数", trigger: "blur" },
+          ],
+        },
       };
     },
-    async handleEdit(row) {
-      this.$refs.ruleForm?.resetFields();
-      this.dataDialogForm = { ...row };
-      this.dialogFormVisible = true;
-    },
-    closeDialog() {
-      this.dialogFormVisible = false;
-      this.$refs.ruleForm?.resetFields();
-    },
-    async submitMaterial() {
-      this.$refs.ruleForm.validate(async (valid) => {
-        if (!valid) return;
-        const url = this.dataDialogForm.id === 0 ? "/painting-cost/save" : "/painting-cost/update";
+    // methods: {
+    //   async getDataList() {
+    //     const params = {
+    //       pageIndex: this.pageIndex,
+    //       pageSize: this.pageSize,
+    //       specification: this.dataForm.specification,
+    //     };
+    //     try {
+    //       const res = await this.$http.get("/painting-cost/list", { params });
+    //       this.dataList = res.data.data.list || [];
+    //       this.totalPage = res.data.data.totalCount || 0;
+    //     } catch (error) {
+    //       console.error("获取数据失败：", error);
+    //     }
+    //   },
+    //   openDialog() {
+    //     this.$refs.ruleForm?.resetFields();
+    //     this.dialogFormVisible = true;
+    //     this.dataDialogForm = {
+    //       id: 0,
+    //       detailId: "",
+    //       specification: "",
+    //       acidWashWeight: "",
+    //       acidWashCost: "",
+    //       sprayPlasticArea: "",
+    //       sprayPlasticCost: "",
+    //       electroswimmingArea: "",
+    //       electroswimmingCost: "",
+    //       primerArea: "",
+    //       primerCost: "",
+    //       topcoatArea: "",
+    //       topcoatCost: "",
+    //       totalPaintingCost: "",
+    //     };
+    //   },
+    //   async handleEdit(row) {
+    //     this.$refs.ruleForm?.resetFields();
+    //     this.dataDialogForm = { ...row };
+    //     this.dialogFormVisible = true;
+    //   },
+    //   closeDialog() {
+    //     this.dialogFormVisible = false;
+    //     this.$refs.ruleForm?.resetFields();
+    //   },
+    //   calculateTotalCost() {
+    //     // 计算总喷涂费用
+    //     const { acidWashCost, sprayPlasticCost, electroswimmingCost, primerCost, topcoatCost } = this.dataDialogForm;
+    //     this.dataDialogForm.totalPaintingCost = (
+    //         parseFloat(acidWashCost || 0) +
+    //         parseFloat(sprayPlasticCost || 0) +
+    //         parseFloat(electroswimmingCost || 0) +
+    //         parseFloat(primerCost || 0) +
+    //         parseFloat(topcoatCost || 0)
+    //     ).toFixed(2); // 保留两位小数
+    //   },
+    //   async submitMaterial() {
+    //     this.$refs.ruleForm.validate(async (valid) => {
+    //       if (!valid) return;
+    //       this.calculateTotalCost(); // 自动计算总费用
+    //       const url = this.dataDialogForm.id === 0 ? "/painting-cost/save" : "/painting-cost/update";
+    //       try {
+    //         await this.$http.post(url, this.dataDialogForm);
+    //         this.$message.success("保存成功");
+    //         this.dialogFormVisible = false;
+    //         this.getDataList();
+    //       } catch (error) {
+    //         console.error("保存失败：", error);
+    //         this.$message.error("保存失败");
+    //       }
+    //     });
+    //   },
+    //   sizeChangeHandle(val) {
+    //     this.pageSize = val;
+    //     this.getDataList();
+    //   },
+    //   currentChangeHandle(val) {
+    //     this.pageIndex = val;
+    //     this.getDataList();
+    //   },
+    // },
+    methods: {
+      async fetchHistoryMaterials() {
         try {
-          await this.$http.post(url, this.dataDialogForm);
-          this.$message.success("保存成功");
-          this.dialogFormVisible = false;
-          this.getDataList();
+
+          const res = await this.$http.get('/raw-materials/getAll');
+          // 修改 historyMaterials 中的 specification 属性
+          this.historyMaterials = res.data.data
+          console.log(this.historyMaterials)
+
         } catch (error) {
-          console.error("保存失败：", error);
-          this.$message.error("保存失败");
+          console.error('获取历史原材料时出错:', error);
         }
-      });
+
+      },
+      async getDataList() {
+        const params = {
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          specification: this.dataForm.specification,
+        };
+        try {
+          const res = await this.$http.get("/painting-cost/list", { params });
+          this.dataList = res.data.data.list || [];
+          this.totalPage = res.data.data.totalCount || 0;
+        } catch (error) {
+          console.error("获取数据失败：", error);
+        }
+      },
+      openDialog() {
+        this.$refs.ruleForm?.resetFields();
+        this.dialogFormVisible = true;
+        this.dataDialogForm = {
+          id: 0,
+          detailId: "",
+          specification: "",
+          acidWashWeight: "",
+          acidWashCost: "",
+          sprayPlasticArea: "",
+          sprayPlasticCost: "",
+          electroswimmingArea: "",
+          electroswimmingCost: "",
+          primerArea: "",
+          primerCost: "",
+          topcoatArea: "",
+          topcoatCost: "",
+          totalPaintingCost: "",
+        };
+      },
+      async handleEdit(row) {
+        this.$refs.ruleForm?.resetFields();
+        this.dataDialogForm = { ...row };
+        this.dialogFormVisible = true;
+      },
+      closeDialog() {
+        this.dialogFormVisible = false;
+        this.$refs.ruleForm?.resetFields();
+      },
+      // 计算总喷涂费用
+      calculateTotalCost() {
+        const { acidWashCost, sprayPlasticCost, electroswimmingCost, primerCost, topcoatCost } = this.dataDialogForm;
+        this.dataDialogForm.totalPaintingCost = (
+          parseFloat(acidWashCost || 0) +
+          parseFloat(sprayPlasticCost || 0) +
+          parseFloat(electroswimmingCost || 0) +
+          parseFloat(primerCost || 0) +
+          parseFloat(topcoatCost || 0)
+        ).toFixed(2); // 保留两位小数
+      },
+      async submitMaterial() {
+        this.$refs.ruleForm.validate(async (valid) => {
+          if (!valid) return;
+
+          // 计算总喷涂费用
+          this.calculateTotalCost();
+
+          // 自动将空字段设置为 0
+          for (const key in this.dataDialogForm) {
+            if (this.dataDialogForm.hasOwnProperty(key) && (this.dataDialogForm[key] === "" || this.dataDialogForm[key] === null)) {
+              this.dataDialogForm[key] = "0"; // 设置为空的字段为 0
+            }
+          }
+
+          const url = this.dataDialogForm.id === 0 ? "/painting-cost/save" : "/painting-cost/update";
+          try {
+            await this.$http.post(url, this.dataDialogForm);
+            this.$message.success("保存成功");
+            this.dialogFormVisible = false;
+            this.getDataList();
+          } catch (error) {
+            console.error("保存失败：", error);
+            this.$message.error("保存失败");
+          }
+        });
+      },
+      sizeChangeHandle(val) {
+        this.pageSize = val;
+        this.getDataList();
+      },
+      currentChangeHandle(val) {
+        this.pageIndex = val;
+        this.getDataList();
+      },
     },
-    sizeChangeHandle(val) {
-      this.pageSize = val;
+
+    mounted() {
       this.getDataList();
+      this.fetchHistoryMaterials();
     },
-    currentChangeHandle(val) {
-      this.pageIndex = val;
-      this.getDataList();
-    },
-  },
-  mounted() {
-    this.getDataList();
-  },
-};
+  };
 </script>
 
 <style scoped>
-.dialog-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .dialog-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

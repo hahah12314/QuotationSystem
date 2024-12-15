@@ -158,18 +158,23 @@ const routes = [
         name: 'auditQuotation',
         component: () => import('@/components/pages/quotation/AuditQuotation')
       },
-      
+      {
+        path: '/personInfo',
+        name: 'personInfo',
+        component: () => import('@/components/pages/person/personInfo')
+      },
+
     ]
   },
   {
-    path:'/login',
-    name:'login',
-    component:Login
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
-    path:'/register',
-    name:'register',
-    component:()=> import('@/components/common/Register')
+    path: '/register',
+    name: 'register',
+    component: () => import('@/components/common/Register')
   }
 
 ]
@@ -177,5 +182,13 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
+// 全局处理 NavigationDuplicated 错误
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') {
+      throw err;
+    }
+  });
+};
 export default router

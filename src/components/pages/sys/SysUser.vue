@@ -1,5 +1,4 @@
 <template>
-
   <el-card class="box-card">
     <div id='sysRole'>
       <el-form :inline="true" :model="dataForm" class="demo-form-inline" size="mini">
@@ -20,7 +19,15 @@
       <el-table :data="dataList" border style="width: 100%" @selection-change="handleSelectionChange" size="mini">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="55"></el-table-column>
-        <el-table-column prop="username" label="用户名称" width="180">
+        <el-table-column label="头像" width="60">
+          <template slot-scope="scope">
+            <img :src="scope.row.avatar ? scope.row.avatar : require('@/assets/images/user1.png')" alt="Avatar"
+              class="avatar-image">
+          </template>
+        </el-table-column>
+        <el-table-column prop="username" label="用户名" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="姓名" width="180">
         </el-table-column>
         <el-table-column prop="email" label="邮箱">
         </el-table-column>
@@ -45,7 +52,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination @size-change="sizeChangeHandle" @cu新增用户width: 240px;rrent-change="currentChangeHandle" :current-page="pageIndex"
+      <el-pagination @size-change="sizeChangeHandle" @current-change="currentChangeHandle" :current-page="pageIndex"
         :page-sizes="[5, 10, 20, 50, 100]" :page-size="pageSize" :total="totalPage"
         layout="total, sizes, prev, pager, next, jumper" style="margin-top:30px;">
       </el-pagination>
@@ -62,6 +69,9 @@
           <el-input v-model="dataDialogForm.password" autocomplete="off" style="width: 240px;"
             type="password"></el-input>
         </el-form-item>
+        <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+          <el-input v-model="dataDialogForm.name" autocomplete="off" style="width: 240px;"></el-input>
+        </el-form-item>
         <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
           <el-input v-model="dataDialogForm.email" autocomplete="off" style="width: 240px;"></el-input>
         </el-form-item>
@@ -75,13 +85,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="可选角色" :label-width="formLabelWidth" prop="roleList">
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox v-for="(item) in roleAll" :label="item.roleId" :key="item.roleId">
+          <el-radio-group v-model="selectedRoleId">
+            <el-radio v-for="(item) in roleAll" :label="item.roleId" :key="item.roleId">
               {{item.roleName}}
-            </el-checkbox>
-
-
-          </el-checkbox-group>
+            </el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -90,7 +98,6 @@
       </div>
     </el-dialog>
   </el-card>
-
 </template>
 
 <script>
@@ -99,7 +106,8 @@
     data() {
       var validateName = (rule, value, callback) => {
         if (this.dataDialogForm.userId === 0) {
-          if (value === '') {
+          console.log('datau', this.dataDialogForm.userId, this.dataDialogForm);
+          if (value === '' || !this.dataDialogForm.username) {
             callback(new Error('请输入用户名称'));
           } else {
             this.$http.get('/sys/sysUser/checkuserName?username=' + value).then(res => {
@@ -132,6 +140,7 @@
         ],
         dataDialogForm: {
           username: '',
+          name: '',
           email: '',
           mobile: '',
           status: 1,
@@ -139,9 +148,9 @@
           userId: 0,
           roleList: []
         },
+        selectedRoleId: null, // 新增
         dataList: [],
         roleAll: [],
-        checkList: [],
         multipleSelection: [],
         pageSize: 5,
         pageIndex: 1,
@@ -180,7 +189,6 @@
               message: '删除成功!'
             });
           }
-
 
           this.getDataList()
         } catch (error) {
@@ -233,8 +241,8 @@
       async handleEdit(index, item) {
         try {
           const res = await this.$http.get('/sys/sysRole/getRoleChecked?userId=' + item.userId);
-          this.checkList = res.data.data.flatMap(item => item.roleId);
-          console.log(this.checkList);
+          this.selectedRoleId = res.data.data[0] ? res.data.data[0].roleId : null; // 修改这里
+          console.log(this.selectedRoleId);
         } catch (error) {
           console.error('获取角色列表时出错:', error);
         }
@@ -242,6 +250,7 @@
         this.dialogFormVisible = true;
         this.dataDialogForm.userId = item.userId;
         this.dataDialogForm.username = item.username;
+        this.dataDialogForm.name = item.name;
         this.dataDialogForm.email = item.email;
         this.dataDialogForm.mobile = item.mobile;
         this.dataDialogForm.status = item.status;
@@ -265,7 +274,8 @@
               mobile: '',
               status: 1,
               password: '',
-              userId: 0
+              userId: 0,
+              name: ''
             };
           } catch (error) {
             console.error('更新用户状态时出错:', error);
@@ -290,9 +300,11 @@
           mobile: '',
           status: 1,
           password: '',
-          userId: 0
+          userId: 0,
+          roleList: [],
+          name: ''
         };
-        this.checkList = [];
+        this.selectedRoleId = null; // 修改这里
       },
       closeDialog() {
         this.dialogFormVisible = false;
@@ -302,8 +314,11 @@
           mobile: '',
           status: 1,
           password: '',
-          userId: 0
+          userId: 0,
+          roleList: [],
+          name: ''
         };
+        this.selectedRoleId = null; // 修改这里
       },
       async submitUser(ruleForm) {
         await this.updateUser(ruleForm);
@@ -324,8 +339,7 @@
 
         try {
           this.dialogSubmitForm = true;
-          this.dataDialogForm.roleList = this.checkList;
-          console.log(this.dataDialogForm);
+          this.dataDialogForm.roleList = [this.selectedRoleId]; // 修改这里
 
           const url = this.dataDialogForm.userId !== 0 ? '/sys/sysUser/update' : '/sys/sysUser/save';
           const response = await this.$http.post(url, this.dataDialogForm);
@@ -338,8 +352,11 @@
             mobile: '',
             status: 1,
             password: '',
-            userId: 0
+            userId: 0,
+            roleList: [],
+            name: ''
           };
+          this.selectedRoleId = null; // 修改这里
           this.dialogSubmitForm = false;
           await this.getDataList();
         } catch (error) {
@@ -358,5 +375,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .avatar-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="add-quotation">
     <div class="quotation-form">
       <h1 class="main-title" v-if="!isReadOnly">新增报价单</h1>
 
@@ -11,22 +11,22 @@
         </thead>
         <tbody>
           <tr>
-            <td>公司名称:</td>
+            <td>公司名称<span class="required">*</span>:</td>
             <td><input v-model="quotationForm.company.name" class="input-field" :readonly="isReadOnly" /></td>
-            <td>客户名称:</td>
+            <td>客户名称<span class="required">*</span>:</td>
             <td><input v-model="quotationForm.customer.name" class="input-field" :readonly="isReadOnly" /></td>
           </tr>
           <tr>
-            <td>负责人:</td>
+            <td>负责人<span class="required">*</span>:</td>
             <td><input v-model="quotationForm.company.responsiblePerson" class="input-field" :readonly="isReadOnly" />
             </td>
-            <td>负责人联系方式:</td>
+            <td>负责人联系方式<span class="required">*</span>:</td>
             <td><input v-model="quotationForm.company.contactInfo" class="input-field" :readonly="isReadOnly" /></td>
           </tr>
           <tr>
             <td>客户邮箱:</td>
             <td><input v-model="quotationForm.customer.email" class="input-field" :readonly="isReadOnly" /></td>
-            <td>客户联系方式:</td>
+            <td>客户联系方式<span class="required">*</span>:</td>
             <td><input v-model="quotationForm.customer.contactInfo" class="input-field" :readonly="isReadOnly" /></td>
           </tr>
           <tr>
@@ -44,7 +44,7 @@
             </td>
           </tr>
           <tr>
-            <td>付款方式:</td>
+            <td>付款方式<span class="required">*</span>:</td>
             <td>
               <select v-model="quotationForm.customer.paymentMethod" class="input-field" :disabled="isReadOnly">
                 <option value="现金">现金</option>
@@ -164,7 +164,11 @@
       outQuotationForm: {
         type: Object,
         required: false
-      }
+      },
+      ReadOnly: {
+        type: Boolean,
+        required: false
+      },
 
     },
 
@@ -205,6 +209,8 @@
           }
 
         },
+        userInfo: null,
+        fromOut: false,
         quotedMaterials: [], // 从后台获取的报价物料数据
         historyMaterials: [], // 从后台获取的历史物料数据
         materialCosts: [
@@ -218,9 +224,9 @@
     computed: {
       selectedQuotedMaterials() {
         // 返回选中的报价物料，并将数量设置为1
-      return this.quotedMaterials
-      .filter(material => material.materialId === this.quotationForm.material.quotedMaterialId)
-      .map(material => ({ ...material, quantity: 1 }));
+        return this.quotedMaterials
+          .filter(material => material.materialId === this.quotationForm.material.quotedMaterialId)
+          .map(material => ({ ...material, quantity: 1 }));
       },
       subtotal() {
         // 计算选中的报价物料的小计
@@ -232,17 +238,32 @@
       }
     },
     created() {
+      this.fetchUserInfo()
       this.fetchQuotedMaterials();
       this.fetchHistoryMaterials();
       this.fetchDataFromQuery()
       this.fetchQuotationInfo()
+
     },
     methods: {
+      async fetchUserInfo() {
+        const res = await this.$http.get('/sys/sysUser/getNowUser');
+        this.userInfo = res.data.data;
+        this.quotationForm.company.responsiblePerson = this.userInfo.name || this.quotationForm.company.responsiblePerson
+        console.log(this.userInfo, 'uuuu')
+      },
       fetchQuotationInfo() {
         this.isReadOnly = !!this.outQuotationForm;
         if (this.isReadOnly) {
           this.quotationForm = this.outQuotationForm
+          console.log('readonly', this.quotationForm)
         }
+        if (!!!this.ReadOnly) {
+          this.fromOut = true
+        }
+        this.isReadOnly = !!this.ReadOnly
+        console.log('readonly', this.ReadOnly)
+
       },
       fetchDataFromQuery() {
         const formData = this.$route.query.formData;
@@ -287,6 +308,33 @@
 
       },
       generateQuote() {
+        if (!this.quotationForm.company.name) {
+          this.$message.error('请输入公司名称');
+          return;
+        }
+
+        if (!this.quotationForm.customer.name) {
+          this.$message.error('请输入客户名称');
+          return;
+        }
+        if (!this.quotationForm.company.responsiblePerson) {
+          this.$message.error('请输入负责人');
+          return;
+        }
+
+        if (!this.quotationForm.company.contactInfo) {
+          this.$message.error('请输入负责人联系方式');
+          return;
+        }
+        if (!this.quotationForm.customer.contactInfo) {
+          this.$message.error('请输入客户联系方式');
+          return;
+        }
+
+        if (!this.quotationForm.customer.paymentMethod) {
+          this.$message.error('请输入付款方式');
+          return;
+        }
         if (!this.quotationForm.material.quotedMaterialId) {
           this.$message.error('请选择报价物料');
           return;
@@ -320,7 +368,7 @@
         // 跳转到生成报价单的页面，并传递数据
         this.$router.push({
           path: '/quoteGeneration',
-          query: { formData }
+          query: { formData, fromOut: this.fromOut }
         }).catch(err => {
           console.error('Router push error:', err);
         });
@@ -335,14 +383,7 @@
   };
 </script>
 
-<style>
-  body {
-    font-family: Arial, sans-serif;
-
-    padding: 0;
-    background-color: #f9f9f9;
-  }
-
+<style scoped>
   .quotation-form {
     background-color: #fff;
     border-radius: 5px;

@@ -14,7 +14,9 @@
         <div class="r-content">
             <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
-                    <img src="@/assets/images/user1.png" class="user-img">
+                    <img :src="userInfo.avatar || require('@/assets/images/user1.png')" class="user-img">
+
+                    <span style="font-size: 16px;">{{userInfo.roleName}}</span>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="a">个人信息</el-dropdown-item>
@@ -30,7 +32,29 @@
     import { mapState } from 'vuex'
     export default {
         name: 'header',
+        data() {
+            return {
+                userInfo: {
+                    username: "",
+                    avatar: ""
+
+                }
+
+            }
+        },
+        mounted() {
+            this.getUserInfo()
+        },
         methods: {
+            async getUserInfo() {
+                const res = await this.$http.get('/sys/sysUser/getNowUser')
+                this.userInfo = res.data.data
+                console.log(res.data.data)
+                if (!this.userInfo.avatar) {
+                    this.userInfo.avatar = require('@/assets/images/user1.png')
+                }
+
+            },
             handleMenu() {
                 this.$store.commit('ChangeCollapse')
             },
@@ -40,15 +64,20 @@
                     sessionStorage.clear()
 
                     this.$router.push('/login')
+                } else if (command === 'a') {
+
+                    this.$router.push('/personInfo')
                 } else {
                     if (this.$route.path !== '/' && this.$route.path !== '/firstPage') {
                         this.$router.push('/')
                     }
 
+
                 }
             }
 
         },
+
         computed: {
             ...mapState(
                 {
@@ -79,12 +108,21 @@
 
             padding-right: 20px;
 
+            .el-dropdown-link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+
+            }
 
             .user-img {
-                width: 40px;
-                height: 40px;
+
+                width: 24px;
+                height: 24px;
                 border-radius: 50%;
-              
+                margin-right: 5px;
+
 
 
             }
