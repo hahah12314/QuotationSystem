@@ -1,7 +1,7 @@
 <template>
   <div class='aside'>
     <h3 class="title-container">
-      <img src="../../assets/icon/首页图标.png" alt="" />
+      <img :src="require('@/assets/icon/首页图标.png')" alt="" />
       <span class="title" v-if="!isCollapse">{{isCollapse ? '金威':'金威报价系统'}}</span>
     </h3>
     <div class="menu-container">
@@ -19,7 +19,7 @@
           <el-menu-item-group>
 
             <el-menu-item v-for="sub in item.children" :key="sub.menuId" :index="sub.menuId"
-              @click="handleClick(sub)" >{{sub.name}}</el-menu-item>
+              @click="handleClick(sub)">{{sub.name}}</el-menu-item>
 
           </el-menu-item-group>
 

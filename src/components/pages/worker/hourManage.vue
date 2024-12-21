@@ -39,8 +39,12 @@
             <el-option v-for="item in processOptions" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="工人姓名" prop="workerName">
-          <el-input v-model="dataDialogForm.workerName" autocomplete="off"></el-input>
+        <el-form-item label="工人姓名" prop="workerId">
+          <el-select v-model="dataDialogForm.workerId" filterable placeholder="请选择" allow-create>
+            <el-option v-for="item in workerOptions" :key="item.id" :label="item.workerName"
+              :value="item.id"></el-option>
+          </el-select>
+
         </el-form-item>
         <el-form-item label="成本" prop="cost">
           <el-input v-model="dataDialogForm.cost" autocomplete="off"></el-input>
@@ -69,7 +73,7 @@
         dataDialogForm: {
           id: 0,
           processName: "",
-          workerName: "",
+          workerId: "",
           cost: "",
           hour: "",
         },
@@ -78,14 +82,15 @@
         pageIndex: 1,
         totalPage: 0,
         dialogFormVisible: false,
+        workerOptions: [],
         processOptions: ["锯", "弯", "钻", "车", "外磨", "铣", "校平", "镗铣", "焊", "打磨", "装"],
         rules: {
           processName: [
             { required: true, message: "请选择或输入工序名称", trigger: "change" },
           ],
-          workerName: [
-            { required: true, message: "请输入工人姓名", trigger: "blur" },
-            { min: 1, max: 10, message: "工人姓名最多为10个汉字", trigger: "blur" },
+          workerId: [
+            { required: true, message: "请选择工人姓名", trigger: "change" },
+
           ],
           cost: [
             { required: true, message: "请输入成本", trigger: "blur" },
@@ -110,6 +115,7 @@
       };
     },
     methods: {
+
       sanitizeHourInput() {
         this.dataDialogForm.hour = this.dataDialogForm.hour.replace(/[^0-9]/g, "");
       },
@@ -122,9 +128,13 @@
 
         try {
           const response = await this.$http.get("/workhours/list", { params });
+          const response2 = await this.$http.get("/workers/getWorkerAll");
           const data = response.data.data;
+          this.workerOptions = response2.data.data || [];
           this.dataList = data.list || [];
           this.totalPage = data.totalCount || 0;
+          console.log('worker', this.workerOptions);
+
         } catch (error) {
           this.$message.error("获取数据失败");
         }
@@ -142,7 +152,7 @@
         this.dataDialogForm = {
           id: 0,
           processName: "",
-          workerName: "",
+          workerId: "",
           cost: "",
           hour: "",
         };
@@ -152,7 +162,7 @@
         this.dataDialogForm = {
           id: 0,
           processName: "",
-          workerName: "",
+          workerId: "",
           cost: "",
           hour: "",
         };

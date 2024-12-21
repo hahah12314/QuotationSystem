@@ -23,56 +23,56 @@
         activities: [
           {
             content: '创建报价单',
-            timestamp: '2023-10-01',
+            timestamp: '2024-10-01',
             size: 'large',
             type: 'primary',
             icon: 'el-icon-edit'
           },
           {
             content: '提交审核',
-            timestamp: '2023-10-02',
+            timestamp: '2024-10-02',
             size: 'large',
             type: 'info',
             icon: 'el-icon-check'
           },
           {
             content: '审核中',
-            timestamp: '2023-10-04',
+            timestamp: '2024-10-04',
             size: 'large',
             type: 'info',
             icon: 'el-icon-check'
           },
           {
             content: '审核通过',
-            timestamp: '2023-10-03',
+            timestamp: '2024-10-03',
             size: 'large',
             type: 'success',
             icon: 'el-icon-success'
           },
           {
             content: '审核不通过',
-            timestamp: '2023-10-04',
+            timestamp: '2024-10-04',
             size: 'large',
             type: 'warning',
             icon: 'el-icon-error'
           },
           {
             content: '修改报价单',
-            timestamp: '2023-10-05',
+            timestamp: '2024-10-05',
             size: 'large',
             type: 'danger',
             icon: 'el-icon-edit-outline'
           },
           {
             content: '重新提交审核',
-            timestamp: '2023-10-06',
+            timestamp: '2024-10-06',
             size: 'large',
             type: 'info',
             icon: 'el-icon-check'
           },
           {
             content: '最终审核通过',
-            timestamp: '2023-10-07',
+            timestamp: '2024-10-07',
             size: 'large',
             type: 'success',
             icon: 'el-icon-success'

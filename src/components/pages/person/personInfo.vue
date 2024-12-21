@@ -24,13 +24,15 @@
                 </div>
                 <div class="info-item">
                     <label>邮箱:</label>
-                    <input v-if="isEditing" v-model="userInfo.email" placeholder="请输入邮箱" class="custom-input" />
+                    <input v-if="isEditing" v-model="userInfo.email" placeholder="请输入邮箱" class="custom-input"
+                        @blur="validateEmailInput" />
                     <span v-else class="right-align">{{ userInfo.email }}</span>
 
                 </div>
                 <div class="info-item">
                     <label>手机号:</label>
-                    <input v-if="isEditing" v-model="userInfo.mobile" placeholder="请输入手机号" class="custom-input" />
+                    <input v-if="isEditing" v-model="userInfo.mobile" placeholder="请输入手机号" class="custom-input"
+                        @blur="validatePhoneInput" />
                     <span v-else class="right-align">{{ userInfo.mobile }}</span>
 
                 </div>
@@ -106,13 +108,39 @@
 
                 originalPasswordError: '',
                 newPasswordError: '',
-                confirmNewPasswordError: ''
+                confirmNewPasswordError: '',
+                emailError: '', // 添加邮箱错误信息变量
+                phoneError: '' // 添加手机号错误信息变量
             };
         },
         created() {
             this.getUserInfo();
         },
         methods: {
+            validateEmail(email) {
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return emailPattern.test(email);
+            },
+
+            validatePhoneNumber(phoneNumber) {
+                const phonePattern = /^1[3-9]\d{9}$/;
+                return phonePattern.test(phoneNumber);
+            },
+            validateEmailInput() {
+                if (!this.validateEmail(this.userInfo.email)) {
+                    this.emailError = '请输入有效的邮箱地址';
+                } else {
+                    this.emailError = '';
+                }
+            },
+
+            validatePhoneInput() {
+                if (!this.validatePhoneNumber(this.userInfo.mobile)) {
+                    this.phoneError = '请输入有效的手机号码';
+                } else {
+                    this.phoneError = '';
+                }
+            },
             async getUserInfo() {
                 try {
                     const res = await this.$http.get('/sys/sysUser/getNowUser');
@@ -139,8 +167,8 @@
                     const filename = avatarUrl.split("//").pop()
                     console.log('filename', filename);
 
-                    avatarUrl = `http://so9r96ky6.hn-bkt.clouddn.com/images//${filename}`;
-                    this.$message.success('上传成功');
+                    avatarUrl = `https://cdn.jw.hnuedu.top/images//${filename}`;
+                    this.$message.success('图像上传成功');
                     if (avatarUrl) {
                         console.log('avatarUrl', avatarUrl);
                         this.userInfo.avatar = avatarUrl;
@@ -156,6 +184,7 @@
                     console.log('response', response.data)
                     if (response.data.code == 'SUCCESS') {
                         console.log('response', response.data.data)
+
                         return response.data.data; // 假设后端返回的JSON格式为 { url: "http://example.com/path/to/image.jpg" }
                     } else {
                         throw new Error('Failed to upload image');

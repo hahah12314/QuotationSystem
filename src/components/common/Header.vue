@@ -16,7 +16,7 @@
                 <span class="el-dropdown-link">
                     <img :src="userInfo.avatar || require('@/assets/images/user1.png')" class="user-img">
 
-                    <span style="font-size: 16px;">{{userInfo.roleName}}</span>
+                    <span style="font-size: 14px;">{{userInfo.roleName}}</span>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="a">个人信息</el-dropdown-item>
@@ -62,6 +62,7 @@
                 console.log(command)
                 if (command === 'b') {
                     sessionStorage.clear()
+                    localStorage.clear()
 
                     this.$router.push('/login')
                 } else if (command === 'a') {

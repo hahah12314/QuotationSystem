@@ -314,8 +314,8 @@
           { task: '准备下周会议', status: '待处理' },
         ],
         systemAnnouncements: [
-          { id: 1, date: '2022-10-21 09:00', title: '系统升级公告', icon: 'info' },
-          { id: 2, date: '2022-10-22 10:00', title: '维护通知', icon: 'warning' },
+          { id: 1, date: '2024-10-21 09:00', title: '系统升级公告', icon: 'info' },
+          { id: 2, date: '2024-10-22 10:00', title: '维护通知', icon: 'warning' },
         ],
         roleFunctions: [
           { role: '管理员', function: '管理所有数据' },
@@ -327,23 +327,17 @@
           { id: 2, message: '用户李四提交了材料申请' },
           { id: 3, message: '用户王五审核了报价申请' },
         ],
+        menuList: []
       };
     },
     mounted() {
+      this.getMenuList();
       this.initCharts();
     },
     computed: {
       permissionMap() {
-        const menuListStr = localStorage.getItem('menuList');
-        let menuList = [];
-        if (menuListStr) {
-          try {
-            menuList = JSON.parse(menuListStr);
-          } catch (error) {
-            console.error('Failed to parse menuList:', error);
-          }
-        }
-        const flatMenuList = menuList.reduce((acc, item) => {
+
+        const flatMenuList = this.menuList.reduce((acc, item) => {
           if (item.children && item.children.length > 0) {
             acc.push(...item.children);
           }
@@ -356,6 +350,18 @@
       },
     },
     methods: {
+      async getMenuList() {
+        const res = await this.$http.get('/sys/sysMenu/getNowMenuChecked');
+        console.log(res);
+        this.menuList = res.data.data
+        // 定义排序顺序
+        const order = ['首页', '报价管理', '资源管理', '工种管理', '费用管理', '系统管理', '统计分析'];
+
+        // 对 menuList 进行排序
+        this.menuList = this.menuList.sort((a, b) => {
+          return order.indexOf(a.name) - order.indexOf(b.name);
+        });
+      },
       hasPermission(path) {
         const menuListStr = localStorage.getItem('menuList');
         let menuList = [];
@@ -496,6 +502,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 4.5px;
   }
 
   .card-content.has-permission .card-icon img {

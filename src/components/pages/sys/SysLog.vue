@@ -22,12 +22,10 @@
                 </el-table-column>
                 <el-table-column prop="method" label="操作方法">
                 </el-table-column>
-                <el-table-column prop="params" label="方法参数">
-                </el-table-column>
+              
                 <el-table-column prop="time" label="执行时间">
                 </el-table-column>
-                <el-table-column prop="ip" label="IP地址">
-                </el-table-column>
+            
                 <el-table-column prop="createDate" label="创建时间">
                 </el-table-column>
                 <el-table-column label="操作">

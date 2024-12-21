@@ -17,7 +17,7 @@
             </el-form>
 
             <el-table :data="dataList" border style="width: 100%" v-loading="dataListLoading" size="mini"
-                ref="multipleTable" @selection-change="handleSelectionChange">
+                ref="multipleTable" @selection-change="handleSelectionChange" :row-class-name="tableRowClassName">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column type="index" label="序号" width="55"></el-table-column>
                 <el-table-column prop="company.name" label="公司名称" width="150"></el-table-column>
@@ -74,52 +74,7 @@
         </el-dialog>
 
 
-        <!-- <el-dialog :title="dataDialogForm.id === 0 ? '新增记录' : '编辑记录'" :visible.sync="dialogFormVisible" width="35%"
-            >
-            <el-form :model="dataDialogForm" :rules="rules" ref="ruleForm" label-width="120px" size="mini">
-                <el-form-item label="公司名称" prop="company.name">
-                    <el-input v-model="dataDialogForm.company.name" autocomplete="off" style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="负责人" prop="company.responsiblePerson">
-                    <el-input v-model="dataDialogForm.company.responsiblePerson" autocomplete="off"
-                        style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="联系方式" prop="company.contactInfo">
-                    <el-input v-model="dataDialogForm.company.contactInfo" autocomplete="off"
-                        style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="客户名称" prop="customer.name">
-                    <el-input v-model="dataDialogForm.customer.name" autocomplete="off"
-                        style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="客户联系方式" prop="customer.contactInfo">
-                    <el-input v-model="dataDialogForm.customer.contactInfo" autocomplete="off"
-                        style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="客户邮箱" prop="customer.email">
-                    <el-input v-model="dataDialogForm.customer.email" autocomplete="off"
-                        style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="客户地址" prop="customer.address">
-                    <el-input v-model="dataDialogForm.customer.address" autocomplete="off"
-                        style="width: 240px;"></el-input>
-                </el-form-item>
-                <el-form-item label="支付方式" prop="customer.paymentMethod">
-                    <el-select v-model="dataDialogForm.customer.paymentMethod" placeholder="请选择支付方式"
-                        style="width: 240px;">
-                        <el-option label="现金" value="现金"></el-option>
-                        <el-option label="信用卡" value="信用卡"></el-option>
-                        <el-option label="支付宝" value="支付宝"></el-option>
-                        <el-option label="银行转账" value="银行转账"></el-option>
-                        <el-option label="微信支付" value="微信支付"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="submitData()">确定</el-button>
-            </div>
-        </el-dialog> -->
+
         <!-- 弹出框显示完整的审核意见 -->
         <el-dialog :visible.sync="fullOpinionDialogVisible" title="审核意见详情" width="50%">
             <p>{{ selectedAuditOpinion }}</p>
@@ -229,6 +184,16 @@
 
         },
         methods: {
+            tableRowClassName({ row }) {
+                console.log('row', row.auditStatus)
+                if (row.auditStatus == 0) {
+                    return 'not-audited-row';
+                } else if (row.auditStatus == -1) {
+                    return 'rejected-row';
+                } else {
+                    return 'approved-row';
+                }
+            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
                 console.log('selected', this.multipleSelection)
@@ -466,7 +431,7 @@
                     case -1:
                         return '审核不通过';
                     default:
-                        return '已审核';
+                        return '审核通过';
                 }
             },
 
@@ -683,5 +648,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .el-table tr.not-audited-row {
+        background: #fde2e2 !important;
+        /* 未审核状态背景颜色 */
+    }
+
+    .el-table tr.rejected-row {
+        background: #fff3cd !important;
+        /* 已打回状态背景颜色 */
+    }
+
+    .el-table tr {
+        background-color: #d4edda !important;
+        /* 已通过状态背景颜色 */
     }
 </style>

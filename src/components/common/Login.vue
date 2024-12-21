@@ -46,6 +46,7 @@
                             if (res.data.code === 200) {
                                 sessionStorage.setItem('token', res.headers.authorization)
                                 sessionStorage.setItem('username', this.form.username)
+                                this.$message.success('登录成功')
                                 this.$router.push('/')
                             } else {
                                 this.$message.error(res.data.msg)

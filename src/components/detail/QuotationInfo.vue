@@ -145,7 +145,7 @@
     </div>
 
     <footer class="footer">
-      <p>&copy; 2023 金威. 版权所有.</p>
+      <p>&copy; 2024 金威. 版权所有.</p>
     </footer>
   </div>
 </template>
@@ -193,9 +193,9 @@
             await this.$http.delete('/quotations/delete', { data: { id: this.quotationForm.quotationId } });
           }
           const response = await this.$http.post('/quotations/save', this.quotationForm);
-          if (response.code === 200) {
-            this.$message.success('报价单已提交审核！');
-          }
+
+          this.$message.success('报价单已提交审核！');
+
           this.$router.push('/firstPage')
 
         } catch (error) {

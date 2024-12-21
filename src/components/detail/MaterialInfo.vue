@@ -301,7 +301,7 @@
                     length: 0,
                     width: 0,
                     height: 0,
-                    blankWeight: 9,
+                    blankWeight: 0,
                     materialUnitPrice: 0,
                     blankFee: 0,
                     scrapUnitPrice: 0,
@@ -684,7 +684,9 @@
                     this.surfaceTreatment = res.data.data.surfaceTreatment !== null ? res.data.data.surfaceTreatment : this.surfaceTreatment;
                     this.cuttingCost = res.data.data.cuttingCost !== null ? res.data.data.cuttingCost : this.cuttingCost;
                     this.paintingCost = res.data.data.paintingCost !== null ? res.data.data.paintingCost : this.paintingCost;
-                    console.log(res, this.rawMaterials)
+                    this.processingCost = res.data.data.processingCost !== null ? res.data.data.processingCost : this.processingCost;
+
+                    console.log('materialinfo', res, this.processingCost, this.materialCost)
 
 
 

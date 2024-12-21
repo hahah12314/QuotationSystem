@@ -342,8 +342,12 @@
           this.dataDialogForm.roleList = [this.selectedRoleId]; // 修改这里
 
           const url = this.dataDialogForm.userId !== 0 ? '/sys/sysUser/update' : '/sys/sysUser/save';
+          if (this.dataDialogForm.userId != 0) {
+            this.dataDialogForm.password = null
+          }
           const response = await this.$http.post(url, this.dataDialogForm);
           console.log(response);
+          this.$message.success(this.dataDialogForm.userId !== 0 ? '用户更新成功！' : '用户新增成功！');
 
           this.dialogFormVisible = false;
           this.dataDialogForm = {
@@ -358,6 +362,7 @@
           };
           this.selectedRoleId = null; // 修改这里
           this.dialogSubmitForm = false;
+
           await this.getDataList();
         } catch (error) {
           console.error('更新用户时出错:', error);

@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import commonCustomer from '@/components/pages/customer/commonCustomer.vue'
-import customerList from '@/components/pages/customer/customerList.vue'
-import allOrder from '@/components/pages/order/allOrder.vue'
-import myOrder from '@/components/pages/order/myOrder.vue'
+
 import firstPage from '@/components/pages/FirstPage.vue'
 import Login from '@/components/common/Login.vue'
 import SysMenu from '@/components/pages/sys/SysMenu.vue'
@@ -28,26 +25,9 @@ const routes = [
         name: 'firstPage',
         component: firstPage
       },
-      {
-        path: '/commonCustomer',
-        name: 'commonCustomer',
-        component: commonCustomer
-      },
-      {
-        path: '/customerList',
-        name: 'customerList',
-        component: customerList
-      },
-      {
-        path: '/allOrder',
-        name: 'allOrder',
-        component: allOrder
-      },
-      {
-        path: '/myOrder',
-        name: 'myOrder',
-        component: myOrder
-      },
+    
+    
+      
       {
         path: '/sysMenu',
         name: 'sysMenu',

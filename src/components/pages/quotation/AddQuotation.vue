@@ -120,7 +120,7 @@
               <select v-model="quotationForm.material.historyMaterialId" class="input-field" :disabled="isReadOnly">
                 <option v-for="(material,index) in historyMaterials" :key="material.detailId"
                   :value="material.detailId">
-                  {{ material.specification}}
+                  {{index+1}}. {{ material.specification}}
                 </option>
               </select>
             </td>
@@ -307,41 +307,66 @@
         }
 
       },
+      // 校验邮箱格式
+      validateEmail(email) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+      },
+
+      // 校验手机号格式
+      validatePhoneNumber(phoneNumber) {
+        const phonePattern = /^1[3-9]\d{9}$/;
+        return phonePattern.test(phoneNumber);
+      },
       generateQuote() {
-        if (!this.quotationForm.company.name) {
-          this.$message.error('请输入公司名称');
+        // 定义一个校验函数，用于检查必填字段是否为空
+        const validateField = (value, fieldName) => {
+          if (!value) {
+            this.$message.error(`请输入${fieldName}`);
+            return false;
+          }
+          return true;
+        };
+
+        // 校验公司名称
+        if (!validateField(this.quotationForm.company.name, '公司名称')) return;
+
+        // 校验客户名称
+        if (!validateField(this.quotationForm.customer.name, '客户名称')) return;
+
+        // 校验负责人
+        if (!validateField(this.quotationForm.company.responsiblePerson, '负责人')) return;
+
+        // 校验负责人联系方式
+        if (!validateField(this.quotationForm.company.contactInfo, '负责人联系方式')) return;
+
+        // 校验客户联系方式
+        if (!validateField(this.quotationForm.customer.contactInfo, '客户联系方式')) return;
+
+        // 校验付款方式
+        if (!validateField(this.quotationForm.customer.paymentMethod, '付款方式')) return;
+
+        // 校验报价物料
+        if (!validateField(this.quotationForm.material.quotedMaterialId, '报价物料')) return;
+
+        // 校验原材料类型
+        if (!validateField(this.quotationForm.material.historyMaterialId, '原材料类型')) return;
+
+        // 校验客户邮箱格式
+        if (this.quotationForm.customer.email && !this.validateEmail(this.quotationForm.customer.email)) {
+          this.$message.error('请输入有效的客户邮箱');
           return;
         }
 
-        if (!this.quotationForm.customer.name) {
-          this.$message.error('请输入客户名称');
-          return;
-        }
-        if (!this.quotationForm.company.responsiblePerson) {
-          this.$message.error('请输入负责人');
+        // 校验负责人联系方式格式（假设负责人联系方式是手机号）
+        if (this.quotationForm.company.contactInfo && !this.validatePhoneNumber(this.quotationForm.company.contactInfo)) {
+          this.$message.error('请输入有效的负责人联系方式');
           return;
         }
 
-        if (!this.quotationForm.company.contactInfo) {
-          this.$message.error('请输入负责人联系方式');
-          return;
-        }
-        if (!this.quotationForm.customer.contactInfo) {
-          this.$message.error('请输入客户联系方式');
-          return;
-        }
-
-        if (!this.quotationForm.customer.paymentMethod) {
-          this.$message.error('请输入付款方式');
-          return;
-        }
-        if (!this.quotationForm.material.quotedMaterialId) {
-          this.$message.error('请选择报价物料');
-          return;
-        }
-
-        if (!this.quotationForm.material.historyMaterialId) {
-          this.$message.error('请选择原材料类型');
+        // 校验客户联系方式格式（假设客户联系方式是手机号）
+        if (this.quotationForm.customer.contactInfo && !this.validatePhoneNumber(this.quotationForm.customer.contactInfo)) {
+          this.$message.error('请输入有效的客户联系方式');
           return;
         }
         // 获取子组件的 customDetails
