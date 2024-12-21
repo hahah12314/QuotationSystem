@@ -53,6 +53,15 @@
 				password: '',
 			};
 		},
+    onLoad() {
+      const userInfo = uni.getStorageSync("userInfo");
+      console.log('login',userInfo)
+      if(userInfo){
+        uni.reLaunch({
+          url:'/pages/home/home'
+        })
+      }
+    },
 		methods: {
 			async handleLogin() {
 				if (!this.username || !this.password) {

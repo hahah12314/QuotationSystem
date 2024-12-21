@@ -1,17 +1,25 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-
+{
+      "path": "pages/login/login",
+      "style": {
+        "enablePullDownRefresh": true ,//开启下拉刷新
+        "navigationBarTitleText": "登录"
+      }
+    },
     {
       "path": "pages/home/home",
       "style": {
-        "enablePullDownRefresh": true //开启下拉刷新
+        "enablePullDownRefresh": true ,//开启下拉刷新
+        "navigationBarTitleText": "首页"
       }
     },
     {
       "path": "pages/my/my",
       "style": {
        
-        "enablePullDownRefresh": true //开启下拉刷新
+        "enablePullDownRefresh": true ,//开启下拉刷新
+        "navigationBarTitleText": "个人中心"
       }
     },
     {
@@ -25,12 +33,7 @@
   "subPackages": [{
     "root": "subpkg",
     "pages": [
-      {
-        "path": "login/login",
-        "style": {
-          "navigationBarTitleText": "登录"
-        }
-      },
+     
       {
         "path" : "worker/workerManagement/workerManagement",
         "style" : 

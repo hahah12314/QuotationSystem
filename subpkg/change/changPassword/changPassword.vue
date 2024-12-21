@@ -103,7 +103,7 @@ export default {
                     uni.removeStorageSync("token");
                     uni.removeStorageSync("userInfo");
                     uni.reLaunch({
-                        url: '/subpkg/login/login'
+                        url: '/pages/login/login'
                     });
                 } else {
                     uni.showToast({

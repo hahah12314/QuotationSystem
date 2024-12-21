@@ -285,4 +285,16 @@ export default {
 .send-btn:hover {
   background-color: #1e4bb8;
 }
+.notification-content text {
+	  text-align: left; 
+	  display: inline-block; 
+	  padding: 0; 
+	  margin: 0; 
+	  line-height: 1.5;
+	}
+  .notification-content {
+      margin-top: 5px;
+  	display: flex;
+    }
+
 </style>

@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import * as echarts from '@/uni_modules/lime-echart/static/echarts.min';
+import * as echarts from '@/static/echarts.min.js';
 
 export default {
   name: 'OrderAnalysis',

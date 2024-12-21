@@ -26,7 +26,7 @@
         <view v-else class="message-content-container sent">
           <!-- 头像 -->
           <view class="avatar-container">
-            <image class="avatar" :src="userInfo.avatar"></image>
+            <image class="avatar" :src="userInfo.avatar || require('static/user1.png')"></image>
           </view>
           <!-- 消息内容 -->
           <view class="message-content">
@@ -62,6 +62,7 @@ export default {
     // 从本地存储中获取 userInfo
     const userInfo = uni.getStorageSync("userInfo");
     this.userInfo = userInfo;
+    console.log('myav',this.userInfo)
     // 从本地存储中获取 selectedMessage
     const messageStr = uni.getStorageSync('selectedMessage');
     if (messageStr) {

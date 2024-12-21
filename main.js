@@ -7,7 +7,9 @@ import store from './store';
 Vue.prototype.$store = store;  // 将store挂载到Vue实例
 uni.$http = $http;
 
-$http.baseUrl = 'http://localhost:8086/wanshu'; // 替换为你的基础URL
+// $http.baseUrl = 'http://localhost:8086/wanshu'; // 替换为你的基础URL
+$http.baseUrl = 'https://jw.hnuedu.top/api'; // 替换为你的基础URL
+
 
 // 请求拦截器
 $http.beforeRequest = function(options) {

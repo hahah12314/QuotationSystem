@@ -53,10 +53,13 @@
         "appid" : "wx9b4220779041c438",
         "setting" : {
             "urlCheck" : false,
-            "ignoreUploadUnusedFiles": false,
-            "ignoreDevUnusedFiles": false
+            "ignoreUploadUnusedFiles" : false,
+            "ignoreDevUnusedFiles" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "optimization" : {
+            "subPackages" : true
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

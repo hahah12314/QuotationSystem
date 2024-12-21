@@ -8,8 +8,8 @@
       </view>
     </view>
     <view class="message_list">
-      <view class="message_item" v-for="(message, index) in filteredMessages" :key="index" @click="goToPage(message, index)"
-        :class="{ 'selected': message.isSelected }">
+      <view class="message_item" v-for="(message, index) in filteredMessages" :key="index"
+        @click="goToPage(message, index)" :class="{ 'selected': message.isSelected }">
         <image class="text_icon" :src="message.icon" mode="scaleToFill" />
         <view class="unread-dot" v-if="message.unreadCount > 0">
           <text class="unread-count">{{ message.unreadCount }}</text>
@@ -27,189 +27,205 @@
 </template>
 
 <script>
-export default {
-  data() {
-    const { safeAreaInsets } = uni.getSystemInfoSync();
+  export default {
+    data() {
+      const {
+        safeAreaInsets
+      } = uni.getSystemInfoSync();
 
-    return {
-      safeAreaInsets,
-      messageStatus: [
-        {
-          title: "已读消息",
-          icon: "/static/images/已读.png",
-          isActive: false,
-        },
-        {
-          title: "未读消息",
-          icon: "/static/images/未读.png",
-          isActive: true,
-        }
-      ],
-      messages: [
-        {
-          title: "待审批消息",
-          content: "进度跟踪消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 57,
-          unreadCount: 0
-        },
-        {
-          title: "审核员",
-          content: "审核员消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 57,
-          unreadCount: 0
-        },
-        {
-          title: "报价员",
-          content: "报价员消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 58,
-          unreadCount: 0
-        },
-        {
-          title: "成本管理员",
-          content: "成本管理员消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 56,
-          unreadCount: 0
-        },
-        {
-          title: "高层决策者",
-          content: "高层决策者消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 55,
-          unreadCount: 0
-        },
-        {
-          title: "系统管理员",
-          content: "系统管理员消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 49,
-          unreadCount: 0
-        },
-        {
-          title: "超级管理员",
-          content: "超级管理员消息",
-          date: "2021-11-10",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 54,
-          unreadCount: 0
-        },
-        {
-          title: "仓储助手",
-          content: "仓储助手消息",
-          date: "2021-11-12",
-          icon: "/static/images/dog.jpg",
-          isRead: false,
-          isSelected: false,
-          roleId: 0,
-          unreadCount: 0
-        }
-      ],
-      userInfo: null,
-      selectedStatus: "未读消息"
-    };
-  },
-  onLoad() {
-    const userInfo = uni.getStorageSync("userInfo");
-    this.userInfo = userInfo;
-    this.fetchMessages();
-  },
-  computed: {
-    filteredMessages() {
-      return this.messages.filter(message =>
-        (this.selectedStatus === "未读消息" && message.unreadCount > 0) ||
-        (this.selectedStatus === "已读消息" && message.unreadCount === 0)
-      );
-    }
-  },
-  methods: {
-    handleStatusChange(title) {
-      this.selectedStatus = title;
-      this.messageStatus.forEach(status => {
-        status.isActive = status.title === title;
-      });
+      return {
+        safeAreaInsets,
+        messageStatus: [{
+            title: "已读消息",
+            icon: "/static/images/已读.png",
+            isActive: false,
+          },
+          {
+            title: "未读消息",
+            icon: "/static/images/未读.png",
+            isActive: true,
+          }
+        ],
+        messages: [
+
+          {
+            title: "审核员",
+            content: "审核员消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 57,
+            unreadCount: 0
+          },
+          {
+            title: "报价员",
+            content: "报价员消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 58,
+            unreadCount: 0
+          },
+          {
+            title: "成本管理员",
+            content: "成本管理员消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 56,
+            unreadCount: 0
+          },
+          {
+            title: "高层决策者",
+            content: "高层决策者消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 55,
+            unreadCount: 0
+          },
+          {
+            title: "系统管理员",
+            content: "系统管理员消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 49,
+            unreadCount: 0
+          },
+          {
+            title: "超级管理员",
+            content: "超级管理员消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 54,
+            unreadCount: 0
+          },
+          {
+            title: "仓储助手",
+            content: "仓储助手消息",
+            date: this.getYearMonthDate(new Date()),
+            icon: "/static/images/dog.jpg",
+            isRead: false,
+            isSelected: false,
+            roleId: 0,
+            unreadCount: 0
+          }
+        ],
+        userInfo: null,
+        selectedStatus: "未读消息"
+      };
     },
-    fetchMessages() {
-      const apiEndpoint = '/messages/unread';
-      this.messages.forEach((message) => {
-        uni.$http.get(apiEndpoint, {
-            receiverId: this.userInfo.roleId, // 当前用户的 roleId
-            senderId: message.roleId // 消息的 roleId
-          })
-          .then(res => {
-            message.unreadCount = res.data.data.length;
-            console.log('获取消息成功', res);
-          })
-          .catch(err => {
-            console.error(`获取消息失败，receiverId: ${this.userInfo.roleId}, senderId: ${message.roleId}`, err);
-          });
-      });
-    },
-    goToPage(message, index) {
-      this.toggleReadStatus(index, message);
-      const pages = [
-        "/subpkg/message/processInfo/processInfo",
-        "/subpkg/message/assistantInfo/assistantInfo",
-      ];
-      let url;
-      if (message.roleId !== 0) {
-        url = pages[0];
-      } else {
-        url = pages[1];
+    onLoad() {
+      const userInfo = uni.getStorageSync("userInfo");
+      if (!userInfo) {
+        uni.showToast({
+          icon: "none",
+          title: "请先登录"
+        })
+        uni.reLaunch({
+          url: "/pages/login/login"
+        })
       }
-      
-      // 将 message 对象存储到本地存储中
-      uni.setStorageSync('selectedMessage', JSON.stringify(message));
-
-      if (url) {
-        uni.navigateTo({
-          url
+      this.userInfo = userInfo;
+      this.fetchMessages();
+    },
+    computed: {
+      filteredMessages() {
+        return this.messages.filter(message =>
+          (this.selectedStatus === "未读消息" && message.unreadCount > 0) ||
+          (this.selectedStatus === "已读消息" && message.unreadCount === 0)
+        );
+      }
+    },
+    methods: {
+      getYearMonthDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      },
+      handleStatusChange(title) {
+        this.selectedStatus = title;
+        this.messageStatus.forEach(status => {
+          status.isActive = status.title === title;
         });
-      }
-    },
-    async toggleReadStatus(index, message) {
-      this.messages[index].isSelected = !this.messages[index].isSelected;
-      this.messages[index].isRead = true;
-      if (this.messages[index].unreadCount > 0) {
-        this.messages[index].unreadCount = 0;
-        
-        // 更新消息状态到后端
-        await uni.$http.get('/messages/markRead', {
-            receiverId: this.userInfo.roleId, // 当前用户的 roleId
-            senderId: this.messages[index].roleId // 消息的 roleId
-          })
-          .then(() => {
-            console.log('消息状态更新成功');
-          })
-          .catch(err => {
-            console.error('消息状态更新失败', err);
+      },
+      fetchMessages() {
+        const apiEndpoint = '/messages/unread';
+        this.messages.forEach((message) => {
+          uni.$http.get(apiEndpoint, {
+              receiverId: this.userInfo.roleId, // 当前用户的 roleId
+              senderId: message.roleId // 消息的 roleId
+            })
+            .then(res => {
+              message.unreadCount = res.data.data.length;
+              console.log('获取消息成功', res);
+            })
+            .catch(err => {
+              console.error(`获取消息失败，receiverId: ${this.userInfo.roleId}, senderId: ${message.roleId}`, err);
+            });
+        });
+      },
+      async goToPage(message, index) {
+        await this.toggleReadStatus(index, message);
+
+      },
+      goPage(index, message) {
+        const pages = [
+          "/subpkg/message/processInfo/processInfo",
+          "/subpkg/message/assistantInfo/assistantInfo",
+        ];
+        let url;
+        if (message.roleId !== 0) {
+          url = pages[0];
+        } else {
+          url = pages[1];
+        }
+
+        // 将 message 对象存储到本地存储中
+        uni.setStorageSync('selectedMessage', JSON.stringify(message));
+
+        if (url) {
+          uni.navigateTo({
+            url
           });
+        }
+      },
+      toggleReadStatus(index, message) {
+        this.messages[index].isSelected = !this.messages[index].isSelected;
+        this.messages[index].isRead = true;
+        console.log('mess', index, message, this.messages)
+        if (message.unreadCount > 0) {
+          this.messages.forEach(m => {
+            if (m.roleId == message.roleId) {
+              m.unreadCount = 0;
+            }
+          });
+          // 更新消息状态到后端
+          console.log('aaaab')
+          uni.$http.get('/messages/markRead', {
+              receiverId: this.userInfo.roleId, // 当前用户的 roleId
+              senderId: message.roleId // 消息的 roleId
+            })
+            .then(() => {
+              console.log('消息状态更新成功');
+              this.goPage(index, message)
+            })
+            .catch(err => {
+              console.error('消息状态更新失败', err);
+            });
+        }
       }
     }
-  }
-};
+  };
 </script>
 <style lang="less">
   .container_wrap {

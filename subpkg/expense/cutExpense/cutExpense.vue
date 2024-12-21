@@ -242,7 +242,22 @@ export default {
   color: #333;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-
+.filter-select {
+  flex: 1 1 150px;
+  border: 1px solid #fff;
+  height: 35px;
+  border-radius: 35px;
+  background-color: #fff;
+  color: #666;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.filter-select-view {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #666;
+  width: 100%;
+  text-align: left;
+}
 .filter-button {
   font-size: 14px;
   color: #fff;
@@ -252,27 +267,8 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .filter-button:hover {
   background-color: #3a8ee6;
-}
-
-.filter-select {
-  flex: 1 1 100px;
-  padding: 8px 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #333;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.filter-select-view {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .card-container {

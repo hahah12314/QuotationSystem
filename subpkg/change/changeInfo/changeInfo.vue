@@ -76,7 +76,7 @@ export default {
       });
       const token = uni.getStorageSync('token');
       uni.uploadFile({
-        url: "http://localhost:8086/wanshu/upload", // 后端接口地址
+        url: "https://jw.hnuedu.top/api/upload", // 后端接口地址
         header: {
           Authorization: token
         },
@@ -90,7 +90,7 @@ export default {
             const response = JSON.parse(uploadRes.data);
             if (response.data) {
                const filename = response.data.split("//").pop()
-              this.updateForm.avatar = `http://so9r96ky6.hn-bkt.clouddn.com/images//${filename}`;
+              this.updateForm.avatar = `https://cdn.jw.hnuedu.top/images//${filename}`;
               uni.showToast({
                 title: "头像上传成功",
                 icon: 'success',
@@ -125,15 +125,51 @@ export default {
         }
       });
     },
+    // 校验邮箱格式
+    			validateEmail(email) {
+    				const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    				return emailPattern.test(email);
+    			},
+    
+    			// 校验手机号格式
+    			validatePhoneNumber(phoneNumber) {
+    				const phonePattern = /^1[3-9]\d{9}$/; 
+    				return phonePattern.test(phoneNumber);
+    			},
     async handleSubmit() {
       try {
         // 更新个人信息
+        // 校验邮箱
+        				if (!this.updateForm.email || !this.validateEmail(this.updateForm.email)) {
+        					uni.showToast({
+        						title: "请输入有效的邮箱地址",
+        						icon: 'none',
+        						duration: 2000
+        					});
+        					return; // 如果邮箱无效，终止提交
+        				}
+        
+        				// 校验手机号
+        				if (!this.updateForm.mobile || !this.validatePhoneNumber(this.updateForm.mobile)) {
+        					uni.showToast({
+        						title: "请输入有效的手机号",
+        						icon: 'none',
+        						duration: 2000
+        					});
+        					return; // 如果手机号无效，终止提交
+        				}
+        this.updateForm.password=null
         const updateResponse = await uni.$http.post("/sys/sysUser/update", this.updateForm);
-        if (updateResponse.data.code === "SUCCESS") {
+        uni.hideLoading()
+        console.log(updateResponse.data)
+        
+        if (updateResponse.data.code == "SUCCESS") {
           uni.showToast({
-            duration:2000,
-            title:'更新成功'
+           
+            title:'更新成功',
+            icon:'success'
           })
+          
           uni.removeStorageSync("userInfo");
           uni.setStorageSync("userInfo",this.updateForm)
           

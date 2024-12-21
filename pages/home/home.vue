@@ -146,7 +146,7 @@
 	export default {
 		data() {
 			return {
-				showPopup: true, // 控制弹窗的显示与隐藏
+				showPopup: false, // 控制弹窗的显示与隐藏
 				unapprovedCount: 0, // 存储未审核的消息数量
 				safeAreaInsets: 0,
 				showTodos: false,
@@ -162,7 +162,7 @@
           56:"成本管理员",
           57:"报价审核员",
           58:"报价员",
-          59:"成本审核员",
+       
       
           }
           
@@ -171,13 +171,14 @@
 		},
 		onLoad() {
       const userInfo = uni.getStorageSync("userInfo");
+      console.log('home',userInfo)
       if(!userInfo){
         uni.showToast({
           icon:"none",
           title:"请先登录"
         })
         uni.reLaunch({
-          url:"/subpkg/login/login"
+          url:"/pages/login/login"
         })
       }
       this.userInfo = userInfo;
@@ -194,7 +195,10 @@
         uni.$http.get("/messages/getAll",{
           receiverId: this.userInfo.roleId
         }).then(res => {
+          
             this.unapprovedCount = res.data.data.length;
+            this.showPopup= this.unapprovedCount > 0;       //添加该语句
+
             this.todos=res.data.data
             console.log('获取消息成功', res);
           })

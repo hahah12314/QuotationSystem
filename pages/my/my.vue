@@ -33,7 +33,7 @@
 		data() {
 			return {
 				user: {
-					avatar: '/static/avatar.jpeg', // 替换为实际头像URL
+					avatar: '', // 替换为实际头像URL
 					username: '张三',
 					role: '普通用户'
 				}
@@ -42,6 +42,15 @@
 		onLoad() {
 			// 数据回显
 			const userInfo = uni.getStorageSync("userInfo");
+			if(!userInfo){
+			  uni.showToast({
+			    icon:"none",
+			    title:"请先登录"
+			  })
+			  uni.reLaunch({
+			    url:"/pages/login/login"
+			  })
+			}
 			this.user=userInfo
       this.user.avatar=userInfo.avatar || require('@/static/user1.png');
 			// this.user.role = userInfo.role;
@@ -66,8 +75,9 @@
 							// 清除用户信息和token
 							uni.removeStorageSync('user');
 							uni.removeStorageSync('token');
+              uni.removeStorageSync('userInfo');
 							uni.reLaunch({
-								url: '/subpkg/login/login'
+								url: '/pages/login/login'
 							});
 						}
 					}
