@@ -8,8 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-// axios.defaults.baseURL = "http://localhost:8086/wanshu"
-axios.defaults.baseURL = "https://jw.hnuedu.top/api/"
+axios.defaults.baseURL = "http://localhost:8086/wanshu"
+// axios.defaults.baseURL = "https://jw.hnuedu.top/api/"
 // 添加 Axios 的拦截器
 // 创建一个全局的消息提示方法
 Vue.prototype.$globalMessage = function (type, message) {

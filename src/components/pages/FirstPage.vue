@@ -252,21 +252,51 @@
       <el-col :span="12">
         <el-card class="box-card1 announcements">
           <h3>系统公告</h3>
-          <div v-for="item in systemAnnouncements" :key="item.id" class="announcement-item">
-            <div>{{ item.title }}</div>
-            <div><i :class="`el-icon-${item.icon}`">{{ item.date }}</i></div>
+          <div v-for="item in systemAnnouncements" :key="item.id" class="announcement-item"
+            @click="showAnnouncementDetails(item)">
+            <div class="announcement-title">{{ item.title }}</div>
+            <div class="announcement-meta">
+              <i :class="`el-icon-${item.icon}`"></i>
+              <span>{{ item.date }}</span>
+            </div>
           </div>
         </el-card>
+        <!-- 详细公告的弹窗 -->
+        <el-dialog title="公告详情" :visible.sync="dialogVisible" width="50%" class="announcement-dialog">
+          <div class="announcement-dialog-header">
+            <h4>{{ selectedAnnouncement.title }}</h4>
+            <div class="announcement-date">{{ selectedAnnouncement.date }}</div>
+          </div>
+          <div class="announcement-details">
+            <!-- 动态渲染内容 -->
+            <div v-if="selectedAnnouncement.content" v-for="(section, index) in selectedAnnouncement.content"
+              :key="index" class="content-section">
+              <h5 v-if="section.title">{{ section.title }}</h5>
+              <p v-if="section.description">{{ section.description }}</p>
+              <ul v-if="section.points && section.points.length">
+                <li v-for="(point, idx) in section.points" :key="idx">{{ point }}</li>
+              </ul>
+            </div>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">关闭</el-button>
+          </span>
+        </el-dialog>
       </el-col>
 
       <el-col :span="12">
         <el-card class="box-card recent-activities">
           <h3>近期活动</h3>
-          <el-list>
-            <div v-for="activity in recentActivities" :key="activity.id" class="activity">
-              {{ activity.message }}
+          <div v-for="activity in recentActivities" :key="activity.id" class="activity">
+            <div class="activity-content">
+              <div class="activity-left">
+                用户 {{ activity.username }}<span style="margin-left: 20px;"></span>{{ activity.operation }}
+              </div>
+              <div class="activity-right">
+                {{ activity.createDate }}
+              </div>
             </div>
-          </el-list>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -278,6 +308,7 @@
           <h3>本周操作统计</h3>
           <div ref="weeklyChart" class="chart-container"></div>
         </el-card>
+
       </el-col>
 
       <el-col :span="12">
@@ -287,6 +318,7 @@
         </el-card>
       </el-col>
     </el-row>
+
 
 
   </div>
@@ -314,25 +346,89 @@
           { task: '准备下周会议', status: '待处理' },
         ],
         systemAnnouncements: [
-          { id: 1, date: '2024-10-21 09:00', title: '系统升级公告', icon: 'info' },
-          { id: 2, date: '2024-10-22 10:00', title: '维护通知', icon: 'warning' },
+          {
+            id: 1,
+            title: "报价系统更新通知",
+            date: "2024-12-20",
+            content: [
+              {
+                title: "更新内容",
+                description: "金威报价系统现已上线以下新功能：",
+                points: [
+                  "报价单管理模块：支持批量导入和导出报价单数据。",
+                  "详细统计分析功能：新增客户分析和利润分析视图。",
+                  "用户体验优化：改进界面布局，提高系统操作的便捷性。"
+                ]
+              },
+              {
+                title: "注意事项",
+                description: "请尽快熟悉新功能，如有疑问请联系系统管理员。"
+              }
+            ],
+            icon: "info"
+          },
+          {
+            id: 2,
+            title: "节假日维护公告",
+            date: "2024-12-15",
+            content: [
+              {
+                title: "维护安排",
+                description: "系统将在以下时间进行例行维护：",
+                points: [
+                  "维护时间：2024年12月25日 00:00 - 06:00",
+                  "维护范围：服务器硬件升级及数据库优化",
+                  "影响范围：系统可能短时间无法正常使用"
+                ]
+              },
+              {
+                title: "致谢",
+                description: "我们将尽快完成维护，感谢您的支持与理解。"
+              }
+            ],
+            icon: "warning"
+          },
+          {
+            id: 3,
+            title: "用户指南与培训通知",
+            date: "2024-12-18",
+            content: [
+              {
+                title: "培训内容",
+                description: "为帮助用户更好地使用系统，我们将开展以下课程：",
+                points: [
+                  "报价系统基础操作",
+                  "报价单审核与管理流程",
+                  "高级功能：自定义统计报表的生成"
+                ]
+              },
+              {
+                title: "注册方式",
+                description: "请使用向管理员提前申请注册并登录培训平台。培训期间有答疑环节，期待您的参与。"
+              }
+            ],
+            icon: "success"
+          }
         ],
+
+        dialogVisible: false,
+        selectedAnnouncement: {},
         roleFunctions: [
           { role: '管理员', function: '管理所有数据' },
           { role: '报价员', function: '生成报价单' },
           { role: '审核员', function: '审核报价及材料' },
         ],
         recentActivities: [
-          { id: 1, message: '用户张三更新了报价单' },
-          { id: 2, message: '用户李四提交了材料申请' },
-          { id: 3, message: '用户王五审核了报价申请' },
+
         ],
         menuList: []
       };
     },
     mounted() {
       this.getMenuList();
+      this.getUserInfo();
       this.initCharts();
+      this.getRecentActivities()
     },
     computed: {
       permissionMap() {
@@ -350,6 +446,23 @@
       },
     },
     methods: {
+      showAnnouncementDetails(item) {
+        this.selectedAnnouncement = item;
+        this.dialogVisible = true;
+      },
+      getRecentActivities() {
+        this.$http.get('/sys/sysLog/latest', { params: { limit: 5 } }).then(res => {
+          this.recentActivities = res.data.data;
+          console.log('recent activities', this.recentActivities)
+        });
+      },
+      async getUserInfo() {
+        const res = await this.$http.get('/sys/sysUser/getNowUser')
+        this.userInfo = res.data.data
+        console.log(res.data.data)
+
+
+      },
       async getMenuList() {
         const res = await this.$http.get('/sys/sysMenu/getNowMenuChecked');
         console.log(res);
@@ -611,5 +724,68 @@
     }
 
     font-size: 14px;
+  }
+
+  /* 悬停状态 */
+  .announcement-item:hover {
+    background-color: #f5f7fa;
+    color: #409eff;
+  }
+
+  /* 点击状态 */
+  .announcement-item:active {
+    background-color: #409eff;
+    color: #fff;
+  }
+
+  .recent-activities .activity-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .recent-activities .activity-left {
+    flex: 1;
+  }
+
+  .recent-activities .activity-right {
+    flex: 1;
+    text-align: right;
+  }
+
+  .announcement-dialog-header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .announcement-date {
+    font-size: 12px;
+    color: #909399;
+  }
+
+  .content-section h5 {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #333;
+  }
+
+  .content-section p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .content-section ul {
+    margin-left: 20px;
+    list-style: disc;
+  }
+
+
+  .dialog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
