@@ -8,7 +8,7 @@
 
       <el-container class="main-container">
         <!-- 头部区域 -->
-        <el-header class="header-container" style="height: 40px;">
+        <el-header class="header-container" style="height: 40px; padding: 0;">
           <Header />
         </el-header>
 

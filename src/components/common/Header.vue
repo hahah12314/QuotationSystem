@@ -2,7 +2,7 @@
     <div class='header-container' style="margin-left:-5px">
         <div class="l-content" style="margin-left:-5px">
             <el-button icon="el-icon-menu" size="medium" @click="handleMenu"></el-button>
-            <el-breadcrumb separator="/" style="margin-left: 20px;">
+            <el-breadcrumb separator="/" style="margin-left: 5px; font-size: 12px;">
                 <el-breadcrumb-item v-for="item in tags" :key="item.path"
                     :to="item.path !== $route.path ? item.path : null">
                     {{item.name}}
@@ -13,11 +13,11 @@
         </div>
         <div class="r-content">
             <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link">
+                <div class="el-dropdown-link">
                     <img :src="userInfo.avatar || require('@/assets/images/user1.png')" class="user-img">
 
-                    <span style="font-size: 14px;">{{userInfo.roleName}}</span>
-                </span>
+                    <div style="font-size: 14px;">{{userInfo.roleName}}</div>
+                </div>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="a">个人信息</el-dropdown-item>
                     <el-dropdown-item command="b">退出</el-dropdown-item>
@@ -106,8 +106,10 @@
         }
 
         .r-content {
+            flex: 1;
+            width: 100px;
 
-            padding-right: 20px;
+            padding-right: 5px;
 
             .el-dropdown-link {
                 display: flex;
@@ -130,8 +132,10 @@
         }
 
         .l-content {
+            flex: 9;
             display: flex;
             align-items: center;
+            margin-right: 4px;
 
             /deep/.el-breadcrumb__item {
                 .el-breadcrumb__inner {

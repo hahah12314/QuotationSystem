@@ -118,7 +118,7 @@
         },
         historyMaterials: [], // 从后台获取的历史材料数据
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 10,
         totalPage: 0,
         dialogFormVisible: false,
         rules: {

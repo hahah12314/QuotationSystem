@@ -101,7 +101,7 @@
         },
         dataList: [],
         menuAll: [],
-        pageSize: 5,
+        pageSize: 10,
         pageIndex: 1,
         totalPage: 0,
         dataListLoading: false,

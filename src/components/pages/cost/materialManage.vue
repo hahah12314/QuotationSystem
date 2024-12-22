@@ -81,7 +81,7 @@ export default {
         unitPrice: "",
       },
       dataList: [],
-      pageSize: 5,
+      pageSize: 10,
       pageIndex: 1,
       totalPage: 0,
     
