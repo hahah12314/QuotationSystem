@@ -2,6 +2,7 @@ package com.wanshu.message.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.message.entity.Messages;
 import com.wanshu.message.mapper.MessagesMapper;
 import io.swagger.annotations.Api;
@@ -52,6 +53,7 @@ public class MessagesController {
 
     // 发送消息
     @PostMapping("/send")
+    @SystemLog(value = "发送消息")
     public void sendMessage(@RequestBody Messages message) {
         messagesMapper.insert(message);
     }

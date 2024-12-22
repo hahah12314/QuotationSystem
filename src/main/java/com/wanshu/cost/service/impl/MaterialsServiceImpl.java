@@ -46,6 +46,7 @@ public class MaterialsServiceImpl extends ServiceImpl<MaterialsMapper, Materials
     }
 
     @Override
+    @SystemLog(value = "新增物料")
     public boolean saveMaterials(Materials materials) {
         materials.setCreateTime(LocalDateTime.now());
         materials.setUpdateTime(LocalDateTime.now());
@@ -64,6 +65,7 @@ public class MaterialsServiceImpl extends ServiceImpl<MaterialsMapper, Materials
 
     @Override
     //这个写id不是materialId能改成功吗
+    @SystemLog(value = "更新物料")
     public boolean updateMaterials(Materials materials) {
         materials.setUpdateTime(LocalDateTime.now());
         this.updateById(materials);

@@ -51,6 +51,7 @@ public class SurfaceTreatmentServiceImpl extends ServiceImpl<SurfaceTreatmentMap
     }
 
     @Override
+    @SystemLog(value = "新增表面处理单件费用")
     public boolean saveSurfaceTreatment(SurfaceTreatment surfaceTreatment) {
         this.baseMapper.insert(surfaceTreatment);
         return true;
@@ -65,6 +66,7 @@ public class SurfaceTreatmentServiceImpl extends ServiceImpl<SurfaceTreatmentMap
     }
 
     @Override
+    @SystemLog(value = "更新表面处理单件费用")
     public boolean updateSurfaceTreatment(SurfaceTreatment surfaceTreatment) {
         this.updateById(surfaceTreatment);
         return true;

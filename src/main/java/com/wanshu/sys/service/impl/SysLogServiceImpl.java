@@ -12,6 +12,8 @@ import com.wanshu.sys.mapper.SysLogMapper;
 import com.wanshu.sys.service.ISysLogService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 系统日志 服务实现类
@@ -38,5 +40,12 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         this.removeById(id);
 
         return "success";
+    }
+
+    @Override
+    public List<SysLog> getLatestLogs(int limit) {
+        QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_date").last("LIMIT " + limit);
+        return this.list(queryWrapper);
     }
 }

@@ -71,6 +71,7 @@ public class WorkersServiceImpl extends ServiceImpl<WorkersMapper, Workers> impl
     //lzy写的
 
     @Override
+    @SystemLog(value = "新增工人")
     public boolean saveworkers(Workers workers) {
         this.baseMapper.insert(workers);
         return true;
@@ -87,6 +88,7 @@ public class WorkersServiceImpl extends ServiceImpl<WorkersMapper, Workers> impl
 
     @Override
     @ApiOperation(value = "更新工人")
+    @SystemLog(value = "更新工人")
     public boolean updateWorkers(Workers workers) {
         this.updateById(workers);
         return true;

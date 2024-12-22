@@ -50,6 +50,7 @@ public class CuttingCostServiceImpl extends ServiceImpl<CuttingCostMapper,Cuttin
     }
 
     @Override
+    @SystemLog(value = "新增数割费用")
     public boolean saveCuttingCost(CuttingCost cuttingCost) {
         this.baseMapper.insert(cuttingCost);
         return true;
@@ -58,7 +59,7 @@ public class CuttingCostServiceImpl extends ServiceImpl<CuttingCostMapper,Cuttin
 
     @Override
     @Transactional
-    @SystemLog(value = "删除工人")
+    @SystemLog(value = "删除数割费用")
     public String deleteCuttingCost(int id) {
         this.baseMapper.deleteCuttingCostById(id);
         return "success";
@@ -66,6 +67,7 @@ public class CuttingCostServiceImpl extends ServiceImpl<CuttingCostMapper,Cuttin
     }
 
     @Override
+    @SystemLog(value = "更新数割费用")
     public boolean updateCuttingCost(CuttingCost cuttingCost) {
         this.updateById(cuttingCost);
         return true;

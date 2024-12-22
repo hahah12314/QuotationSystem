@@ -5,6 +5,8 @@ import com.wanshu.common.util.PageUtils;
 import com.wanshu.sys.dto.SysLogQueryDto;
 import com.wanshu.sys.entity.SysLog;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -19,4 +21,6 @@ public interface ISysLogService extends IService<SysLog> {
     PageUtils queryPage(SysLogQueryDto sysLogQueryDto);
 
     String deleteLog(Long id);
+
+    List<SysLog> getLatestLogs(int limit);
 }

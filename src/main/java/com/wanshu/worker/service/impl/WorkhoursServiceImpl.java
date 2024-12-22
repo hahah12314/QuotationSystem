@@ -67,6 +67,7 @@ public class WorkhoursServiceImpl extends ServiceImpl<WorkhoursMapper, Workhours
     }
 
     @Override
+    @SystemLog(value = "新增工时")
     public boolean saveworkhours(Workhours workhours) {
         this.baseMapper.insert(workhours);
         return true;
@@ -74,13 +75,14 @@ public class WorkhoursServiceImpl extends ServiceImpl<WorkhoursMapper, Workhours
 
     @Override
     @Transactional
-    @SystemLog(value = "删除工人")
+    @SystemLog(value = "删除工时")
     public String deleteWorkhours(int id) {
         this.baseMapper.deleteWorkhoursById(id);
         return "success";
     }
 
     @Override
+    @SystemLog(value = "更新工时")
     public boolean updateWorkhours(Workhours workhours) {
         this.updateById(workhours);
         return true;

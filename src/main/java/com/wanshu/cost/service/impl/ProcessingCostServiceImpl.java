@@ -54,6 +54,7 @@ public class ProcessingCostServiceImpl extends ServiceImpl<ProcessingCostMapper,
     }
 
     @Override
+    @SystemLog(value = "新增单件加工费用")
     public boolean saveProcessingCost(ProcessingCost processingCost) {
         this.baseMapper.insert(processingCost);
         return true;
@@ -68,6 +69,7 @@ public class ProcessingCostServiceImpl extends ServiceImpl<ProcessingCostMapper,
     }
 
     @Override
+    @SystemLog(value = "更新单件加工费用")
     public boolean updateProcessingCost(ProcessingCost processingCost) {
         this.updateById(processingCost);
         return true;

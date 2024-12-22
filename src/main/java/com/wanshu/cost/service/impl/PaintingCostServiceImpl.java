@@ -52,6 +52,7 @@ public class PaintingCostServiceImpl extends ServiceImpl<PaintingCostMapper, Pai
     }
 
     @Override
+    @SystemLog(value = "新增喷涂单件费用")
     public boolean savePaintingCost(PaintingCost paintingCost) {
         this.baseMapper.insert(paintingCost);
         return true;
@@ -66,6 +67,7 @@ public class PaintingCostServiceImpl extends ServiceImpl<PaintingCostMapper, Pai
     }
 
     @Override
+    @SystemLog(value = "更新喷涂单件费用")
     public boolean updatePaintingCost(PaintingCost paintingCost) {
         this.updateById(paintingCost);
         return true;

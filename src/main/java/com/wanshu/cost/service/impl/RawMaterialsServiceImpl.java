@@ -126,6 +126,7 @@ public class RawMaterialsServiceImpl extends ServiceImpl<RawMaterialsMapper, Raw
     }
 
     @Override
+    @SystemLog(value = "新增原材料")
     public boolean saverawMaterials(RawMaterials rawMaterials) {
         rawMaterials.setCreateTime(LocalDateTime.now());
         rawMaterials.setUpdateTime(LocalDateTime.now());
@@ -143,6 +144,7 @@ public class RawMaterialsServiceImpl extends ServiceImpl<RawMaterialsMapper, Raw
     }
 
     @Override
+    @SystemLog(value = "更新原材料")
     public boolean updateRawMaterials(RawMaterials rawMaterials) {
         rawMaterials.setUpdateTime(LocalDateTime.now());
         this.updateById(rawMaterials);

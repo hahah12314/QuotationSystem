@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanshu.common.annotation.SystemLog;
 import com.wanshu.common.util.PageUtils;
 import com.wanshu.cost.dto.RawMaterialQueryDto;
 import com.wanshu.cost.entity.*;
@@ -237,6 +238,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
 
     @Override
     @Transactional
+    @SystemLog(value = "新增报价单")
     public void saveQuotation(QuotationFormDto quotationForm) {
 // 保存公司信息
         Company company = new Company();
@@ -422,6 +424,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     }
 
     @Override
+    @SystemLog(value = "审核报价单")
     public void auditQuotation(Long quotationId) {
         QueryWrapper<Quotations> wrapper=new QueryWrapper<>();
         wrapper.eq("id",quotationId);
@@ -431,6 +434,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     }
 
     @Override
+    @SystemLog(value = "删除报价单")
     public String deleteQuotation(int id) {
         QueryWrapper<Quotations> wrapper=new QueryWrapper<>();
         wrapper.eq("id",id);
@@ -442,6 +446,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
 
     @Override
     @Transactional
+    @SystemLog(value = "更新报价单")
     public boolean updateQuotation(QuotationFormDto quotationFormDto) {
         QueryWrapper<Quotations> wrapper=new QueryWrapper<>();
         wrapper.eq("id",quotationFormDto.getQuotationId());

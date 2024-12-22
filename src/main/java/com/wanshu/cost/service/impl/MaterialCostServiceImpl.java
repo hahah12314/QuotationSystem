@@ -51,6 +51,7 @@ public class MaterialCostServiceImpl extends ServiceImpl<MaterialCostMapper, Mat
     }
 
     @Override
+    @SystemLog(value = "新增原材料费用")
     public boolean saveMaterialCost(MaterialCost materialCost) {
         this.baseMapper.insert(materialCost);
         return true;
@@ -65,6 +66,7 @@ public class MaterialCostServiceImpl extends ServiceImpl<MaterialCostMapper, Mat
     }
 
     @Override
+    @SystemLog(value = "更新原材料费用")
     public boolean updateMaterialCost(MaterialCost materialCost) {
         this.updateById(materialCost);
         return true;
