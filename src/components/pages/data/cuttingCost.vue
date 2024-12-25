@@ -257,7 +257,7 @@
       openDialog() {
         this.dialogFormVisible = true;
         this.dataDialogForm = {
-          id: "",
+          id: 0,
           detailId: "",
           specification: "",
           numCut: "",
