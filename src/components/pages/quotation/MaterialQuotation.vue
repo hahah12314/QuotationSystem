@@ -28,6 +28,8 @@
                 <el-table-column prop="customer.email" label="客户邮箱" width="150"></el-table-column>
                 <el-table-column prop="customer.address" label="客户地址" width="200"></el-table-column>
                 <el-table-column prop="customer.paymentMethod" label="支付方式" width="150"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间" width="150"></el-table-column>
+                <el-table-column prop="updateTime" label="更新时间" width="150"></el-table-column>
 
                 <el-table-column label="审核状态" width="120">
                     <template slot-scope="scope">
