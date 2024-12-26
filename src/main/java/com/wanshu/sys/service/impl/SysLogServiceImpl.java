@@ -30,6 +30,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         QueryWrapper<SysLog> wrapper=new QueryWrapper<>();
         wrapper.like("username",sysLogQueryDto.getMsg());
         wrapper.or().like("operation",sysLogQueryDto.getMsg());
+        wrapper.orderByDesc("create_date");
         Page<SysLog> page=this.page(sysLogQueryDto.page(),wrapper);
         return new PageUtils(page);
     }
