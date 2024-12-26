@@ -66,7 +66,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     public PageUtils queryPageQuotation(QuotationQueryDto quotationQueryDto) {
         QueryWrapper<Quotations> wrapper = new QueryWrapper<>();
 //        wrapper.eq("audit_status", 1);
-
+        wrapper.orderByDesc("update_time");
         Page<Quotations> page = new Page<>(quotationQueryDto.getPageIndex(), quotationQueryDto.getPageSize());
         Page<Quotations> quotationPage = quotationsMapper.selectPage(page, wrapper);
 
@@ -333,6 +333,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
     public List<QuotationFormDto> queryAuditPageQuotation() {
         QueryWrapper<Quotations> wrapper = new QueryWrapper<>();
         wrapper.in("audit_status", Arrays.asList(0));
+        wrapper.orderByDesc("update_time");
 
         List<Quotations> quotations = quotationsMapper.selectList(wrapper);
 
@@ -430,6 +431,7 @@ public class QuotationsServiceImpl extends ServiceImpl<QuotationsMapper, Quotati
         wrapper.eq("id",quotationId);
         Quotations quotations = quotationsMapper.selectOne(wrapper);
         quotations.setAuditStatus(1);
+        quotations.setUpdateTime(LocalDateTime.now());
         quotationsMapper.updateById(quotations);
     }
 
